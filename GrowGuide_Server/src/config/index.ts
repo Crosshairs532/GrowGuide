@@ -7,6 +7,7 @@ console.log(configPath)
 const configFiles = {
   DB_URL: process.env.DB_URI,
   port: process.env.PORT,
+  jwt_secret: process.env.JWT_SECRET,
 }
 
 export default configFiles

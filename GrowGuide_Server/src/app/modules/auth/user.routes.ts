@@ -12,4 +12,10 @@ router.post(
   userController.Registration,
 )
 
+router.post(
+  '/login',
+  validation(userValidation.loginSchema),
+  userController.Login,
+)
+
 export const authRoute = router

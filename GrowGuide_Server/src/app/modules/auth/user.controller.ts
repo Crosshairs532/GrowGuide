@@ -16,6 +16,19 @@ const Registration = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const Login = catchAsync(async (req: Request, res: Response) => {
+  const loginData = req.body
+  const response = await userService.loginDb(loginData)
+
+  sendResponse(res, {
+    success: true,
+    status: 200,
+    message: 'Login successful',
+    data: response,
+  })
+})
+
 export const userController = {
   Registration,
+  Login,
 }

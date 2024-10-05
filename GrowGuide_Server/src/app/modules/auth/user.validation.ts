@@ -5,8 +5,23 @@ const RegistrationSchema = z.object({
     required_error: 'Name is required',
     invalid_type_error: 'Name must be a string',
   }),
-  email: z.string({}).email({ message: 'Invalid email address' }),
+  email: z
+    .string({
+      required_error: 'Email is required',
+    })
+    .email({ message: 'Invalid email address' }),
   image: z.string(),
+  password: z.string({
+    required_error: 'Password is Required',
+  }),
+})
+
+const loginSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Email is required',
+    })
+    .email({ message: 'Invalid email address' }),
   password: z.string({
     required_error: 'Password is Required',
   }),
@@ -14,4 +29,5 @@ const RegistrationSchema = z.object({
 
 export const userValidation = {
   RegistrationSchema,
+  loginSchema,
 }

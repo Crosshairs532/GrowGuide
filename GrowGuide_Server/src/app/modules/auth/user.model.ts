@@ -25,4 +25,8 @@ userSchema.statics.findUser = async (email: string) => {
   return res
 }
 
+userSchema.statics.isPassWordMatch = async (email: string, password) => {
+  const res = await userModel.find({ email })
+}
+
 export const userModel = model<TUser, TUserExist>('users', userSchema)

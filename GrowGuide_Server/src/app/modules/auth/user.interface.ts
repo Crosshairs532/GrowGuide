@@ -6,6 +6,7 @@ export interface TUser {
   password: string
   image: string
 }
+
 export interface TUserExist extends Model<TUser> {
   findUser: (email: string) => Promise<any>
 }
