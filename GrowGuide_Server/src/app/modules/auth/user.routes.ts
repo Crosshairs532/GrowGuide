@@ -25,5 +25,17 @@ router.post(
   validation(userValidation.changePasswordSchema),
   userController.changePassword,
 )
+router.post(
+  '/reset-password',
+  auth(),
+  validation(userValidation.resetPasswordSchema),
+  userController.resetPassword,
+)
+router.post(
+  '/forget-password',
+  auth(),
+  // validation(userValidation.resetPasswordSchema),
+  userController.forgetPassword,
+)
 
 export const authRoute = router

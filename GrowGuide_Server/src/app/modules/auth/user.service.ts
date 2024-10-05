@@ -1,8 +1,10 @@
 import configFiles from '../../../config'
+import sendEmail from '../../utilities/sendEmail'
 import { sendResponse } from '../../utilities/sendResponse'
 import { TUser } from './user.interface'
 import { userModel } from './user.model'
 import jwt from 'jsonwebtoken'
+
 const registrationDb = async (userData: TUser) => {
   // * check if any user exists or not
   const isExists = await userModel.findUser(userData.email)
@@ -39,8 +41,25 @@ const changePasswordDb = async (email: string, password: string) => {
   return res
 }
 
+const forgetPasswordDb = async (email: string) => {
+  const link = `${configFiles.base_url}password-reset?email=${email}`
+  await sendEmail(email, 'Reset password', link)
+  return null
+}
+
+const resetPasswordDb = async (email: string, password: string) => {
+  const res = await userModel.findOneAndUpdate(
+    { email },
+    { password },
+    { new: true },
+  )
+  return res
+}
+
 export const userService = {
   registrationDb,
   loginDb,
   changePasswordDb,
+  forgetPasswordDb,
+  resetPasswordDb,
 }

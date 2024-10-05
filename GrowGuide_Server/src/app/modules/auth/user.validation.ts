@@ -36,8 +36,15 @@ const changePasswordSchema = z.object({
   }),
 })
 
+const resetPasswordSchema = z.object({
+  newPassword: z.string({
+    required_error: 'This  Field is required',
+  }),
+})
+
 export const userValidation = {
   RegistrationSchema,
   loginSchema,
   changePasswordSchema,
+  resetPasswordSchema,
 }
