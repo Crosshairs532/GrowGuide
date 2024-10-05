@@ -10,7 +10,9 @@ const registrationDb = async (userData: TUser) => {
     throw new Error('user already exists!')
   }
 
-  const res = await userModel.create(userData)
+  const newUserData = { ...userData, needsPasswordChange: false }
+
+  const res = await userModel.create(newUserData)
   return res
 }
 
@@ -21,16 +23,24 @@ const loginDb = async (userData: Partial<TUser>) => {
   if (!isExists) {
     throw new Error('user does not exists!')
   }
-
   const token = jwt.sign(userData, configFiles.jwt_secret as string, {
     expiresIn: '2d',
   })
-
   return {
     accessToken: token,
   }
 }
+const changePasswordDb = async (email: string, password: string) => {
+  const res = await userModel.findOneAndUpdate(
+    { email },
+    { password },
+    { new: true },
+  )
+  return res
+}
+
 export const userService = {
   registrationDb,
   loginDb,
+  changePasswordDb,
 }

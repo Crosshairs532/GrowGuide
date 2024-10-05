@@ -5,6 +5,8 @@ export interface TUser {
   email: string
   password: string
   image: string
+  role: string
+  needsPasswordChange: boolean
 }
 
 export interface TUserExist extends Model<TUser> {
