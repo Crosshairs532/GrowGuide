@@ -1,11 +1,14 @@
 import configFiles from '../../../config'
 import sendEmail from '../../utilities/sendEmail'
 import { sendResponse } from '../../utilities/sendResponse'
+import { sendImageToCloudinary } from '../../utilities/ToCloudinary'
 import { TUser } from './user.interface'
 import { userModel } from './user.model'
 import jwt from 'jsonwebtoken'
 
-const registrationDb = async (userData: TUser) => {
+const registrationDb = async (userData: any) => {
+  console.log(userData, 'user Registration Data')
+
   // * check if any user exists or not
   const isExists = await userModel.findUser(userData.email)
   if (isExists) {
@@ -13,7 +16,6 @@ const registrationDb = async (userData: TUser) => {
   }
 
   const newUserData = { ...userData, needsPasswordChange: false }
-
   const res = await userModel.create(newUserData)
   return res
 }

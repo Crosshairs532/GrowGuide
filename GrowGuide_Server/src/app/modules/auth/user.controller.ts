@@ -7,7 +7,6 @@ import { JwtPayload } from 'jsonwebtoken'
 const Registration = catchAsync(async (req: Request, res: Response) => {
   const registrationData = req.body
 
-  console.log(registrationData)
   const response = await userService.registrationDb(registrationData)
 
   sendResponse(res, {

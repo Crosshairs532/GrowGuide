@@ -4,11 +4,15 @@ import { validation } from '../../middlewares/validation'
 import { userValidation } from './user.validation'
 import { userController } from './user.controller'
 import auth from '../../middlewares/auth'
+import { upload } from '../../utilities/ToCloudinary'
+import ParseFromData from '../../middlewares/parse'
 
 const router = Router()
 
 router.post(
   '/register',
+  upload.single('file'),
+  ParseFromData,
   validation(userValidation.RegistrationSchema),
   userController.Registration,
 )
