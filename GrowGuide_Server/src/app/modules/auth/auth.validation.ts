@@ -42,7 +42,7 @@ const resetPasswordSchema = z.object({
   }),
 })
 
-export const userValidation = {
+export const authValidation = {
   RegistrationSchema,
   loginSchema,
   changePasswordSchema,

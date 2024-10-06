@@ -1,10 +1,9 @@
 import configFiles from '../../../config'
 import sendEmail from '../../utilities/sendEmail'
-import { sendResponse } from '../../utilities/sendResponse'
-import { sendImageToCloudinary } from '../../utilities/ToCloudinary'
-import { TUser } from './user.interface'
-import { userModel } from './user.model'
+
 import jwt from 'jsonwebtoken'
+import { userModel } from '../user-management/user.model'
+import { TUser } from '../user-management/user.interface'
 
 const registrationDb = async (userData: any) => {
   console.log(userData, 'user Registration Data')
@@ -58,7 +57,7 @@ const resetPasswordDb = async (email: string, password: string) => {
   return res
 }
 
-export const userService = {
+export const authService = {
   registrationDb,
   loginDb,
   changePasswordDb,

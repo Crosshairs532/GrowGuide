@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { catchAsync } from '../utilities/catchAsync'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import configFiles from '../../config'
-import { userModel } from '../modules/auth/user.model'
+import { userModel } from '../modules/user-management/user.model'
 // * it is used when i need to verify the user.
 
 const auth = () => {
@@ -16,8 +16,11 @@ const auth = () => {
     const decoded = jwt.verify(token, configFiles.jwt_secret as string)
     const { email, password } = decoded as JwtPayload
 
+    console.log({ decodec: email })
+
     //! check of the decoded user really exists?
     const isExists = await userModel.findUser(email)
+    console.log(isExists, '<<=')
     if (!isExists) {
       throw new Error('This User does not exists!')
     }

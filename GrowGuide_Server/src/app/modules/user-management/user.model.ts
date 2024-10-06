@@ -32,6 +32,7 @@ const userSchema = new Schema<TUser, TUserExist>(
 )
 
 userSchema.statics.findUser = async (email: string) => {
+  console.log(email, '=>')
   const res = await userModel.findOne({ email })
   return res
 }

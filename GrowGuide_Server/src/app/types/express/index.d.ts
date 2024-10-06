@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken'
-import { TUser } from '../../modules/auth/user.interface'
+import { TUser } from '../../modules/user-management/user.interface'
 
 export {}
 

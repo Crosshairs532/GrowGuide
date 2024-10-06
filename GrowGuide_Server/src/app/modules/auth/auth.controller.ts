@@ -1,13 +1,14 @@
 import { Request, Response } from 'express'
 import { catchAsync } from '../../utilities/catchAsync'
-import { userService } from './user.service'
+
 import { sendResponse } from '../../utilities/sendResponse'
 import { JwtPayload } from 'jsonwebtoken'
+import { authService } from './auth.service'
 
 const Registration = catchAsync(async (req: Request, res: Response) => {
   const registrationData = req.body
 
-  const response = await userService.registrationDb(registrationData)
+  const response = await authService.registrationDb(registrationData)
 
   sendResponse(res, {
     success: true,
@@ -19,7 +20,7 @@ const Registration = catchAsync(async (req: Request, res: Response) => {
 
 const Login = catchAsync(async (req: Request, res: Response) => {
   const loginData = req.body
-  const response = await userService.loginDb(loginData)
+  const response = await authService.loginDb(loginData)
   res.cookie('accessToken', response!.accessToken, { maxAge: 20000 })
   sendResponse(res, {
     success: true,
@@ -36,7 +37,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
     throw new Error('old password Does not match!')
   }
 
-  const response = await userService.changePasswordDb(email, newPassword)
+  const response = await authService.changePasswordDb(email, newPassword)
   res.clearCookie('accessToken')
   sendResponse(res, {
     success: true,
@@ -50,7 +51,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 
 const forgetPassword = catchAsync(async (req: Request, res: Response) => {
   const { email } = req?.user as JwtPayload
-  const response = await userService.forgetPasswordDb(email)
+  const response = await authService.forgetPasswordDb(email)
   return null
 })
 
@@ -62,7 +63,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
   if (!(verifiedEmail === email)) {
     throw new Error('You are not Authorized!')
   }
-  const response = await userService.resetPasswordDb(
+  const response = await authService.resetPasswordDb(
     email as string,
     newPassword,
   )
@@ -74,7 +75,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
-export const userController = {
+export const authController = {
   Registration,
   Login,
   changePassword,

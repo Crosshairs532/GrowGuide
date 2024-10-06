@@ -13,7 +13,7 @@ app.use(express.json())
 app.get('/', (req: Request, res: Response) => {
   res.send('GrowGuide Server in running 🚀')
 })
-app.use('/api/growGuide/', allRouter)
+app.use('/api/growGuide', allRouter)
 
 app.use(globalError)
 
