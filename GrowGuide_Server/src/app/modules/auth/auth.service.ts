@@ -23,10 +23,12 @@ const loginDb = async (userData: Partial<TUser>) => {
   const { email } = userData
   // * check if any user exists or not
   const isExists = await userModel.findUser(email as string)
+
+  const tokenData = { ...userData, name: isExists.name }
   if (!isExists) {
     throw new Error('user does not exists!')
   }
-  const token = jwt.sign(userData, configFiles.jwt_secret as string, {
+  const token = jwt.sign(tokenData, configFiles.jwt_secret as string, {
     expiresIn: '2d',
   })
   return {
