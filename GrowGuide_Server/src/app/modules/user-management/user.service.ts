@@ -69,7 +69,34 @@ const followUserDb = async (followUser: any) => {
   return { CurrentUserFollowing, CurrentFollowingFollower }
 }
 
+const unFollowUserDb = async (userUnFollowInfo: any) => {
+  const { myId, unfollowId } = userUnFollowInfo
+
+  // ! first delete from my list.
+  const userUnfollowed = await userModel.findByIdAndUpdate(
+    { _id: new ObjectId(myId) },
+    {
+      $pull: {
+        following: unfollowId,
+      },
+    },
+  )
+
+  // ! then delete from the other user's list.
+  const res = await userModel.findByIdAndUpdate(
+    { _id: new ObjectId(unfollowId) },
+    {
+      $pull: {
+        followers: myId,
+      },
+    },
+  )
+
+  return { userUnfollowed, res }
+}
+
 export const userService = {
   updateProfileDb,
   followUserDb,
+  unFollowUserDb,
 }

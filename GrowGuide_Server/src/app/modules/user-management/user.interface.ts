@@ -8,6 +8,7 @@ export interface TUser {
   image: string
   role: string
   needsPasswordChange: boolean
+  status?: string
   followers?: Array<Types.ObjectId>
   following?: Array<Types.ObjectId>
 }

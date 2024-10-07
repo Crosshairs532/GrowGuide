@@ -27,6 +27,11 @@ const userSchema = new Schema<TUser, TUserExist>(
       type: Boolean,
       default: false,
     },
+    status: {
+      type: String,
+      default: 'General',
+      enum: ['General', 'Premium'],
+    },
     followers: [{ type: Schema.Types.ObjectId, ref: 'users' }],
     following: [{ type: Schema.Types.ObjectId, ref: 'users' }],
   },
