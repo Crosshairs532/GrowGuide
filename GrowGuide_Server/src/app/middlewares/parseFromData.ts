@@ -5,9 +5,9 @@ import { sendImageToCloudinary } from '../utilities/ToCloudinary'
 const ParseFromData = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { image, ...other } = JSON.parse(req.body.data)
-
     // ! cloudinary
     const path = req.file!.path
+    console.log({ path })
     const { secure_url } = (await sendImageToCloudinary(
       other.name,
       path,

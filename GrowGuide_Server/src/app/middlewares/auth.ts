@@ -16,7 +16,7 @@ const auth = () => {
     const decoded = jwt.verify(token, configFiles.jwt_secret as string)
     const { email, password } = decoded as JwtPayload
 
-    console.log({ decodec: email })
+    console.log({ email })
 
     //! check of the decoded user really exists?
     const isExists = await userModel.findUser(email)
@@ -25,8 +25,10 @@ const auth = () => {
       throw new Error('This User does not exists!')
     }
 
-    req.user = decoded as JwtPayload
-
+    if (!(email === isExists.email)) {
+      throw new Error('This User does not authorized')
+    }
+    req.user = isExists
     next()
   })
 }

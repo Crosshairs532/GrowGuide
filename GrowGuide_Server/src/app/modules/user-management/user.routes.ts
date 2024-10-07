@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { userController } from './user.controller'
 import auth from '../../middlewares/auth'
-import { upload } from '../../utilities/ToCloudinary'
+
 import ParseFromData from '../../middlewares/parseFromData'
+import { upload } from '../../utilities/ToCloudinary'
 
 const router = Router()
 router.put(

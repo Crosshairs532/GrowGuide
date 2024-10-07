@@ -8,12 +8,18 @@ const updateProfileDb = async (
   userId: ObjectId,
 ) => {
   const isExists = await userModel.findUser(email as string)
+
+  console.log({ userId })
   if (!isExists) {
     throw new Error('user does not exists!')
   }
-  const updated = await userModel.findByIdAndUpdate(userId, updateData, {
-    new: true,
-  })
+  const updated = await userModel.findByIdAndUpdate(
+    { _id: userId },
+    updateData,
+    {
+      new: true,
+    },
+  )
 
   return updated
 }

@@ -2,6 +2,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer'
 import configFiles from '../../config'
 import fs from 'fs'
+import path from 'path'
 cloudinary.config({
   cloud_name: configFiles.cloud_name,
   api_key: configFiles.api_key,
@@ -37,7 +38,9 @@ export const sendImageToCloudinary = async (
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, process.cwd() + '/uploads')
+    const uploadPath = path.resolve(process.cwd(), 'uploads')
+    console.log(process.cwd())
+    cb(null, uploadPath)
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
