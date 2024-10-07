@@ -13,4 +13,7 @@ router.put(
   auth(),
   userController.profileUpdate,
 )
+
+router.post('/follow-user', auth(), userController.FollowUser)
+
 export const userRoute = router

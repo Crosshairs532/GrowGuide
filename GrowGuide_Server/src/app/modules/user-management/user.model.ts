@@ -21,10 +21,14 @@ const userSchema = new Schema<TUser, TUserExist>(
     },
     role: {
       type: String,
+      default: 'user',
     },
     needsPasswordChange: {
       type: Boolean,
+      default: false,
     },
+    followers: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+    following: [{ type: Schema.Types.ObjectId, ref: 'users' }],
   },
   {
     timestamps: true,

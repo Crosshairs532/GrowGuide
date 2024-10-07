@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import { Model } from 'mongoose'
 
 export interface TUser {
@@ -7,6 +8,8 @@ export interface TUser {
   image: string
   role: string
   needsPasswordChange: boolean
+  followers?: Array<Types.ObjectId>
+  following?: Array<Types.ObjectId>
 }
 
 export interface TUserExist extends Model<TUser> {

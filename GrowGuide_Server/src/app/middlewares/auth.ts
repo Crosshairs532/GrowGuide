@@ -10,6 +10,7 @@ const auth = () => {
     const token = req.headers.authorization
 
     console.log(token, 'access-Token')
+
     if (!token) {
       throw new Error('You are not Authorized!')
     }

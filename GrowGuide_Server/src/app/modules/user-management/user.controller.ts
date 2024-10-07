@@ -29,6 +29,21 @@ const profileUpdate = catchAsync(
   },
 )
 
+const FollowUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const followedUserId = req.body //! ownId, followedId
+    const response = await userService.followUserDb(followedUserId)
+
+    sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'User followed successfully',
+      data: response,
+    })
+  },
+)
+
 export const userController = {
   profileUpdate,
+  FollowUser,
 }
