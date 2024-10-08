@@ -70,7 +70,23 @@ const createCommentDb = async (commentData: TComment) => {
   return post
 }
 
+const UpDownVoteDb = async (postId: string, val: string) => {
+  const res = await postModel.findByIdAndUpdate(
+    { _id: postId },
+    {
+      $inc: {
+        votes: parseInt(val),
+      },
+    },
+    {
+      new: true,
+    },
+  )
+  return res
+}
+
 export const postService = {
   createPostDb,
   createCommentDb,
+  UpDownVoteDb,
 }

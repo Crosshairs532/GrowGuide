@@ -28,7 +28,21 @@ const createComment = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const UpDownVote = catchAsync(async (req: Request, res: Response) => {
+  const { postId, votes } = req.body
+
+  console.log(votes)
+  const response = await postService.UpDownVoteDb(postId as string, votes)
+  sendResponse(res, {
+    success: true,
+    status: httpStatus.OK,
+    message: 'voted successfully',
+    data: response,
+  })
+})
+
 export const postController = {
   createPost,
   createComment,
+  UpDownVote,
 }

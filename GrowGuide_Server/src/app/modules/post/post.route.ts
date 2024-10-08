@@ -13,4 +13,6 @@ router.post(
 )
 
 router.put('/create-comment', postController.createComment)
+
+router.patch('/vote', postController.UpDownVote)
 export const postRoute = router
