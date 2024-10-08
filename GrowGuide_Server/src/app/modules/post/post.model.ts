@@ -17,6 +17,20 @@ const postSchema = new Schema<TPost>({
   premium: {
     type: Boolean,
   },
+  votes: {
+    type: Number,
+  },
+  comments: {
+    type: [
+      {
+        userId: Schema.Types.ObjectId,
+        userComments: {
+          type: [String],
+        },
+      },
+    ],
+    _id: false,
+  },
 })
 
 export const postModel = model<TPost>('posts', postSchema)

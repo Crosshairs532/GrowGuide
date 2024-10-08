@@ -11,4 +11,6 @@ router.post(
   postFromData,
   postController.createPost,
 )
+
+router.put('/create-comment', postController.createComment)
 export const postRoute = router
