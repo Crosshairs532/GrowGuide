@@ -8,6 +8,7 @@ const ParseFromData = catchAsync(
     // ! cloudinary
     const path = req.file!.path
     console.log({ path })
+
     const { secure_url } = (await sendImageToCloudinary(
       other.name,
       path,
