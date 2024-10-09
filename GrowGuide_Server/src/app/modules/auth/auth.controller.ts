@@ -1,9 +1,10 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { catchAsync } from '../../utilities/catchAsync'
 
 import { sendResponse } from '../../utilities/sendResponse'
 import { JwtPayload } from 'jsonwebtoken'
 import { authService } from './auth.service'
+import httpStatus from 'http-status'
 
 const Registration = catchAsync(async (req: Request, res: Response) => {
   const registrationData = req.body
@@ -49,26 +50,31 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
   // !check that logged in user and the given old password matches
 })
 
-const forgetPassword = catchAsync(async (req: Request, res: Response) => {
-  // const { email } = req?.user as JwtPayload
-  const { email } = req.body
+const forgetPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body
+    console.log({ email }, 'server')
 
-  const response = await authService.forgetPasswordDb(email)
-  return null
-})
+    const response = await authService.forgetPasswordDb(email)
+
+    sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'Forget password email sent successfully',
+      data: response,
+    })
+  },
+)
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
   const { email: verifiedEmail } = req?.user as JwtPayload
   const { email } = req.query
-  const { newPassword } = req.body
+  const { password } = req.body
 
   if (!(verifiedEmail === email)) {
     throw new Error('You are not Authorized!')
   }
-  const response = await authService.resetPasswordDb(
-    email as string,
-    newPassword,
-  )
+  const response = await authService.resetPasswordDb(email as string, password)
   sendResponse(res, {
     success: true,
     status: 200,

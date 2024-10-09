@@ -5,13 +5,18 @@ import { toast } from "sonner";
 export const useForgetPassword = () => {
   return useMutation({
     mutationKey: ["AUTH_FORGET_PASSWORD"],
-    mutationFn: async (emailData: any) =>
-      await forgetPasswordService(emailData),
+    mutationFn: async (emailData: any) => {
+      console.log(emailData);
+      const res = await forgetPasswordService(emailData);
+      console.log(res, "useForgetword");
+      return res;
+    },
     onSuccess: () => {
       toast.success(`Check Your Email`);
     },
-    onError: (data) => {
-      toast.error(data.message);
+    onError: (error: any) => {
+      console.log(error);
+      toast.error(error.message);
     },
   });
 };

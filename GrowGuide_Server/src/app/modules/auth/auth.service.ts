@@ -6,7 +6,7 @@ import { userModel } from '../user-management/user.model'
 import { TUser } from '../user-management/user.interface'
 
 const registrationDb = async (userData: any) => {
-  console.log(userData, 'user Registration Data')
+  // console.log(userData, 'user Registration Data')
 
   // * check if any user exists or not
   const isExists = await userModel.findUser(userData.email)
@@ -46,13 +46,25 @@ const changePasswordDb = async (email: string, password: string) => {
 
 const forgetPasswordDb = async (email: string) => {
   const isExist = await userModel.findUser(email)
+
+  console.log(isExist)
   if (!isExist) {
     throw new Error('This User Does not Have any account!')
   }
+  const tokenData = {
+    name: isExist.name,
+    email: isExist.email,
+  }
+  const accessToken = jwt.sign(tokenData, configFiles.jwt_secret as string, {
+    expiresIn: '10000',
+  })
 
-  const link = `${configFiles.base_url}password-reset?email=${email}`
-  await sendEmail(email, 'Reset password', link, isExist.name)
-  return null
+  console.log(accessToken)
+
+  const link = `${configFiles.frontend_url}password-reset?email=${email}&accessToken=${accessToken}`
+  const res = await sendEmail(email, 'Reset password', link, isExist?.name)
+  console.log(res, 'send mail')
+  return res
 }
 
 const resetPasswordDb = async (email: string, password: string) => {

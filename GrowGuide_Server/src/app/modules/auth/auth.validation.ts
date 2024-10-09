@@ -37,7 +37,7 @@ const changePasswordSchema = z.object({
 })
 
 const resetPasswordSchema = z.object({
-  newPassword: z.string({
+  password: z.string({
     required_error: 'This  Field is required',
   }),
 })

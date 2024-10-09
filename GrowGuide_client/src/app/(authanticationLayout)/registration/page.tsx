@@ -4,9 +4,10 @@ import GGPassword from "@/components/Form/GGInputPassword";
 import Logo from "@/utils/Icons/Logo";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Button, Spinner } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useRegistration } from "@/hooks/useRegistration";
 import { redirect } from "next/navigation";
+import LoadingOverlay from "../../UI/LoadingOverlay";
 
 const RegistrationPage = () => {
   const [image, setImage] = useState<string | File | undefined>();
@@ -54,11 +55,9 @@ const RegistrationPage = () => {
 
   return (
     <>
-      <div
-        className={` ${isPending ? "block" : "hidden"}  overlay z-30 fixed inset-0 bg-black/20 backdrop-blur-sm flex justify-center items-center`}
-      >
-        {isPending && <Spinner size="lg" />}
-      </div>
+      {/* {isPending &&  isPending={isPending}></>} */}
+      {isPending && <LoadingOverlay isPending={isPending}></LoadingOverlay>}
+
       <div className=" mx-auto border-2 flex flex-col sm:flex-row lg:flex-row justify-center space-y-[4vw] sm:justify-around lg:justify-around items-center h-screen">
         <div className="  icon lg:w-[50%]">
           <div className="  w-fit mx-auto">

@@ -17,6 +17,7 @@ const configFiles = {
   signature_key: process.env.SIGNATURE_KEY,
   payment_url: process.env.PAYMENT_URL,
   search_transaction: process.env.SEARCH_TRANSACTION,
+  frontend_url: process.env.FRONTEND_URL,
 }
 
 export default configFiles

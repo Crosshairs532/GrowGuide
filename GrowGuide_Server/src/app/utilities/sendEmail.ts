@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 import configFiles from '../../config'
-const sendEmail = (
+const sendEmail = async (
   userEmail: string,
   subject: string,
   link: string,
@@ -24,15 +24,13 @@ const sendEmail = (
     Click On the Link To Reset Password - ${link}`,
   }
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error)
-    } else {
-      console.log({ message: 'Email sent: ' + info.accepted })
-      return { message: 'Email sent: ' + info.accepted }
-      console.log()
-    }
-  })
+  try {
+    const info = await transporter.sendMail(mailOptions)
+    return info
+  } catch (error) {
+    // Send error response to client
+    console.error('Error sending email:', error)
+  }
 }
 
 export default sendEmail
