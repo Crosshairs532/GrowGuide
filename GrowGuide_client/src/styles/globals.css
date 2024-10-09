@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "chirpRegular";
+  src: url("../utils/fonts/Chirp-Regular.80fda27a.woff2");
+}
+@font-face {
+  font-family: "chirpMedium";
+  src: url("../utils/fonts/Chirp-Medium.f8e2739a.woff2");
+}
+@font-face {
+  font-family: "chirpBold";
+  src: url("../utils/fonts/Chirp-Bold.ebb56aba.woff2");
+}

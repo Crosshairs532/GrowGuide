@@ -36,7 +36,7 @@ router.post(
 )
 router.post(
   '/forget-password',
-  auth(),
+  // auth(),
   // validation(authValidation.resetPasswordSchema),
   authController.forgetPassword,
 )

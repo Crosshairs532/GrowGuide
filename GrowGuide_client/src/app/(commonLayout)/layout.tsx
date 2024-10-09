@@ -1,12 +1,14 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
-const CommonLayout = ({ children }: { children: ReactNode }) => {
+const commonLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className=" flex border-2 justify-around">
-      <h1 className=" border-2">Left Side bad</h1>
-      {children}
+    <div className=" flex mainLayout border-2 container h-screen mx-auto max-w-7xl pt-16 flex-grow">
+      <div className=" bg-red-500 w-[20%]">sidebar</div>
+      <div className=" bg-yellow-500 w-[80%] relative flex flex-col h-screen border-">
+        <main className=" h-screen w-full">{children}</main>
+      </div>
     </div>
   );
 };
 
-export default CommonLayout;
+export default commonLayout;

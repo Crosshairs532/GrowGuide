@@ -1,6 +1,11 @@
 import nodemailer from 'nodemailer'
 import configFiles from '../../config'
-const sendEmail = (userEmail: string, subject: string, link: string) => {
+const sendEmail = (
+  userEmail: string,
+  subject: string,
+  link: string,
+  name: string,
+) => {
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -13,14 +18,19 @@ const sendEmail = (userEmail: string, subject: string, link: string) => {
     from: configFiles.sender_email,
     to: userEmail,
     subject: subject,
-    text: `Click On the Link To Reset Password - ${link}`,
+    text: `
+    Hi ${name}!
+    
+    Click On the Link To Reset Password - ${link}`,
   }
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error)
     } else {
-      console.log('Email sent: ' + info.response)
+      console.log({ message: 'Email sent: ' + info.accepted })
+      return { message: 'Email sent: ' + info.accepted }
+      console.log()
     }
   })
 }

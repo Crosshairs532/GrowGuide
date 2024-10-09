@@ -1,14 +1,14 @@
 import React from "react";
 
-const Logo = () => {
+const Logo = ({ width, height }: { width: string; height: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
+      width={width}
+      height={height}
+      viewBox={`0 0 24 24`}
       fill="none"
-      stroke="currentColor"
+      stroke="white"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"

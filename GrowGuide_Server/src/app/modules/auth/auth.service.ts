@@ -45,8 +45,13 @@ const changePasswordDb = async (email: string, password: string) => {
 }
 
 const forgetPasswordDb = async (email: string) => {
+  const isExist = await userModel.findUser(email)
+  if (!isExist) {
+    throw new Error('This User Does not Have any account!')
+  }
+
   const link = `${configFiles.base_url}password-reset?email=${email}`
-  await sendEmail(email, 'Reset password', link)
+  await sendEmail(email, 'Reset password', link, isExist.name)
   return null
 }
 

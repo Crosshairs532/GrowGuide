@@ -12,6 +12,9 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],
+        chirpRegular: ["chirpRegular", "sans-serif"],
+        chirpMedium: ["chirpMedium", "sans-serif"],
+        chirpBold: ["chirpBold", "sans-serif"],
       },
     },
   },

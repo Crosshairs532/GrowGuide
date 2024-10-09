@@ -50,7 +50,9 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 })
 
 const forgetPassword = catchAsync(async (req: Request, res: Response) => {
-  const { email } = req?.user as JwtPayload
+  // const { email } = req?.user as JwtPayload
+  const { email } = req.body
+
   const response = await authService.forgetPasswordDb(email)
   return null
 })
