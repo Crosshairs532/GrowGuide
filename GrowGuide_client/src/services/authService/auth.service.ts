@@ -18,6 +18,15 @@ export const registrationService = async (userData: any) => {
   }
 };
 
+export const loginService = async (userData: any) => {
+  try {
+    const res = await AxiosInstance.post("/auth/login", userData);
+    return res.data;
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
 export const forgetPasswordService = async (data: { email: string }) => {
   try {
     const res = await AxiosInstance.post("/auth/forget-password", data);

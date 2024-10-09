@@ -2,12 +2,24 @@
 import ForgetModal from "@/app/UI/Modal";
 import GGForm from "@/components/Form/GGForm";
 import GGInput from "@/components/Form/GGInput";
+import { useLogin } from "@/hooks/useLogin";
 import { Button } from "@nextui-org/button";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 const LoginPage = () => {
-  const onSubmit: SubmitHandler<any> = () => {};
+  const { mutate: loginMutation, isPending, isSuccess } = useLogin();
+  const onSubmit: SubmitHandler<any> = (data) => {
+    loginMutation(data);
+  };
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      router.push("/");
+    }
+  }, [isPending, isSuccess]);
   return (
     <div className=" flex justify-center items-center h-screen">
       <div className=" form w-[80vw] sm:w-[50vw] lg:w-[35vw]">

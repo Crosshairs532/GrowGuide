@@ -7,7 +7,11 @@ export const AxiosInstance = axios.create({
 
 axios.interceptors.request.use(
   function (config) {
-    config.headers.Authorization = `${cookies().get("accessToken")?.value}`;
+    // !forget password
+    if (cookies().get("accessToken")?.value) {
+      config.headers.Authorization = `${cookies().get("accessToken")?.value}`;
+    }
+
     return config;
   },
   function (error) {
