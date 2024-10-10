@@ -10,6 +10,9 @@ import {
   Divider,
 } from "@nextui-org/react";
 
+import { Children } from "react";
+import PostEditForm from "../post/PostEditForm";
+
 export default function CustomModal({ post, children, isOpen, onOpenChange }) {
   const { mutate: postDelete } = usePostDelete();
 
@@ -31,11 +34,21 @@ export default function CustomModal({ post, children, isOpen, onOpenChange }) {
         {(onClose) => (
           <>
             <ModalHeader className="flex  justify-center items-center gap-1">
-              Edit Post
+              {children === "delete"
+                ? "Delete Post"
+                : children === "edit"
+                  ? "Edit Post"
+                  : ""}
             </ModalHeader>
             <Divider className="my-4" />
             <ModalBody>
-              {children === "delete" ? "Do You want to Delete the post?" : ""}
+              {children === "delete" ? (
+                "Do You want to Delete the post?"
+              ) : children === "edit" ? (
+                <PostEditForm post={post}></PostEditForm>
+              ) : (
+                ""
+              )}
             </ModalBody>
             <ModalFooter>
               {children === "delete" ? (
@@ -51,7 +64,7 @@ export default function CustomModal({ post, children, isOpen, onOpenChange }) {
                 </Button>
               ) : (
                 <Button color="primary" onPress={onClose}>
-                  Action
+                  Save
                 </Button>
               )}
               <Button color="danger" variant="light" onPress={onClose}>

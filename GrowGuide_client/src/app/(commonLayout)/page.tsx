@@ -24,8 +24,6 @@ const NewsFeed = () => {
       {data?.map((post: any, index: number) => {
         return <PostCard post={post} key={index}></PostCard>;
       })}
-
-      {/* {<PostCard post="" key={1}></PostCard>} */}
     </>
   );
 };
