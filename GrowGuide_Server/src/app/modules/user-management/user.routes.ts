@@ -17,4 +17,6 @@ router.put(
 router.post('/follow-user', auth(), userController.FollowUser)
 router.post('/unfollow-user', auth(), userController.unfollowUser)
 
+router.get('/users', userController.getAllUsers)
+
 export const userRoute = router

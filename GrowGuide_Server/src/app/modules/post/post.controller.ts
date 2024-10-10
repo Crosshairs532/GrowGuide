@@ -41,8 +41,19 @@ const UpDownVote = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const getAllPosts = catchAsync(async (req: Request, res: Response) => {
+  const response = await postService.getAllPostsDb()
+  sendResponse(res, {
+    success: true,
+    status: httpStatus.OK,
+    message: 'Posts fetched successfully',
+    data: response,
+  })
+})
+
 export const postController = {
   createPost,
   createComment,
   UpDownVote,
+  getAllPosts,
 }

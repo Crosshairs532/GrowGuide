@@ -2,6 +2,7 @@
 import { cookies, headers } from "next/headers";
 
 import { AxiosInstance } from "@/lib/AxiosInstance";
+import { jwtDecode } from "jwt-decode";
 
 export const registrationService = async (userData: any) => {
   console.log(userData.get("data"), "kothay");
@@ -45,4 +46,10 @@ export const resetPasswordService = async (data: any) => {
   } catch (error: any) {
     console.log(error.message);
   }
+};
+
+export const getUserService = async () => {
+  const token = cookies().get("accessToken")!.value;
+  const decoded = jwtDecode(token);
+  return decoded;
 };

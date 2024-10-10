@@ -7,6 +7,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ThemeProviderProps } from "next-themes/dist/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
+import GrowContext from "@/app/Context/GrowContext";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -22,7 +23,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
       <NextThemesProvider {...themeProps}>
         <QueryClientProvider client={queryClient}>
           <Toaster />
-          {children}
+          <GrowContext>{children}</GrowContext>
         </QueryClientProvider>
       </NextThemesProvider>
     </NextUIProvider>

@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { authRoute } from '../modules/auth/auth.routes'
 import { userRoute } from '../modules/user-management/user.routes'
 import { paymentRoute } from '../modules/payment/payment.routes'
-import { postRoute } from '../modules/post/post.route'
+import { postRoute } from '../modules/post/post.routes'
 
 const router = Router()
 

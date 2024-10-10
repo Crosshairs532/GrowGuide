@@ -3,7 +3,7 @@ import { postModel } from './post.model'
 
 const createPostDb = async (postData: TPost) => {
   console.log(postData)
-  const posted = await postModel.create(postData)
+  const posted = (await postModel.create(postData)).populate('user')
   return posted
 }
 
@@ -85,8 +85,13 @@ const UpDownVoteDb = async (postId: string, val: string) => {
   return res
 }
 
+const getAllPostsDb = async () => {
+  const res = await postModel.find({}).populate('user')
+  return res
+}
 export const postService = {
   createPostDb,
   createCommentDb,
   UpDownVoteDb,
+  getAllPostsDb,
 }

@@ -15,4 +15,7 @@ router.post(
 router.put('/create-comment', postController.createComment)
 
 router.patch('/vote', postController.UpDownVote)
+
+router.get('/posts', postController.getAllPosts)
+
 export const postRoute = router

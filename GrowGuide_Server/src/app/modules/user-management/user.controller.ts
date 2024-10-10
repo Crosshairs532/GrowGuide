@@ -4,6 +4,7 @@ import { userService } from './user.service'
 import { sendResponse } from '../../utilities/sendResponse'
 import { JwtPayload } from 'jsonwebtoken'
 import httpStatus from 'http-status'
+import { userModel } from './user.model'
 
 const profileUpdate = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -56,8 +57,24 @@ const unfollowUser = catchAsync(
   },
 )
 
+const getAllUsers = async (req, res) => {
+  try {
+    const response = await userModel.find({})
+    sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'Users fetched successfully',
+
+      data: response,
+    })
+  } catch (err: any) {
+    console.log(err.message)
+  }
+}
+
 export const userController = {
   profileUpdate,
   FollowUser,
   unfollowUser,
+  getAllUsers,
 }
