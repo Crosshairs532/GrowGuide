@@ -34,6 +34,12 @@ const userSchema = new Schema<TUser, TUserExist>(
     },
     followers: [{ type: Schema.Types.ObjectId, ref: 'users' }],
     following: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+    favourites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'posts',
+      },
+    ],
   },
   {
     timestamps: true,

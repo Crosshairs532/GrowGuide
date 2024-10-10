@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { TUser } from './user.interface'
 import { userModel } from './user.model'
+import { postModel } from '../post/post.model'
 
 const updateProfileDb = async (
   updateData: TUser,
@@ -95,8 +96,31 @@ const unFollowUserDb = async (userUnFollowInfo: any) => {
   return { userUnfollowed, res }
 }
 
+const addToFavDb = async (email: string, postId: string) => {
+  const res = await userModel
+    .findOneAndUpdate(
+      {
+        email,
+      },
+      {
+        $addToSet: {
+          favourites: { $each: [postId] },
+        },
+      },
+      {
+        new: true,
+      },
+    )
+    .populate({
+      path: 'favourites',
+    })
+
+  return res
+}
+
 export const userService = {
   updateProfileDb,
   followUserDb,
   unFollowUserDb,
+  addToFavDb,
 }

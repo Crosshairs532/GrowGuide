@@ -50,6 +50,6 @@ export const resetPasswordService = async (data: any) => {
 
 export const getUserService = async () => {
   const token = cookies().get("accessToken")!.value;
-  const decoded = jwtDecode(token);
+  const decoded = await jwtDecode(token);
   return decoded;
 };

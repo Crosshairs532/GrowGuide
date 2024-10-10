@@ -11,6 +11,7 @@ export interface TUser {
   status?: string
   followers?: Array<Types.ObjectId>
   following?: Array<Types.ObjectId>
+  favourites?: Array<Types.ObjectId>
 }
 
 export interface TUserExist extends Model<TUser> {

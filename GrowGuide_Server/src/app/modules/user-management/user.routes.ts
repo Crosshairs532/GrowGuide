@@ -18,5 +18,6 @@ router.post('/follow-user', auth(), userController.FollowUser)
 router.post('/unfollow-user', auth(), userController.unfollowUser)
 
 router.get('/users', userController.getAllUsers)
+router.post('/add-to-favourites', userController.addToFav)
 
 export const userRoute = router

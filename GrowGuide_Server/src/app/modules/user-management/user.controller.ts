@@ -72,9 +72,23 @@ const getAllUsers = async (req, res) => {
   }
 }
 
+const addToFav = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, postId } = req.body
+    const response = await userService.addToFavDb(email, postId)
+    sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'Post added to fav successfully',
+      data: response,
+    })
+  },
+)
+
 export const userController = {
   profileUpdate,
   FollowUser,
   unfollowUser,
   getAllUsers,
+  addToFav,
 }

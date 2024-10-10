@@ -3,7 +3,10 @@ import React from "react";
 
 const getUser = async () => {
   const res = await getUserService();
-  return res;
+  console.log(res);
+  if (res) {
+    return res;
+  }
 };
 
 export default getUser;

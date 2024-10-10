@@ -1,12 +1,48 @@
 "use client";
-import { Avatar } from "@nextui-org/react";
-import React from "react";
+import { Avatar, Tooltip } from "@nextui-org/react";
+import React, { useState } from "react";
+import {
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
+  Bookmark,
+  ChartNoAxesGantt,
+  Heart,
+  MessageCircle,
+  Share,
+  Vote,
+} from "lucide-react";
 
-import { Bookmark, Heart, MessageCircle, Share, Vote } from "lucide-react";
-import Image from "next/image";
 import PostGallary from "./Postgallary";
+import { useAddToFav, useVote } from "@/hooks/useAddToFav";
+import getUser from "@/hooks/getUser";
+import { JwtPayload } from "jwt-decode";
+import { useGrowContext } from "@/app/Context/GrowContext";
 
 const PostCard = ({ post }: { post: any }) => {
+  const { mutate: addToFav } = useAddToFav();
+  const { mutate: addVote } = useVote();
+  const [vote, setVote] = useState<Boolean>();
+  const user = useGrowContext();
+
+  const handleAddToFav = (postId: string) => {
+    const favData = { email: user?.email, postId: postId };
+    console.log(favData);
+    addToFav(favData);
+  };
+
+  const handleUpVote = (postId: string) => {
+    addVote({
+      postId: postId,
+      vote: 1,
+    });
+  };
+  const handleDownVote = (postId: string) => {
+    addVote({
+      postId: postId,
+      vote: -1,
+    });
+  };
+
   return (
     <div className="  px-4">
       <div className=" relative post-header w-full bg-red-500 min-h-[60vh] flex gap-3 ">
@@ -41,8 +77,55 @@ const PostCard = ({ post }: { post: any }) => {
           </div>
           <div className=" mt-2 user_interaction flex justify-between">
             <MessageCircle />
-            <Vote />
-            <Heart />
+            <Tooltip
+              classNames={{
+                content: [
+                  "py-2 px-4 shadow-xl",
+                  "text-[#1C9BEF] bg-gradient-to-br from-bg-[#0D1720] to-neutral-400",
+                ],
+              }}
+              content="Up Vote"
+            >
+              <span
+                onClick={() => handleUpVote(post._id)}
+                className=" group flex items-center cursor-pointer hover:text-[#1C9BEF] duration-250"
+              >
+                <ArrowUpNarrowWide className=" group-hover:bg-[#0D1720] rounded-full " />
+              </span>
+            </Tooltip>
+            <Tooltip
+              classNames={{
+                content: [
+                  "py-2 px-4 shadow-xl",
+                  "text-[#ef1c1ccf] bg-gradient-to-br from-bg-[#ef1c1ccf] to-neutral-400",
+                ],
+              }}
+              content="down Vote"
+            >
+              <span
+                onClick={() => handleDownVote(post._id)}
+                className=" group flex items-center cursor-pointer hover:text-[#ef1c1ccf] duration-250"
+              >
+                <ArrowDownWideNarrow className=" group-hover:bg-[#0D1720] rounded-full " />
+              </span>
+            </Tooltip>
+
+            <span
+              onClick={() => handleAddToFav(post?._id)}
+              className=" group duration-250 cursor-pointer hover:bg-[#F9197F]"
+            >
+              <Tooltip
+                content="Add To Favoutites"
+                classNames={{
+                  content: [
+                    "py-2 px-4 shadow-xl",
+                    "text-[#F9197F] bg-gradient-to-br from-bg-[#F9197F] to-neutral-400",
+                  ],
+                }}
+              >
+                <Heart className=" group-hover:bg-[#210C14] rounded-full" />
+              </Tooltip>
+            </span>
             <div className=" flex gap-2">
               <Bookmark />
               <Share />

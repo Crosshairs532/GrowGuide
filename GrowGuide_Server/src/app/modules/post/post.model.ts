@@ -21,6 +21,7 @@ const postSchema = new Schema<TPost>(
     votes: {
       type: Number,
     },
+
     comments: {
       type: [
         {
