@@ -51,9 +51,23 @@ const getAllPosts = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const postDelete = catchAsync(async (req: Request, res: Response) => {
+  const { postId } = req.query
+
+  console.log(postId)
+  const response = await postService.postDeleteDb(postId as string)
+  sendResponse(res, {
+    success: true,
+    status: httpStatus.OK,
+    message: 'post deleted Successfully',
+    data: response,
+  })
+})
+
 export const postController = {
   createPost,
   createComment,
   UpDownVote,
   getAllPosts,
+  postDelete,
 }

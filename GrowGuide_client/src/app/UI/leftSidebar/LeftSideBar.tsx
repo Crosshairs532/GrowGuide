@@ -4,7 +4,7 @@ import { useGrowContext } from "@/app/Context/GrowContext";
 import HomeIcon from "@/utils/Icons/HomeIcon";
 import Logo from "@/utils/Icons/Logo";
 import { Button } from "@nextui-org/button";
-import { Avatar } from "@nextui-org/react";
+import { Avatar, Divider } from "@nextui-org/react";
 import {
   Bell,
   Bookmark,

@@ -1,31 +1,31 @@
 "use client";
-import { Avatar, Tooltip } from "@nextui-org/react";
+import { Avatar, Divider, Link, Tooltip } from "@nextui-org/react";
 import React, { useState } from "react";
 import {
   ArrowDownWideNarrow,
   ArrowUpNarrowWide,
   Bookmark,
-  ChartNoAxesGantt,
   Ellipsis,
   Heart,
   MessageCircle,
   Share,
-  Vote,
 } from "lucide-react";
 
 import PostGallary from "./Postgallary";
 import { useAddToFav, useVote } from "@/hooks/useAddToFav";
-import getUser from "@/hooks/getUser";
-import { JwtPayload } from "jwt-decode";
+
 import { useGrowContext } from "@/app/Context/GrowContext";
 import DropDown from "../dropDown/DropDown";
+import { usePostDelete } from "@/hooks/usePostDelete";
 
 const PostCard = ({ post }: { post: any }) => {
   const { mutate: addToFav } = useAddToFav();
+
   const { mutate: addVote } = useVote();
   const [vote, setVote] = useState<Boolean>();
   const user = useGrowContext();
 
+  console.log(post, "post");
   const handleAddToFav = (postId: string) => {
     const favData = { email: user?.email, postId: postId };
     console.log(favData);
@@ -46,101 +46,118 @@ const PostCard = ({ post }: { post: any }) => {
   };
 
   return (
-    <div className="  px-4">
-      <div className=" relative post-header w-full bg-red-500 min-h-[60vh] flex gap-3 ">
-        <div className=" avatar ">
-          <Avatar
-            isBordered
-            size="md"
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-          />
-        </div>
-        <div className=" border-2 user_name description date space-y-3 flex flex-col">
-          <div className=" userName_Data flex gap-2 justify-between items-center">
-            <div className=" flex gap-2">
-              <p className=" leading-none">Tanzim</p>
-              <small>oct , 5</small>
-            </div>
+    <>
+      <div className="py-8 px-4">
+        <div className=" relative post-header w-full min-h-[60vh] flex gap-3 ">
+          <div className=" avatar ">
+            <Avatar isBordered size="md" src={post.user.image} />
+          </div>
+          <div className="  w-full user_name description date  flex flex-col">
+            <div className=" userName_Data flex gap-2 justify-between items-center">
+              <div className=" leading-none flex gap-2">
+                <p className="leading-none">{post.user.name}</p>
+                <small>oct, 6</small>
+              </div>
 
-            <span className=" rounded-full duration-250 flex justify-center items-center group hover:bg-[#0D1720] cursor-pointer">
-              <DropDown>
-                <Ellipsis className=" group-hover:text-[#1C9BEF]" />
-              </DropDown>
-            </span>
-          </div>
-          <div className=" description_ categories">
-            <div className=" description">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe
-              nisi porro suscipit rerum distinctio repellat iste, provident vel
-              quisquam accusantium, odio consequatur ipsum, asperiores veniam.
-              Cum quis error molestiae eveniet.
-            </div>
-            <div className=" categories">
-              <p>#categories</p>
-            </div>
-          </div>
-          <div className="images border-2 relative grid grid-cols-2 h-full w-[100%] overflow-hidden   rounded-2xl">
-            <PostGallary />
-          </div>
-          <div className=" mt-2 user_interaction flex justify-between">
-            <MessageCircle />
-            <Tooltip
-              classNames={{
-                content: [
-                  "py-2 px-4 shadow-xl",
-                  "text-[#1C9BEF] bg-gradient-to-br from-bg-[#0D1720] to-neutral-400",
-                ],
-              }}
-              content="Up Vote"
-            >
-              <span
-                onClick={() => handleUpVote(post._id)}
-                className=" group flex items-center cursor-pointer hover:text-[#1C9BEF] duration-250"
-              >
-                <ArrowUpNarrowWide className=" group-hover:bg-[#0D1720] rounded-full " />
+              <span className=" rounded-full duration-250 flex justify-center items-center group hover:bg-[#0D1720] cursor-pointer">
+                <DropDown post={post}>
+                  <Ellipsis className=" group-hover:text-[#1C9BEF]" />
+                </DropDown>
               </span>
-            </Tooltip>
-            <Tooltip
-              classNames={{
-                content: [
-                  "py-2 px-4 shadow-xl",
-                  "text-[#ef1c1ccf] bg-gradient-to-br from-bg-[#ef1c1ccf] to-neutral-400",
-                ],
-              }}
-              content="down Vote"
-            >
-              <span
-                onClick={() => handleDownVote(post._id)}
-                className=" group flex items-center cursor-pointer hover:text-[#ef1c1ccf] duration-250"
-              >
-                <ArrowDownWideNarrow className=" group-hover:bg-[#0D1720] rounded-full " />
-              </span>
-            </Tooltip>
-
-            <span
-              onClick={() => handleAddToFav(post?._id)}
-              className=" group duration-250 cursor-pointer hover:bg-[#F9197F]"
-            >
+            </div>
+            <div className=" description_categories">
+              <p className=" description">{post.description}</p>
+              <div className=" categories pb-5">
+                {post.categories?.map((category: string, index: number) => (
+                  <Link
+                    key={index}
+                    href="#"
+                    className=" italic"
+                    underline="always"
+                  >
+                    #{category}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="images  relative grid grid-cols-2 h-full w-[100%] overflow-hidden   rounded-2xl">
+              {post.images.map((image: string) => (
+                <PostGallary image={image} />
+              ))}
+            </div>
+            <div className=" mt-2 user_interaction flex justify-between">
               <Tooltip
-                content="Add To Favoutites"
                 classNames={{
                   content: [
                     "py-2 px-4 shadow-xl",
-                    "text-[#F9197F] bg-gradient-to-br from-bg-[#F9197F] to-neutral-400",
+                    "text-[#00BA7C] bg-gradient-to-br from-bg-[#0D1720] to-neutral-400",
                   ],
                 }}
+                content="Comments"
               >
-                <Heart className=" group-hover:bg-[#210C14] rounded-full" />
+                <span className=" duration-250 hover:bg-[#00ba7c1e] cursor-pointer flex items-center group justify-center w-[5vh] h-[5vh] rounded-full">
+                  <MessageCircle className=" group-hover:text-[#00BA7C] text-[#71767A] " />
+                </span>
               </Tooltip>
-            </span>
-            <div className=" flex gap-2">
-              <Bookmark />
-              <Share />
+              <Tooltip
+                classNames={{
+                  content: [
+                    "py-2 px-4 shadow-xl",
+                    "text-[#1C9BEF] bg-gradient-to-br from-bg-[#0D1720] to-neutral-400",
+                  ],
+                }}
+                content="Up Vote"
+              >
+                <span
+                  onClick={() => handleUpVote(post._id)}
+                  className=" justify-center w-[5vh] h-[5vh] rounded-full  hover:bg-[#0D1720]  group flex items-center cursor-pointer duration-250"
+                >
+                  <ArrowUpNarrowWide className=" text-[#71767A]  group-hover:text-[#1C9BEF]" />
+                </span>
+              </Tooltip>
+              <Tooltip
+                classNames={{
+                  content: [
+                    "py-2 px-4 shadow-xl",
+                    "text-[#ef1c1ccf] bg-gradient-to-br from-bg-[#ef1c1ccf] to-neutral-400",
+                  ],
+                }}
+                content="down Vote"
+              >
+                <span
+                  onClick={() => handleDownVote(post._id)}
+                  className=" w-[5vh] h-[5vh] rounded-full  group flex justify-center items-center cursor-pointer hover:text-[#ef1c1ccf] hover:bg-[#ef1c1c16] duration-250"
+                >
+                  <ArrowDownWideNarrow className="  text-[#71767A] group-hover:text-[#ef1c1ccf] " />
+                </span>
+              </Tooltip>
+
+              <span
+                onClick={() => handleAddToFav(post?._id)}
+                className=" w-[5vh] h-[5vh] flex justify-center items-center hover:bg-[#f9197e1a] rounded-full group duration-250 cursor-pointer"
+              >
+                <Tooltip
+                  content="Add To Favoutites"
+                  classNames={{
+                    content: [
+                      "py-2 px-4 shadow-xl",
+                      "text-[#F9197F]  bg-gradient-to-br from-bg-[#F9197F] to-neutral-400",
+                    ],
+                  }}
+                >
+                  <Heart className=" text-[#71767A] group-hover:text-[#F9197F] group-hover:bg-[#210C14] rounded-full" />
+                </Tooltip>
+              </span>
+              {/* <div className=" flex gap-2">
+                <Bookmark color="#71767A" />
+                <Share color="#71767A" />
+              </div> */}
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <Divider />
+    </>
   );
 };
 

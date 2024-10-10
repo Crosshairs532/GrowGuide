@@ -12,4 +12,5 @@ export type TPost = {
   premium: boolean
   votes: number
   comments?: TComment
+  description: string
 }

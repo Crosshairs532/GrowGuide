@@ -1,18 +1,31 @@
-import { useGetAllPosts } from "@/services/newsFeedService/newsFeed.Service";
-import React from "react";
+"use client";
+import React, { Suspense } from "react";
+
+import { useGetAllPosts } from "@/hooks/useGetAllPosts";
 import PostCard from "../UI/post/PostCard";
 
-const NewsFeed = async () => {
-  const allPostData: any = await useGetAllPosts();
+const NewsFeed = () => {
+  const { isFetching, isLoading, isPending, data, isError } = useGetAllPosts();
 
-  console.log(allPostData.data, "helooo");
+  if (isPending || isFetching || isLoading) {
+    return (
+      <p className=" flex justify-center items-center h-[50%]">loading...</p>
+    );
+  }
+
+  if (isError) {
+    return <p>Something went Wrong!</p>;
+  }
+
+  console.log(data);
+
   return (
     <>
-      <div className="">News Feed - {allPostData.data.length}</div>;
-      {/* {allPostData?.data?.map((post: any, index: number) => {
-        <PostCard post={post} key={index}></PostCard>;
-      })} */}
-      {<PostCard post="" key={1}></PostCard>}
+      {data?.map((post: any, index: number) => {
+        return <PostCard post={post} key={index}></PostCard>;
+      })}
+
+      {/* {<PostCard post="" key={1}></PostCard>} */}
     </>
   );
 };

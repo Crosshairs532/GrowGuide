@@ -1,0 +1,5 @@
+.sticky {
+  position: sticky;
+  top: 0; /* or bottom: 0 for bottom positioning */
+  z-index: 10; /* Ensures it's above other content */
+}

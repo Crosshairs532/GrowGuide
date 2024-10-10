@@ -57,7 +57,7 @@ const unfollowUser = catchAsync(
   },
 )
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req: Request, res: Response) => {
   try {
     const response = await userModel.find({})
     sendResponse(res, {

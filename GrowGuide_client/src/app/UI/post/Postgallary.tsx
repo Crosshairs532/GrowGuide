@@ -11,29 +11,29 @@ import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgZoom from "lightgallery/plugins/zoom";
 import Image from "next/image";
 
-const PostGallary = () => {
+const PostGallary = ({ image }: { image: string }) => {
   const onInit = () => {
     console.log("lightGallery has been initialized");
   };
   return (
     <div className=" flex">
       <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom]}>
-        <a href="https://nextui.org/images/hero-card-complete.jpeg">
+        <a href={image}>
           <Image
             className="w-full rounded-none"
             fill
             style={{ objectFit: "cover" }}
             alt="NextUI hero Image"
-            src="https://nextui.org/images/hero-card-complete.jpeg"
+            src={image}
           />
         </a>
-        <a href="https://nextui.org/images/hero-card-complete.jpeg">
+        <a href={image}>
           <Image
             className="w-full rounded-none"
             fill
             style={{ objectFit: "cover" }}
             alt="NextUI hero Image"
-            src="https://nextui.org/images/hero-card-complete.jpeg"
+            src={image}
           />
         </a>
         ...

@@ -33,6 +33,9 @@ const postSchema = new Schema<TPost>(
       ],
       _id: false,
     },
+    description: {
+      type: String,
+    },
   },
   {
     timestamps: true,

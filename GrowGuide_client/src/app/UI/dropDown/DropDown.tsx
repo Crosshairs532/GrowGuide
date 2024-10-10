@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -8,8 +8,9 @@ import {
 } from "@nextui-org/react";
 import CustomModal from "../customModal/CustomModal";
 import { Copy, Delete, Pencil } from "lucide-react";
+import { usePostDelete } from "@/hooks/usePostDelete";
 
-const DropDown = ({ children }) => {
+const DropDown = ({ children, post }: { children: ReactNode; post: any }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [modalContent, setModalContent] = useState("");
 
@@ -20,8 +21,9 @@ const DropDown = ({ children }) => {
   ];
 
   const handleSelect = (item: any) => {
-    setModalContent(item.label); // Set the label of the selected item to be shown in the modal
-    onOpen(); // Trigger modal to open
+    console.log(item);
+    setModalContent(item);
+    onOpen();
   };
 
   return (
@@ -32,7 +34,7 @@ const DropDown = ({ children }) => {
           aria-label="Dynamic Actions"
           closeOnSelect={true}
           items={items}
-          onAction={handleSelect}
+          onAction={(item) => handleSelect(item)}
         >
           {(item) => (
             <DropdownItem
@@ -47,8 +49,8 @@ const DropDown = ({ children }) => {
         </DropdownMenu>
       </Dropdown>
 
-      <CustomModal isOpen={isOpen} onOpenChange={onOpenChange}>
-        {modalContent}{" "}
+      <CustomModal post={post} isOpen={isOpen} onOpenChange={onOpenChange}>
+        {modalContent}
       </CustomModal>
     </>
   );

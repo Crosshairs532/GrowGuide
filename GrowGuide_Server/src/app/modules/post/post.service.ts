@@ -89,9 +89,24 @@ const getAllPostsDb = async () => {
   const res = await postModel.find({}).populate('user')
   return res
 }
+
+const postDeleteDb = async (postId: string) => {
+  try {
+    const res = await postModel.findByIdAndDelete(
+      { _id: postId },
+      {
+        new: true,
+      },
+    )
+    return res
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+}
 export const postService = {
   createPostDb,
   createCommentDb,
   UpDownVoteDb,
   getAllPostsDb,
+  postDeleteDb,
 }
