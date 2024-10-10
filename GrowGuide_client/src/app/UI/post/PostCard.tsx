@@ -6,6 +6,7 @@ import {
   ArrowUpNarrowWide,
   Bookmark,
   ChartNoAxesGantt,
+  Ellipsis,
   Heart,
   MessageCircle,
   Share,
@@ -17,6 +18,7 @@ import { useAddToFav, useVote } from "@/hooks/useAddToFav";
 import getUser from "@/hooks/getUser";
 import { JwtPayload } from "jwt-decode";
 import { useGrowContext } from "@/app/Context/GrowContext";
+import DropDown from "../dropDown/DropDown";
 
 const PostCard = ({ post }: { post: any }) => {
   const { mutate: addToFav } = useAddToFav();
@@ -59,7 +61,12 @@ const PostCard = ({ post }: { post: any }) => {
               <p className=" leading-none">Tanzim</p>
               <small>oct , 5</small>
             </div>
-            <p> ... </p>
+
+            <span className=" rounded-full duration-250 flex justify-center items-center group hover:bg-[#0D1720] cursor-pointer">
+              <DropDown>
+                <Ellipsis className=" group-hover:text-[#1C9BEF]" />
+              </DropDown>
+            </span>
           </div>
           <div className=" description_ categories">
             <div className=" description">
