@@ -1,5 +1,12 @@
 "use client";
-import { Avatar, Divider, Link, Tooltip, User } from "@nextui-org/react";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Link,
+  Tooltip,
+  User,
+} from "@nextui-org/react";
 import React, { useState } from "react";
 import parse from "html-react-parser";
 import {
@@ -54,8 +61,15 @@ const PostCard = ({ post }: { post: any }) => {
 
   return (
     <>
-      <div className=" py-8 px-4">
+      <div className=" relative py-8 px-4">
         <div className="  bg-[#242526] p-2 rounded-2xl relative post-header w-full min-h-[60vh] flex gap-3 ">
+          <div
+            className={`${post?.premium ? "block" : "hidden"} flex justify-center items-center absolute w-full h-full top-0 inset-0 bg-black/30  backdrop-blur-md z-20`}
+          >
+            <div className="">
+              <Button className=" font-chirpBold">Upgrade To Premium</Button>
+            </div>
+          </div>
           <div className=" avatar ">
             <Avatar isBordered size="md" src={post.user.image} />
           </div>

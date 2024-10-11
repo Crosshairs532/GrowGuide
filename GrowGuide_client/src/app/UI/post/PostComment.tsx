@@ -53,10 +53,11 @@ const PostComment = ({
                 onValueChange={(value: string) => setOnChange(value)}
                 key="underlined"
                 variant={"underlined"}
+                size="md"
                 labelPlacement="outside"
                 placeholder={`Comment as ${user?.name}`}
-                className="col-span-12 w-full bg-[#242526] md:col-span-6 mb-6 md:mb-0"
-                startContent={<Send onClick={handleSubmit(onSubmit)} />}
+                className="col-span-12 px-2 w-full bg-[#242526] md:col-span-6 mb-6 md:mb-0"
+                endContent={<Send onClick={handleSubmit(onSubmit)} />}
               />
               <small>{isPending ? "posting..." : ""}</small>
             </div>
