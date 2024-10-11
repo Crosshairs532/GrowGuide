@@ -25,7 +25,7 @@ const PostCard = ({ post }: { post: any }) => {
   const { mutate: addToFav } = useAddToFav();
   const { mutate: addVote } = useVote();
   const [vote, setVote] = useState<Boolean>();
-  const [isComment, setIsComment] = useState<Boolean>();
+  const [isComment, setIsComment] = useState<Boolean>(false);
   const user = useGrowContext();
 
   console.log(post, "post");
@@ -108,7 +108,8 @@ const PostCard = ({ post }: { post: any }) => {
                   }}
                   className=" duration-250 hover:bg-[#00ba7c1e] cursor-pointer flex items-center group justify-center w-[5vh] h-[5vh] rounded-full"
                 >
-                  <MessageCircle className=" group-hover:text-[#00BA7C] text-[#71767A] " />
+                  <MessageCircle className=" group-hover:text-[#00BA7C] text-[#71767A] " />{" "}
+                  {post?.comments?.length}
                 </span>
               </Tooltip>
               <Tooltip
@@ -166,9 +167,9 @@ const PostCard = ({ post }: { post: any }) => {
               </div> */}
             </div>
           </div>
-          <div className="comment">
-            <PostComment post={post}></PostComment>
-          </div>
+        </div>
+        <div className="comment">
+          <PostComment isComment={isComment} post={post}></PostComment>
         </div>
       </div>
       <Divider />

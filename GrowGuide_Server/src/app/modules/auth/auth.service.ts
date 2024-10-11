@@ -23,8 +23,9 @@ const loginDb = async (userData: Partial<TUser>) => {
   const { email } = userData
   // * check if any user exists or not
   const isExists = await userModel.findUser(email as string)
-
-  const tokenData = { ...userData, name: isExists.name }
+  console.log(userData, isExists)
+  const tokenData = { ...isExists?._doc }
+  console.log({ tokenData })
   if (!isExists) {
     throw new Error('user does not exists!')
   }

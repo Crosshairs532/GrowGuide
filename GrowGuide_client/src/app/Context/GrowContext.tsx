@@ -17,6 +17,7 @@ const GrowContext = ({ children }: { children: ReactNode }) => {
 
   const handleUser = async () => {
     const user = (await getUser()) as JwtPayload;
+
     setUser(user);
   };
   useEffect(() => {

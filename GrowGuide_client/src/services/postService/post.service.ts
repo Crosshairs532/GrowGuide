@@ -1,6 +1,7 @@
 "use server";
 import { AxiosInstance } from "@/lib/AxiosInstance";
 import nexiosInstance from "@/lib/nexiosConfig/nexios.config";
+import { revalidateTag } from "next/cache";
 
 export const addToFav = async (data: any) => {
   try {
@@ -47,4 +48,11 @@ export const updatePost = async (postData: any) => {
   } catch (error: any) {
     throw new Error(error.message);
   }
+};
+
+export const postComment = async (commentData: any) => {
+  const res = await nexiosInstance.put("/post/create-comment", commentData);
+  revalidateTag("post");
+
+  return res;
 };

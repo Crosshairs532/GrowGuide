@@ -25,9 +25,12 @@ const postSchema = new Schema<TPost>(
     comments: {
       type: [
         {
-          userId: Schema.Types.ObjectId,
+          userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'users',
+          },
           userComments: {
-            type: [String],
+            type: String,
           },
         },
       ],

@@ -41,10 +41,10 @@ const createCommentDb = async (commentData: TComment) => {
   const post = await postModel.findOneAndUpdate(
     {
       _id: postId,
-      'comments.userId': commenterId,
+      // 'comments.userId': commenterId,
     },
     {
-      $push: { 'comments.$.userComments': userComments },
+      $push: { comments: { userId: commenterId, userComments } },
     },
     {
       new: true,
@@ -86,7 +86,15 @@ const UpDownVoteDb = async (postId: string, val: string) => {
 }
 
 const getAllPostsDb = async () => {
-  const res = await postModel.find({}).populate('user')
+  const res = await postModel
+    .find({})
+    .populate('user')
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'userId',
+      },
+    })
   return res
 }
 
@@ -119,6 +127,10 @@ const postUpdateDb = async (updatedData: any) => {
   )
   return res
 }
+
+const postCommentDb = async (postId: string) => {
+  const res = await postModel.findById(postId, {})
+}
 export const postService = {
   createPostDb,
   createCommentDb,
@@ -126,4 +138,5 @@ export const postService = {
   getAllPostsDb,
   postDeleteDb,
   postUpdateDb,
+  postCommentDb,
 }

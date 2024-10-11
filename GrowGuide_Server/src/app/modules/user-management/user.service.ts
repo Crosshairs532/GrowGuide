@@ -118,9 +118,18 @@ const addToFavDb = async (email: string, postId: string) => {
   return res
 }
 
+const getSingleUserDb = async (email: string) => {
+  const res = await userModel.findOne({
+    email,
+  })
+
+  return res
+}
+
 export const userService = {
   updateProfileDb,
   followUserDb,
   unFollowUserDb,
   addToFavDb,
+  getSingleUserDb,
 }

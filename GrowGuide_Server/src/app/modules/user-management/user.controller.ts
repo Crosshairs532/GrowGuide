@@ -85,10 +85,26 @@ const addToFav = catchAsync(
   },
 )
 
+const getSingleUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.query
+
+    console.log(email)
+    const response = await userService.getSingleUserDb(email as string)
+
+    sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'User fetched successfully',
+      data: response,
+    })
+  },
+)
 export const userController = {
   profileUpdate,
   FollowUser,
   unfollowUser,
   getAllUsers,
   addToFav,
+  getSingleUser,
 }
