@@ -10,7 +10,7 @@ export const getAllPosts = async () => {
         tags: ["post"],
       },
     });
-    console.log(response);
+
     return response.data;
   } catch (error: any) {
     throw new Error(error.message);

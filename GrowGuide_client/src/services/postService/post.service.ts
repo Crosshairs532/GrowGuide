@@ -27,6 +27,21 @@ export const deletePost = async (data: any) => {
   console.log(data);
   try {
     const res = await nexiosInstance.delete(`/post/post-delete?postId=${data}`);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+export const updatePost = async (postData: any) => {
+  console.log(postData, "axios");
+  // `/post/post-update?postId="67092a38f05a7eb41adabdc6"&userId=67063aa0b940a61d10e0b16b`,
+
+  try {
+    const res = await AxiosInstance.put(`/post/post-update`, postData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     return res.data;
   } catch (error: any) {

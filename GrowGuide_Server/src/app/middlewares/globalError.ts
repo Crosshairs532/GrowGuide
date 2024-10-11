@@ -4,7 +4,7 @@ import handleZodError from '../error/handleZodError'
 import { TSources } from '../types/errorTypes'
 
 const globalError: ErrorRequestHandler = (err, req, res, next) => {
-  console.log(err, 'magiiiiiiiii')
+  console.log(err, 'GlobalError')
   let statusCode = err.status || 500
   let errorMessage: any = err.message || 'something went wrong!'
   let sources: TSources[] = [

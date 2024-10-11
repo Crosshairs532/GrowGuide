@@ -63,6 +63,17 @@ const postDelete = catchAsync(async (req: Request, res: Response) => {
     data: response,
   })
 })
+const postUpdate = catchAsync(async (req: Request, res: Response) => {
+  const postData = req.body
+
+  const response = await postService.postUpdateDb(postData)
+  sendResponse(res, {
+    success: true,
+    status: httpStatus.OK,
+    message: 'post updated Successfully',
+    data: response,
+  })
+})
 
 export const postController = {
   createPost,
@@ -70,4 +81,5 @@ export const postController = {
   UpDownVote,
   getAllPosts,
   postDelete,
+  postUpdate,
 }

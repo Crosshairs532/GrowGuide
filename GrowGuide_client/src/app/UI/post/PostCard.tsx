@@ -1,6 +1,7 @@
 "use client";
-import { Avatar, Divider, Link, Tooltip } from "@nextui-org/react";
+import { Avatar, Divider, Link, Tooltip, User } from "@nextui-org/react";
 import React, { useState } from "react";
+import parse from "html-react-parser";
 import {
   ArrowDownWideNarrow,
   ArrowUpNarrowWide,
@@ -17,12 +18,14 @@ import { useAddToFav, useVote } from "@/hooks/useAddToFav";
 import { useGrowContext } from "@/app/Context/GrowContext";
 import DropDown from "../dropDown/DropDown";
 import { usePostDelete } from "@/hooks/usePostDelete";
+import PostComment from "./PostComment";
+import { json } from "stream/consumers";
 
 const PostCard = ({ post }: { post: any }) => {
   const { mutate: addToFav } = useAddToFav();
-
   const { mutate: addVote } = useVote();
   const [vote, setVote] = useState<Boolean>();
+  const [isComment, setIsComment] = useState<Boolean>();
   const user = useGrowContext();
 
   console.log(post, "post");
@@ -45,10 +48,14 @@ const PostCard = ({ post }: { post: any }) => {
     });
   };
 
+  const handleComment = (value: boolean) => {
+    setIsComment(value);
+  };
+
   return (
     <>
-      <div className="py-8 px-4">
-        <div className=" relative post-header w-full min-h-[60vh] flex gap-3 ">
+      <div className=" py-8 px-4">
+        <div className="  bg-[#242526] p-2 rounded-2xl relative post-header w-full min-h-[60vh] flex gap-3 ">
           <div className=" avatar ">
             <Avatar isBordered size="md" src={post.user.image} />
           </div>
@@ -66,7 +73,7 @@ const PostCard = ({ post }: { post: any }) => {
               </span>
             </div>
             <div className=" description_categories">
-              <p className=" description">{post.description}</p>
+              <p className=" description">{parse(post?.description)}</p>
               <div className=" categories pb-5">
                 {post.categories?.map((category: string, index: number) => (
                   <Link
@@ -81,9 +88,9 @@ const PostCard = ({ post }: { post: any }) => {
               </div>
             </div>
             <div className="images  relative grid grid-cols-2 h-full w-[100%] overflow-hidden   rounded-2xl">
-              {post.images.map((image: string) => (
-                <PostGallary image={image} />
-              ))}
+              {/* {post?.images?.map((image: string, index: number) => ( */}
+              <PostGallary images={post?.images} />
+              {/* ))} */}
             </div>
             <div className=" mt-2 user_interaction flex justify-between">
               <Tooltip
@@ -95,7 +102,12 @@ const PostCard = ({ post }: { post: any }) => {
                 }}
                 content="Comments"
               >
-                <span className=" duration-250 hover:bg-[#00ba7c1e] cursor-pointer flex items-center group justify-center w-[5vh] h-[5vh] rounded-full">
+                <span
+                  onClick={() => {
+                    handleComment(true);
+                  }}
+                  className=" duration-250 hover:bg-[#00ba7c1e] cursor-pointer flex items-center group justify-center w-[5vh] h-[5vh] rounded-full"
+                >
                   <MessageCircle className=" group-hover:text-[#00BA7C] text-[#71767A] " />
                 </span>
               </Tooltip>
@@ -153,6 +165,9 @@ const PostCard = ({ post }: { post: any }) => {
                 <Share color="#71767A" />
               </div> */}
             </div>
+          </div>
+          <div className="comment">
+            <PostComment post={post}></PostComment>
           </div>
         </div>
       </div>

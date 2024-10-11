@@ -103,10 +103,27 @@ const postDeleteDb = async (postId: string) => {
     throw new Error(error.message)
   }
 }
+
+const postUpdateDb = async (updatedData: any) => {
+  const {
+    post: { _id },
+  } = updatedData
+  const res = await postModel.findByIdAndUpdate(
+    {
+      _id,
+    },
+    updatedData,
+    {
+      new: true,
+    },
+  )
+  return res
+}
 export const postService = {
   createPostDb,
   createCommentDb,
   UpDownVoteDb,
   getAllPostsDb,
   postDeleteDb,
+  postUpdateDb,
 }

@@ -11,35 +11,28 @@ import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgZoom from "lightgallery/plugins/zoom";
 import Image from "next/image";
 
-const PostGallary = ({ image }: { image: string }) => {
+const PostGallary = ({ images }: { images: string[] }) => {
   const onInit = () => {
     console.log("lightGallery has been initialized");
   };
+  console.log(images);
   return (
     <div className=" flex">
       <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom]}>
-        <a href={image}>
-          <Image
-            className="w-full rounded-none"
-            fill
-            style={{ objectFit: "cover" }}
-            alt="NextUI hero Image"
-            src={image}
-          />
-        </a>
-        <a href={image}>
-          <Image
-            className="w-full rounded-none"
-            fill
-            style={{ objectFit: "cover" }}
-            alt="NextUI hero Image"
-            src={image}
-          />
-        </a>
-        ...
+        {images?.map((image) => (
+          <a href={image}>
+            <Image
+              className="w-full rounded-none"
+              fill
+              style={{ objectFit: "cover" }}
+              alt="NextUI hero Image"
+              src={image}
+            />
+          </a>
+        ))}
       </LightGallery>
       <div className=" comments">
-        <h1> comments</h1>
+        <h1>comments</h1>
       </div>
     </div>
   );
