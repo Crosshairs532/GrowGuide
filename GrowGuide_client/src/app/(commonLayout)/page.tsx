@@ -5,7 +5,8 @@ import { useGetAllPosts } from "@/hooks/useGetAllPosts";
 import PostCard from "../UI/post/PostCard";
 
 const NewsFeed = () => {
-  const { isFetching, isLoading, isPending, data, isError } = useGetAllPosts();
+  const { isFetching, isLoading, isPending, data, isError, refetch } =
+    useGetAllPosts();
 
   if (isPending || isFetching || isLoading) {
     return (

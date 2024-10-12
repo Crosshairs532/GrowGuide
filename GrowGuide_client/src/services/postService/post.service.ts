@@ -52,7 +52,13 @@ export const updatePost = async (postData: any) => {
 
 export const postComment = async (commentData: any) => {
   const res = await nexiosInstance.put("/post/create-comment", commentData);
+
   revalidateTag("post");
 
-  return res;
+  return res?.data?.data;
+};
+
+export const commentUpdate = async (commentData: any) => {
+  const res = await AxiosInstance.put(`/post/comments`, commentData);
+  return res.data;
 };

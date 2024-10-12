@@ -1,11 +1,14 @@
 import { useGrowContext } from "@/app/Context/GrowContext";
 import { useComment } from "@/hooks/useComment";
+import { queryClient } from "@/lib/providers";
 import { Textarea } from "@nextui-org/input";
 import { Avatar } from "@nextui-org/react";
-import { Send } from "lucide-react";
+import { Ellipsis, Send } from "lucide-react";
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import DropDownComment from "../dropDown/DropDownComment";
+import { useCommentUpdate } from "@/hooks/useCommentUpdate";
 
 const PostComment = ({
   isComment,
@@ -17,15 +20,12 @@ const PostComment = ({
   const { user } = useGrowContext();
   const [viewAll, setViewAll] = useState(false);
   const [value, setOnChange] = useState("");
+  const [valueEdit, setOnChangeEdit] = useState("");
   const { register, handleSubmit, reset } = useForm();
   const { mutate: postComment, isPending } = useComment();
-  // const { data, isPending, isFetching, isSuccess } = useQuery({
-  //   queryKey: ["ALL_COMMENTS"],
-  //   queryFn: async () => {
-  //     const res = await AxiosInstance.get(`/post/comments?postId=${post._id}`);
-  //     return res.data;
-  //   },
-  // });
+  const [editing, setEditing] = useState<boolean>(false);
+  const [edited, setEdited] = useState<any>();
+  const { mutate: commentUpdate } = useCommentUpdate();
 
   const onSubmit = (data: any) => {
     const commentData = {
@@ -33,8 +33,26 @@ const PostComment = ({
       commenterId: "67063aa0b940a61d10e0b16b",
       userComments: data.comment,
     };
+
+    // console.log(commentData);
     postComment(commentData);
+
     setOnChange("");
+  };
+
+  const editPost = (post: any, comment: any) => {
+    setEdited({ action: "edit", post, commentId: comment._id });
+    setEditing(true);
+    setOnChangeEdit(comment.userComments);
+  };
+
+  const editCommentSubmit = (data: any) => {
+    const commentInfo = { ...edited, updatedComment: data.commentEdit };
+
+    console.log(commentInfo);
+    commentUpdate(commentInfo);
+    reset();
+    setEditing(false);
   };
 
   return (
@@ -61,6 +79,7 @@ const PostComment = ({
               />
               <small>{isPending ? "posting..." : ""}</small>
             </div>
+            <div></div>
           </div>
 
           <div>
@@ -74,8 +93,6 @@ const PostComment = ({
             }
             {viewAll &&
               post?.comments?.map((comment: any) => {
-                // if (comment.email != user.email)
-                console.log(comment);
                 return (
                   <div className=" my-3 flex items-center gap-3">
                     <div>
@@ -83,17 +100,44 @@ const PostComment = ({
                     </div>
                     <div className=" px-2 rounded-2xl w-full col-span-12 bg-[#242526] py-4 md:col-span-6 mb-6 md:mb-0">
                       <h1 className=" font-chirpBold">{comment.userId.name}</h1>
-                      <p>{comment.userComments}</p>
+
+                      {editing ? (
+                        <div className="flex flex-col w-full">
+                          <Textarea
+                            {...register("commentEdit")}
+                            value={valueEdit}
+                            autoFocus={true}
+                            onValueChange={(value: string) =>
+                              setOnChangeEdit(value)
+                            }
+                            key="underlined"
+                            variant={"underlined"}
+                            size="md"
+                            labelPlacement="outside"
+                            placeholder={`Comment as ${user?.name}`}
+                            className="col-span-12 px-2 w-full bg-[#242526] md:col-span-6 mb-6 md:mb-0"
+                            endContent={
+                              <Send onClick={handleSubmit(editCommentSubmit)} />
+                            }
+                          />
+                          <small>{isPending ? "posting..." : ""}</small>
+                        </div>
+                      ) : (
+                        <p>{comment.userComments}</p>
+                      )}
                     </div>
-                    {/* <Textarea
-                    disabled
-                    value={comment.userComments}
-                    key="underlined"
-                    variant={"underlined"}
-                    labelPlacement="outside"
-                    placeholder={`Comment as ${user?.name}`}
-                    className="col-span-12 bg-[#242526] md:col-span-6 mb-6 md:mb-0"
-                  /> */}
+                    <div
+                      className={`edit_delete ${"67063aa0b940a61d10e0b16b" == "67063aa0b940a61d10e0b16b" ? "block" : "hidden"} `}
+                    >
+                      <DropDownComment
+                        editPost={editPost}
+                        post={post}
+                        comment={comment}
+                        commenterId={"67063aa0b940a61d10e0b16b"}
+                      >
+                        <Ellipsis />
+                      </DropDownComment>
+                    </div>
                   </div>
                 );
               })}

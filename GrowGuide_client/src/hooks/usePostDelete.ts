@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 export const usePostDelete = () => {
   return useMutation({
+    mutationKey: ["GET_POSTS"],
     mutationFn: async (postId) => {
       console.log(postId);
       const res = await deletePost(postId);

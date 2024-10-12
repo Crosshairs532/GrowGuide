@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 export const usePostUpdate = () => {
   return useMutation({
+    mutationKey: ["GET_POSTS"],
     mutationFn: async (postData: any) => {
       console.log(postData, 'usePostDatata,ablg bakg balkhb"');
       const res = await updatePost(postData);

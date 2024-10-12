@@ -34,7 +34,7 @@ const postSchema = new Schema<TPost>(
           },
         },
       ],
-      _id: false,
+      // _id: false,
     },
     description: {
       type: String,

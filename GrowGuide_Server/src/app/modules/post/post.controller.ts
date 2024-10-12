@@ -1,3 +1,4 @@
+import { Delete } from 'lucide-react'
 import { TPost } from './post.interface'
 import { Request, Response } from 'express'
 import { catchAsync } from '../../utilities/catchAsync'
@@ -75,6 +76,42 @@ const postUpdate = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const postComment = catchAsync(async (req: Request, res: Response) => {
+  const { action } = req.body
+
+  switch (action) {
+    case 'delete':
+      const { commentId } = req.body
+      const response = await postService.PostCommentUpdate(action, commentId)
+      sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: 'comment deleted Successfully',
+        data: response,
+      })
+      break
+    case 'edit':
+      const {
+        commentId: editCommentId,
+        comment,
+        post,
+        updatedComment,
+      } = req.body
+      const responseComment = await postService.PostCommentUpdate(
+        action,
+        editCommentId,
+        updatedComment,
+      )
+      sendResponse(res, {
+        success: true,
+        status: httpStatus.OK,
+        message: 'comment updated Successfully',
+        data: responseComment,
+      })
+      break
+  }
+})
+
 export const postController = {
   createPost,
   createComment,
@@ -82,4 +119,5 @@ export const postController = {
   getAllPosts,
   postDelete,
   postUpdate,
+  postComment,
 }

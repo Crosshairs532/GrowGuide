@@ -38,18 +38,20 @@ const createCommentDb = async (commentData: TComment) => {
   //     },
   //   )
 
-  const post = await postModel.findOneAndUpdate(
-    {
-      _id: postId,
-      // 'comments.userId': commenterId,
-    },
-    {
-      $push: { comments: { userId: commenterId, userComments } },
-    },
-    {
-      new: true,
-    },
-  )
+  const post = await postModel
+    .findOneAndUpdate(
+      {
+        _id: postId,
+        // 'comments.userId': commenterId,
+      },
+      {
+        $push: { comments: { userId: commenterId, userComments } },
+      },
+      {
+        new: true,
+      },
+    )
+    .lean()
 
   if (!post) {
     const addNewComment = await postModel.findByIdAndUpdate(
@@ -131,6 +133,43 @@ const postUpdateDb = async (updatedData: any) => {
 const postCommentDb = async (postId: string) => {
   const res = await postModel.findById(postId, {})
 }
+
+const PostCommentUpdate = async (
+  action: string,
+  commentId: string,
+  updatedComment = '',
+) => {
+  switch (action) {
+    case 'delete':
+      const res = await postModel.findOneAndUpdate(
+        {
+          'comments._id': commentId,
+        },
+        {
+          $pull: {
+            comments: {
+              _id: commentId,
+            },
+          },
+        },
+      )
+
+      return res
+
+    case 'edit':
+      const commentUpdated = await postModel.findOneAndUpdate(
+        {
+          'comments._id': commentId,
+        },
+        {
+          $set: {
+            'comments.$.userComments': updatedComment,
+          },
+        },
+      )
+      return commentUpdated
+  }
+}
 export const postService = {
   createPostDb,
   createCommentDb,
@@ -139,4 +178,5 @@ export const postService = {
   postDeleteDb,
   postUpdateDb,
   postCommentDb,
+  PostCommentUpdate,
 }

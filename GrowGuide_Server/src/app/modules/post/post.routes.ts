@@ -21,7 +21,7 @@ router.patch('/vote', postController.UpDownVote)
 router.get('/posts', postController.getAllPosts)
 
 router.delete('/post-delete', postController.postDelete)
-router.delete('/comments', postController.postDelete)
+router.put('/comments', postController.postComment)
 
 router.put(
   '/post-update',
