@@ -10,25 +10,27 @@ import React, {
   useState,
 } from "react";
 
-export const userContext = createContext<any>(undefined);
+export const userContext = createContext<any>(null);
 
 const GrowContext = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<JwtPayload | null>(null);
+  const [loading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<JwtPayload | null | undefined>(null);
 
   const handleUser = async () => {
-    const user = (await getUser()) as JwtPayload;
-
+    const user = await getUser();
+    if (user) {
+      setIsLoading(!loading);
+    }
     setUser(user);
   };
   useEffect(() => {
     handleUser();
-
     return () => {
       console.log("cleanUp");
     };
   }, []);
 
-  const contextValue: any = { user };
+  const contextValue: any = { user, loading };
 
   return (
     <userContext.Provider value={contextValue}>{children}</userContext.Provider>

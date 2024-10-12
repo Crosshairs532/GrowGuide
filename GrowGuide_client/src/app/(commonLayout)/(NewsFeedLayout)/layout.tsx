@@ -1,5 +1,8 @@
+"use client";
+
 import React, { ReactNode } from "react";
 import MakePost from "./@rightSidebar/_components/MakePost";
+import { usePathname } from "next/navigation";
 
 const NewsFeedLayout = ({
   children,
@@ -8,11 +11,14 @@ const NewsFeedLayout = ({
   children: ReactNode;
   rightSidebar: ReactNode;
 }) => {
+  const pathname = usePathname();
+
+  console.log(pathname);
   return (
     <>
       <div className=" flex ">
         <div>
-          <MakePost />
+          {pathname === "/" && <MakePost />}
           <div className=" w-[42vw]">{children}</div>
         </div>
         <div className=" flex-grow">{rightSidebar}</div>

@@ -29,5 +29,6 @@ router.put(
   parsePostFromData,
   postController.postUpdate,
 )
+router.post('/')
 
 export const postRoute = router

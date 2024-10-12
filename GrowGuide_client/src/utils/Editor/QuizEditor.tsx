@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { toolbarOptions } from "./editorOptions";
 import { useFormContext } from "react-hook-form";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const QuizEditor = ({
   description = "",

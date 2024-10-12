@@ -22,6 +22,10 @@ export const registrationService = async (userData: any) => {
 export const loginService = async (userData: any) => {
   try {
     const res = await AxiosInstance.post("/auth/login", userData);
+    const token = res?.data?.data?.accessToken;
+
+    console.log(token);
+    cookies().set("accessToken", token);
     return res.data;
   } catch (error: any) {
     console.log(error.message);
@@ -50,6 +54,7 @@ export const resetPasswordService = async (data: any) => {
 
 export const getUserService = async () => {
   const token = cookies().get("accessToken")!.value;
+  console.log(token);
   const decoded = (await jwtDecode(token)) as JwtPayload;
 
   console.log({ decoded });

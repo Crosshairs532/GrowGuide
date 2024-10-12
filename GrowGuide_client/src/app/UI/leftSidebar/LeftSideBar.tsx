@@ -24,6 +24,7 @@ import React from "react";
 const LeftSideBar = () => {
   const { user } = useGrowContext();
 
+  console.log(user);
   const sidebarItems = [
     {
       link: "/",
@@ -82,7 +83,7 @@ const LeftSideBar = () => {
       title: "Verified Orgs",
     },
     {
-      link: `/${user?.name}`,
+      link: `/profile/${user?.name}`,
       icon: <UserRound />,
       title: "Profile",
     },
@@ -121,7 +122,7 @@ const LeftSideBar = () => {
           color="default"
           className=" bg-transparent rounded-full w-full flex items-center justify-between"
         >
-          <Avatar size="sm" />
+          <Avatar size="sm" src={user?.image} />
           <div className=" flex flex-col">
             <span className=" font-chirpMedium text-[15px]">{user?.name}</span>
             <span className=" text-[#E7E9EA1A]">{user?.email}</span>

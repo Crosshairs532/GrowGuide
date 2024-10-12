@@ -22,7 +22,8 @@ const Registration = catchAsync(async (req: Request, res: Response) => {
 const Login = catchAsync(async (req: Request, res: Response) => {
   const loginData = req.body
   const response = await authService.loginDb(loginData)
-  res.cookie('accessToken', response!.accessToken, { maxAge: 20000 })
+  console.log(response)
+  // res.cookie('accessToken', response!.accessToken, { maxAge: 20000 })
   sendResponse(res, {
     success: true,
     status: 200,
