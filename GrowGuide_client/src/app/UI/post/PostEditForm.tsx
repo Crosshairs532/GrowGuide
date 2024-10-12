@@ -26,6 +26,8 @@ const PostEditForm = ({
     new Set([...post.categories])
   );
 
+  console.log(categoriesEdit);
+
   const user = useGrowContext();
   const methods = useForm();
   // const { register, handleSubmit } = useFormContext();
@@ -75,6 +77,7 @@ const PostEditForm = ({
       data: categoriesAndDescription,
     };
 
+    console.log(editedData);
     onSubmit(editedData);
   };
 
@@ -92,7 +95,10 @@ const PostEditForm = ({
           </div>
           <div className="description">
             <div className=" py-3">
-              <QuizEditor description={post.description} />
+              <QuizEditor
+                placeholder="Edit Comment"
+                description={post.description}
+              />
             </div>
             <div className=" w-full flex gap-1 text-balance break-words flex-wrap">
               {Array.from(categoriesEdit).map((cc) => (

@@ -1,8 +1,7 @@
 "use client";
-import React, { Suspense } from "react";
-
+import React from "react";
 import { useGetAllPosts } from "@/hooks/useGetAllPosts";
-import PostCard from "../UI/post/PostCard";
+import PostCard from "../../UI/post/PostCard";
 
 const NewsFeed = () => {
   const { isFetching, isLoading, isPending, data, isError, refetch } =

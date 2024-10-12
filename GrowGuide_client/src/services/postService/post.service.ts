@@ -62,3 +62,13 @@ export const commentUpdate = async (commentData: any) => {
   const res = await AxiosInstance.put(`/post/comments`, commentData);
   return res.data;
 };
+
+export const createPost = async (postData: any) => {
+  console.log(postData);
+  const res = await nexiosInstance.post("/post/create-post", postData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};

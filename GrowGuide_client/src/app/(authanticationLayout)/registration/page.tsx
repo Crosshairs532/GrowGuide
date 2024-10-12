@@ -7,7 +7,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import { useRegistration } from "@/hooks/useRegistration";
 import { redirect } from "next/navigation";
-import LoadingOverlay from "../../UI/LoadingOverlay";
+import LoadingOverlay from "@/app/UI/LoadingOverlay";
 
 const RegistrationPage = () => {
   const [image, setImage] = useState<string | File | undefined>();

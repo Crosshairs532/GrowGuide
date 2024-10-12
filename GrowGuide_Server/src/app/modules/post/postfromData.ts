@@ -5,8 +5,10 @@ import { userModel } from '../user-management/user.model'
 
 const postFromData = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(JSON.parse(req.body.data))
+    console.log(req)
     const formData = JSON.parse(req.body.data)
+
+    console.log(formData)
 
     // !find the user
     const user = await userModel.findById(formData.user)
