@@ -65,3 +65,19 @@ export const getUserService = async () => {
   //   );
   return decoded;
 };
+
+export const profileUpdate = async (updateData: any) => {
+  console.log(updateData, "hhhhhhhhhh");
+  const res = await AxiosInstance.put(
+    "/user-management/profile-update",
+    updateData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  cookies().set("accessToken", res?.data?.data?.accessToken);
+
+  return res.data;
+};

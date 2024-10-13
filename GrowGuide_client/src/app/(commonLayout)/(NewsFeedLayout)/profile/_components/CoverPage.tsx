@@ -1,5 +1,7 @@
 import { Avatar, Button } from "@nextui-org/react";
+import Link from "next/link";
 import React from "react";
+import EditProfileModal from "./EditProfileModal";
 
 const CoverPage = ({ CurrentUser }: any) => {
   return (
@@ -22,10 +24,7 @@ const CoverPage = ({ CurrentUser }: any) => {
         <div className="  relative leading-none w-[130px] h-[130px] flex justify-center items-center rounded-full group/avatar">
           <Avatar className=" w-full h-full" src={`${CurrentUser?.image}`} />
         </div>
-
-        <Button className=" relative font-chirpMedium rounded-full right-5 text-[15px] border border-[#536371] bg-transparent hover:bg-[#181919]">
-          Edit profile
-        </Button>
+        <EditProfileModal CurrentUser={CurrentUser}></EditProfileModal>
       </div>
     </>
   );

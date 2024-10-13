@@ -19,13 +19,10 @@ const ProfilePage = ({ params, searchParams }: any) => {
     loading
   );
 
+  console.log(CurrentUser?.name);
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
   console.log(params, searchParams);
-
-  // const followers = CurrentUser?.followers;
-  // const following = CurrentUser?.following;
-  // const favourites = CurrentUser?.favourites;
 
   const user = {
     fullName: "John Doe",
@@ -46,7 +43,7 @@ const ProfilePage = ({ params, searchParams }: any) => {
     { label: "Following", value: "following" },
   ];
 
-  const handleImgChange = (e, state) => {
+  const handleImgChange = (e: any, state: any) => {
     const file = e.target.files[0];
     // if (file) {
     //   const reader = new FileReader();
@@ -77,6 +74,8 @@ const ProfilePage = ({ params, searchParams }: any) => {
     }
   }, [feedType, refetch]);
 
+  console.log(data?.name, "one");
+
   return (
     <div className="flex-[4_4_0]  border-r border-gray-700 min-h-screen ">
       <div className="flex flex-col">
@@ -84,9 +83,7 @@ const ProfilePage = ({ params, searchParams }: any) => {
         <div className="flex gap-10 px-4 py-2 items-center">
           <ArrowLeft />
           <div className="flex flex-col">
-            <p className="font-bold font-chirpBold text-[20px]">
-              {CurrentUser?.fullName}
-            </p>
+            <p className="font-bold font-chirpBold text-[20px]">{data?.name}</p>
             <span className="text-sm font-chirpRegular text-[#71767A]">
               5 posts
             </span>
@@ -98,7 +95,7 @@ const ProfilePage = ({ params, searchParams }: any) => {
         {/* USER INFO */}
         <div className="flex flex-col gap-2 mt-5  px-4">
           <span className=" leading-none font-chirpBold text-[20px] font-bold text-lg">
-            {CurrentUser?.fullName}
+            {data?.name}
           </span>
 
           <div className="flex gap-2"></div>
@@ -109,14 +106,12 @@ const ProfilePage = ({ params, searchParams }: any) => {
           </div>
 
           <div className=" font-chirpMedium flex gap-2">
-            <span className="font-bold text-sm">
-              {CurrentUser?.following.length}
-            </span>
+            <span className="font-bold text-sm">{data?.following.length}</span>
             <span className=" font-chirpMedium  text-[#71767A] text-sm">
               Following
             </span>
             <span className=" font-chirpMedium  font-bold text-sm">
-              {CurrentUser?.followers.length}
+              {data?.followers.length}
             </span>
             <span className="text-[#71767A] text-sm">Followers</span>
           </div>

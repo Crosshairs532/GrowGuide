@@ -17,9 +17,11 @@ const GrowContext = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<JwtPayload | null | undefined>(null);
 
   const handleUser = async () => {
+    setIsLoading(true); // Start loading when fetching user
+
     const user = await getUser();
     if (user) {
-      setIsLoading(!loading);
+      setIsLoading(false);
     }
     setUser(user);
   };

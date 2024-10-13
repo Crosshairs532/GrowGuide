@@ -5,10 +5,12 @@ export const AxiosInstance = axios.create({
   baseURL: "http://localhost:2000/api/growGuide",
 });
 
-axios.interceptors.request.use(
+AxiosInstance.interceptors.request.use(
   function (config) {
     // !forget password
     if (cookies().get("accessToken")?.value) {
+      console.log(cookies().get("accessToken")?.value);
+
       config.headers.Authorization = `${cookies().get("accessToken")?.value}`;
     }
 
@@ -19,7 +21,7 @@ axios.interceptors.request.use(
   }
 );
 
-axios.interceptors.response.use(
+AxiosInstance.interceptors.response.use(
   function (response) {
     return response;
   },

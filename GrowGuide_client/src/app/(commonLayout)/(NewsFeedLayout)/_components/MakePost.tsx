@@ -6,8 +6,10 @@ import { Image, ImageIcon, X } from "lucide-react";
 
 import QuizEditor from "@/utils/Editor/QuizEditor";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { categories } from "../../../../../../public/category";
+// import { categories } from "../../../../../../public/category";
+
 import { usePostCreate } from "@/hooks/useCreatePost";
+import { categories } from "../../../../../public/category";
 const MakePost = () => {
   const [image, setImage] = useState<(string | File)[]>([]);
   const [profilePicture, setProfilePicture] = useState<any[]>([]);

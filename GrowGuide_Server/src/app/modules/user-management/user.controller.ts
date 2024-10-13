@@ -89,7 +89,6 @@ const getSingleUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.query
 
-    console.log(email)
     const response = await userService.getSingleUserDb(email as string)
 
     sendResponse(res, {

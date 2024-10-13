@@ -1,28 +1,44 @@
+import jwt from 'jsonwebtoken'
 import { ObjectId } from 'mongodb'
 import { TUser } from './user.interface'
 import { userModel } from './user.model'
 import { postModel } from '../post/post.model'
+import configFiles from '../../../config'
 
 const updateProfileDb = async (
   updateData: TUser,
   email: string,
   userId: ObjectId,
 ) => {
+  console.log(updateData)
+
   const isExists = await userModel.findUser(email as string)
 
   console.log({ userId })
   if (!isExists) {
     throw new Error('user does not exists!')
   }
-  const updated = await userModel.findByIdAndUpdate(
-    { _id: userId },
-    updateData,
-    {
-      new: true,
-    },
-  )
+  try {
+    const updated = await userModel.findByIdAndUpdate(
+      { _id: userId },
+      updateData,
+      {
+        new: true,
+      },
+    )
+    // !make new Token
+    if (updated) {
+      const tokenData = { ...updated?._doc }
 
-  return updated
+      const token = jwt.sign(tokenData, configFiles.jwt_secret as string, {
+        expiresIn: '2d',
+      })
+
+      return { ...updated._doc, accessToken: token }
+    }
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
 }
 
 const followUserDb = async (followUser: any) => {

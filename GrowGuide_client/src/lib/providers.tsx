@@ -19,13 +19,15 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
 
   return (
-    <NextUIProvider navigate={router.push}>
-      <NextThemesProvider {...themeProps}>
-        <QueryClientProvider client={queryClient}>
-          <Toaster />
-          <GrowContext>{children}</GrowContext>
-        </QueryClientProvider>
-      </NextThemesProvider>
-    </NextUIProvider>
+    <QueryClientProvider client={queryClient}>
+      <NextUIProvider navigate={router.push}>
+        <GrowContext>
+          <NextThemesProvider {...themeProps}>
+            <Toaster />
+            {children}
+          </NextThemesProvider>
+        </GrowContext>
+      </NextUIProvider>
+    </QueryClientProvider>
   );
 }

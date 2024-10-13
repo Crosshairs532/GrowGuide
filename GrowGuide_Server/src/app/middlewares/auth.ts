@@ -8,7 +8,6 @@ import { userModel } from '../modules/user-management/user.model'
 const auth = () => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization
-
     console.log(token, 'access-Token')
 
     if (!token) {

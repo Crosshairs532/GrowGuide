@@ -83,7 +83,7 @@ const LeftSideBar = () => {
       title: "Verified Orgs",
     },
     {
-      link: `/profile/${user?.name}`,
+      link: `/profile`,
       icon: <UserRound />,
       title: "Profile",
     },
