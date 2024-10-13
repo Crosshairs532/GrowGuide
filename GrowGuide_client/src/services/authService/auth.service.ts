@@ -1,8 +1,8 @@
 "use server";
 import { cookies, headers } from "next/headers";
 
-import { AxiosInstance } from "@/lib/AxiosInstance";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import AxiosInstance from "@/lib/AxiosInstance";
 
 export const registrationService = async (userData: any) => {
   console.log(userData.get("data"), "kothay");
@@ -22,13 +22,14 @@ export const registrationService = async (userData: any) => {
 export const loginService = async (userData: any) => {
   try {
     const res = await AxiosInstance.post("/auth/login", userData);
+    console.log(res);
     const token = res?.data?.data?.accessToken;
-
     console.log(token);
     cookies().set("accessToken", token);
     return res.data;
   } catch (error: any) {
-    console.log(error.message);
+    console.log(error);
+    throw new Error(error);
   }
 };
 
@@ -53,17 +54,22 @@ export const resetPasswordService = async (data: any) => {
 };
 
 export const getUserService = async () => {
-  const token = cookies().get("accessToken")!.value;
-  console.log(token);
-  const decoded = (await jwtDecode(token)) as JwtPayload;
+  const tokenValue = cookies()?.get("accessToken");
+  let token;
+  let decoded = null;
+  if (tokenValue) {
+    token = cookies()?.get("accessToken")!.value;
+    decoded = (await jwtDecode(token)) as JwtPayload;
+  }
 
-  console.log({ decoded });
+  return decoded;
+
+  // console.log({ decoded });
 
   // if (decoded) {
   //   const res = await AxiosInstance.get(
   //     `/user-management/user?email=${decoded?.email} `
   //   );
-  return decoded;
 };
 
 export const profileUpdate = async (updateData: any) => {
@@ -80,4 +86,8 @@ export const profileUpdate = async (updateData: any) => {
   cookies().set("accessToken", res?.data?.data?.accessToken);
 
   return res.data;
+};
+
+export const logout = () => {
+  cookies().delete("accessToken");
 };

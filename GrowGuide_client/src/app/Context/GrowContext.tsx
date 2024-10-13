@@ -17,8 +17,6 @@ const GrowContext = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<JwtPayload | null | undefined>(null);
 
   const handleUser = async () => {
-    setIsLoading(true); // Start loading when fetching user
-
     const user = await getUser();
     if (user) {
       setIsLoading(false);
@@ -30,7 +28,7 @@ const GrowContext = ({ children }: { children: ReactNode }) => {
     return () => {
       console.log("cleanUp");
     };
-  }, []);
+  }, [loading]);
 
   const contextValue: any = { user, loading };
 
@@ -40,7 +38,11 @@ const GrowContext = ({ children }: { children: ReactNode }) => {
 };
 
 export const useGrowContext = () => {
-  return useContext(userContext);
+  const context = useContext(userContext);
+  if (context === undefined) {
+    throw new Error("useGrowContext must be used within a GrowContext");
+  }
+  return context;
 };
 
 export default GrowContext;

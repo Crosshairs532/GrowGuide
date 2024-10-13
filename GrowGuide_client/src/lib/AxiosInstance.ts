@@ -1,7 +1,7 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 
-export const AxiosInstance = axios.create({
+const AxiosInstance = axios.create({
   baseURL: "http://localhost:2000/api/growGuide",
 });
 
@@ -10,7 +10,6 @@ AxiosInstance.interceptors.request.use(
     // !forget password
     if (cookies().get("accessToken")?.value) {
       console.log(cookies().get("accessToken")?.value);
-
       config.headers.Authorization = `${cookies().get("accessToken")?.value}`;
     }
 
@@ -29,3 +28,5 @@ AxiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default AxiosInstance;

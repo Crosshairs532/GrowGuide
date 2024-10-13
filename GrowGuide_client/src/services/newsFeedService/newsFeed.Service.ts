@@ -1,5 +1,5 @@
 "use server";
-import { AxiosInstance } from "@/lib/AxiosInstance";
+
 import nexiosInstance from "@/lib/nexiosConfig/nexios.config";
 
 export const getAllPosts = async () => {

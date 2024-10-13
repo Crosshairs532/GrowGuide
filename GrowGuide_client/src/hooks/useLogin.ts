@@ -17,8 +17,9 @@ export const useLogin = () => {
     onSuccess: (data) => {
       toast.success(data.message);
     },
-    onError: (data) => {
-      toast.error(data.message);
+    onError: (error) => {
+      console.log(error);
+      toast.error(error.message);
     },
   });
 };

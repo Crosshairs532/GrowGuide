@@ -4,6 +4,8 @@ import sendEmail from '../../utilities/sendEmail'
 import jwt from 'jsonwebtoken'
 import { userModel } from '../user-management/user.model'
 import { TUser } from '../user-management/user.interface'
+import AppError from '../../middlewares/AppError'
+import httpStatus from 'http-status'
 
 const registrationDb = async (userData: any) => {
   // console.log(userData, 'user Registration Data')
@@ -20,14 +22,18 @@ const registrationDb = async (userData: any) => {
 }
 
 const loginDb = async (userData: Partial<TUser>) => {
-  const { email } = userData
+  const { email, password } = userData
   // * check if any user exists or not
   const isExists = await userModel.findUser(email as string)
   console.log(userData, isExists)
   const tokenData = { ...isExists?._doc }
   console.log({ tokenData })
   if (!isExists) {
-    throw new Error('user does not exists!')
+    throw new AppError(httpStatus.UNAUTHORIZED, 'user does not exists!')
+  }
+
+  if (!(password === tokenData?.password)) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'password does not match!')
   }
   const token = jwt.sign(tokenData, configFiles.jwt_secret as string, {
     expiresIn: '2d',

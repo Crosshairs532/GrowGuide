@@ -1,5 +1,6 @@
 "use server";
-import { AxiosInstance } from "@/lib/AxiosInstance";
+
+import AxiosInstance from "@/lib/AxiosInstance";
 import nexiosInstance from "@/lib/nexiosConfig/nexios.config";
 import { revalidateTag } from "next/cache";
 

@@ -23,6 +23,9 @@ const LoginPage = () => {
   return (
     <div className=" flex justify-center items-center h-screen">
       <div className=" form w-[80vw] sm:w-[50vw] lg:w-[35vw]">
+        <h1 className=" font-chirpBold space-y-5 text-[4vw] text-[#E6E9EA]">
+          Grow Guide
+        </h1>
         <GGForm onSubmit={onSubmit}>
           <div className=" space-y-3">
             <div className=" space-y-3">
