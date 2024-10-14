@@ -73,7 +73,7 @@ const LeftSideBar = () => {
       title: "Notifications",
     },
     {
-      link: `/`,
+      link: `/imageGallery`,
       icon: <Images />,
       title: "Gallery",
     },
