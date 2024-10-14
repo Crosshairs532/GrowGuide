@@ -5,7 +5,17 @@ import cookieParser from 'cookie-parser'
 import { allRouter } from './app/routes/routes'
 import globalError from './app/middlewares/globalError'
 import path from 'path'
-app.use(cors())
+import configFiles from './config'
+
+app.use(
+  cors({
+    origin: [
+      'https://grow-guide-client.vercel.app/',
+      configFiles.frontend_url as string,
+    ],
+    credentials: true,
+  }),
+)
 app.use(cookieParser())
 app.use(express.json())
 

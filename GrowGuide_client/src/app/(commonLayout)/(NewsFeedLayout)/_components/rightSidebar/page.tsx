@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import UsersToFollow from "./_components/UsersToFollow";
 
-const RightBar = async () => {
+const RightBar = () => {
   return (
     <div className=" border-2 space-y-4 px-4">
       <div className=" h-[50vh] z-10 ">

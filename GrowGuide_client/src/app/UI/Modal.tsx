@@ -29,7 +29,9 @@ const ForgetModal = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <div onClick={onOpen}>{children}</div>
+      <div role="button" tabIndex={0} onClick={onOpen}>
+        {children}
+      </div>
       <Modal
         backdrop="blur"
         isOpen={isOpen}

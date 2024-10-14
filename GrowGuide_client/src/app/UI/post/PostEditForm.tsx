@@ -19,11 +19,22 @@ const PostEditForm = ({
   onSubmit: SubmitHandler<any>;
   post: any;
 }) => {
-  const [image, setImage] = useState<string[] | File[] | undefined[]>([]);
+  // const [image, setImage] = useState<string[] | File[] | undefined[]>([]);
+  // const [profilePicture, setProfilePicture] = useState<any[]>([]);
+  // const [AlreadyPostedImages, setAlreadyPostedImages] = useState<string[]>([]);
+  // const [categoriesEdit, setCategoriesEdit] = useState(
+  //   new Set([...post.categories])
+  // );
+  // const [categoriesEdit, setCategoriesEdit] = useState<Set<string>>(
+  //   new Set(post.categories)
+  // );
+
+  // !new
+  const [image, setImage] = useState<(string | File)[]>([]);
   const [profilePicture, setProfilePicture] = useState<any[]>([]);
-  const [AlreadyPostedImages, setAlreadyPostedImages] = useState<string[]>([]);
-  const [categoriesEdit, setCategoriesEdit] = useState(
-    new Set([...post.categories])
+  const [alreadyPostedImages, setAlreadyPostedImages] = useState<string[]>([]);
+  const [categoriesEdit, setCategoriesEdit] = useState<Set<string>>(
+    new Set(post.categories)
   );
 
   console.log(categoriesEdit);
@@ -52,11 +63,12 @@ const PostEditForm = ({
   }, [post]);
 
   const handleRemoveImages = (data: { image: string; index: number }) => {
-    if (AlreadyPostedImages.includes(data.image)) {
+    if (alreadyPostedImages.includes(data.image)) {
       setAlreadyPostedImages((prevPostedImages) =>
         prevPostedImages.filter((img) => img !== data.image)
       );
     } else {
+      // setImage((prevImages) => prevImages.filter((img) => img !== data.image));
       setImage((prevPostedImages) =>
         prevPostedImages.filter((img) => img !== data.image)
       );
@@ -70,7 +82,7 @@ const PostEditForm = ({
   console.log(Array.from(categoriesEdit));
 
   const handleformSubmit = (data: any) => {
-    const postEditImages = [...AlreadyPostedImages, ...image];
+    const postEditImages = [...alreadyPostedImages, ...image];
     const categoriesAndDescription = { ...data };
     const editedData = {
       images: postEditImages,
@@ -81,6 +93,12 @@ const PostEditForm = ({
     onSubmit(editedData);
   };
 
+  const handleSelectionChange = (keys: any) => {
+    const newSet = new Set<string>(
+      Array.isArray(keys) ? keys : Array.from(keys)
+    );
+    setCategoriesEdit(newSet);
+  };
   return (
     <div>
       <FormProvider {...methods}>
@@ -101,16 +119,18 @@ const PostEditForm = ({
               />
             </div>
             <div className=" w-full flex gap-1 text-balance break-words flex-wrap">
-              {Array.from(categoriesEdit).map((cc) => (
-                <p className="">#{cc}</p>
+              {Array.from(categoriesEdit).map((cc, idx) => (
+                <p key={idx} className="">
+                  #{cc}
+                </p>
               ))}
             </div>
 
             <Select
               {...methods.register("categories")}
               defaultSelectedKeys={[...post.categories]}
-              SelectedKeys={categoriesEdit}
-              onSelectionChange={setCategoriesEdit}
+              selectedKeys={categoriesEdit}
+              onSelectionChange={handleSelectionChange}
               variant="underlined"
               label="Choose Category"
               selectionMode="multiple"
@@ -123,9 +143,9 @@ const PostEditForm = ({
             </Select>
           </div>
           <div className=" my-4 grid gap-2 grid-cols-2">
-            {AlreadyPostedImages.map((image: string, index: number) => {
+            {alreadyPostedImages.map((image: string, index: number) => {
               return (
-                <div className=" relative">
+                <div key={index} className=" relative">
                   <Button
                     onClick={() => handleRemoveImages({ image, index })}
                     className=" z-20 absolute right-2 rounded-full"
@@ -145,7 +165,7 @@ const PostEditForm = ({
 
             {profilePicture &&
               profilePicture.map((img, index) => (
-                <div className=" relative previewImage">
+                <div key={index} className=" relative previewImage">
                   <Button
                     className=" z-20 absolute right-2 rounded-full"
                     onClick={() => handleRemoveImages({ image: img, index })}

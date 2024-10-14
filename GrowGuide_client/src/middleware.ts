@@ -12,7 +12,7 @@ const roleBasedRoutes = {
 };
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const user = await getUser();
+  const user: any = await getUser();
   // ! protected based
   if (!user) {
     if (AuthRoutes.includes(pathname)) {

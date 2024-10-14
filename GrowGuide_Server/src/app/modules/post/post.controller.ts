@@ -1,4 +1,3 @@
-import { Delete } from 'lucide-react'
 import { TPost } from './post.interface'
 import { Request, Response } from 'express'
 import { catchAsync } from '../../utilities/catchAsync'

@@ -5,7 +5,7 @@ export const useGetAllPosts = () => {
   return useQuery({
     queryKey: ["GET_POSTS"],
     queryFn: async () => {
-      const res = await getAllPosts();
+      const res: any = await getAllPosts();
       return res?.data;
     },
   });

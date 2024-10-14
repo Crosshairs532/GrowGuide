@@ -32,7 +32,7 @@ const PostCard = ({ post }: { post: any }) => {
   const { mutate: addToFav } = useAddToFav();
   const { mutate: addVote } = useVote();
   const [vote, setVote] = useState<Boolean>();
-  const [isComment, setIsComment] = useState<Boolean>(false);
+  const [isComment, setIsComment] = useState<boolean>(false);
   const user = useGrowContext();
 
   console.log(post, "post");
@@ -117,6 +117,8 @@ const PostCard = ({ post }: { post: any }) => {
                 content="Comments"
               >
                 <span
+                  role="button"
+                  tabIndex={0}
                   onClick={() => {
                     handleComment(true);
                   }}
@@ -136,6 +138,8 @@ const PostCard = ({ post }: { post: any }) => {
                 content="Up Vote"
               >
                 <span
+                  role="button"
+                  tabIndex={0}
                   onClick={() => handleUpVote(post._id)}
                   className=" justify-center w-[5vh] h-[5vh] rounded-full  hover:bg-[#0D1720]  group flex items-center cursor-pointer duration-250"
                 >
@@ -152,6 +156,8 @@ const PostCard = ({ post }: { post: any }) => {
                 content="down Vote"
               >
                 <span
+                  role="button"
+                  tabIndex={0}
                   onClick={() => handleDownVote(post._id)}
                   className=" w-[5vh] h-[5vh] rounded-full  group flex justify-center items-center cursor-pointer hover:text-[#ef1c1ccf] hover:bg-[#ef1c1c16] duration-250"
                 >
@@ -160,6 +166,8 @@ const PostCard = ({ post }: { post: any }) => {
               </Tooltip>
 
               <span
+                role="button"
+                tabIndex={0}
                 onClick={() => handleAddToFav(post?._id)}
                 className=" w-[5vh] h-[5vh] flex justify-center items-center hover:bg-[#f9197e1a] rounded-full group duration-250 cursor-pointer"
               >

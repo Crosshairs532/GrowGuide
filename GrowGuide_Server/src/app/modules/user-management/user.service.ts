@@ -28,13 +28,13 @@ const updateProfileDb = async (
     )
     // !make new Token
     if (updated) {
-      const tokenData = { ...updated?._doc }
+      const tokenData = { ...updated.toObject() }
 
       const token = jwt.sign(tokenData, configFiles.jwt_secret as string, {
         expiresIn: '2d',
       })
 
-      return { ...updated._doc, accessToken: token }
+      return { ...updated.toObject(), accessToken: token }
     }
   } catch (error: any) {
     throw new Error(error.message)

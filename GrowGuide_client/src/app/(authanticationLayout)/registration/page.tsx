@@ -11,7 +11,9 @@ import LoadingOverlay from "@/app/UI/LoadingOverlay";
 
 const RegistrationPage = () => {
   const [image, setImage] = useState<string | File | undefined>();
-  const [profilePicture, setProfilePicture] = useState();
+  const [profilePicture, setProfilePicture] = useState<
+    string | ArrayBuffer | null
+  >();
   const {
     mutate: handleUserRegistration,
     isPending,
@@ -115,7 +117,11 @@ const RegistrationPage = () => {
                     <img
                       alt="item"
                       className="h-full w-full object-contain object-center rounded-md"
-                      src={profilePicture}
+                      src={
+                        typeof profilePicture === "string"
+                          ? profilePicture
+                          : undefined
+                      }
                     />
                   </div>
                 </div>

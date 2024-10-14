@@ -19,8 +19,8 @@ const PostGallary = ({ images }: { images: string[] }) => {
   return (
     <div className=" flex">
       <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom]}>
-        {images?.map((image) => (
-          <a href={image}>
+        {images?.map((image, index) => (
+          <a key={index} href={image}>
             <Image
               className="w-full rounded-none"
               fill

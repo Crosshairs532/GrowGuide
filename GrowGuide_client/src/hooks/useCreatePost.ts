@@ -8,7 +8,7 @@ export const usePostCreate = () => {
     mutationFn: async (postData: any) => {
       console.log(postData.get("data"));
       console.log(postData.get("file"));
-      const res = await createPost(postData);
+      const res: any = await createPost(postData);
       return res?.data;
     },
     onSuccess: (data) => {

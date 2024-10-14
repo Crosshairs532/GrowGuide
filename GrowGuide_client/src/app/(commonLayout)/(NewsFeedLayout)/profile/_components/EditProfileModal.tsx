@@ -23,7 +23,9 @@ const EditProfileModal = ({ CurrentUser }: any) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const { register, handleSubmit } = useForm();
   const [image, setImage] = useState<string | File | undefined>();
-  const [profilePicture, setProfilePicture] = useState();
+  const [profilePicture, setProfilePicture] = useState<
+    string | ArrayBuffer | null
+  >();
   const { mutate: updateProfile, isPending } = useProfileUpdate();
 
   const toggleVisibility = () => setIsVisible(!isVisible);

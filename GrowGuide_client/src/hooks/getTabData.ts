@@ -6,7 +6,7 @@ export const useGetTabData = (id: string, email: string, loading: boolean) => {
     queryKey: ["MY_POSTS", "LIKES", "FOLLOWERS", "FOLLOWING", "AUTH"],
     enabled: !loading,
     queryFn: async () => {
-      const response = await getData(id, email);
+      const response: any = await getData(id, email);
       return response?.data;
     },
   });

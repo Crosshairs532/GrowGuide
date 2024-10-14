@@ -21,7 +21,7 @@ const NewsFeedLayout = ({ children }: { children: ReactNode }) => {
         </div>
         {/* <div className=" flex-grow">{rightSidebar}</div> */}
         <div className=" flex-grow">
-          <RightBar></RightBar>
+          <RightBar />
         </div>
       </div>
     </>

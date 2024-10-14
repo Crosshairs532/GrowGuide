@@ -17,8 +17,11 @@ import {
   Bell,
   Bookmark,
   Ellipsis,
+  Images,
   Mails,
+  NotebookTabs,
   Search,
+  SearchSlash,
   ShieldHalf,
   Slash,
   TreeDeciduous,
@@ -71,8 +74,8 @@ const LeftSideBar = () => {
     },
     {
       link: `/`,
-      icon: <Mails />,
-      title: "Messages",
+      icon: <Images />,
+      title: "Gallery",
     },
     {
       link: `/`,
@@ -80,9 +83,9 @@ const LeftSideBar = () => {
       title: "Premium",
     },
     {
-      link: `/`,
-      icon: <Bookmark />,
-      title: "Bookmarks",
+      link: `/about`,
+      icon: <SearchSlash />,
+      title: "About",
     },
     {
       link: `/`,
@@ -90,9 +93,9 @@ const LeftSideBar = () => {
       title: "Dashboard",
     },
     {
-      link: `/`,
-      icon: <Zap />,
-      title: "Verified Orgs",
+      link: `/contact`,
+      icon: <NotebookTabs />,
+      title: "Contact Us",
     },
     {
       link: ` ${user?.role === "user" ? "/profile" : user?.role === "admin" ? "/admin" : ""} `,
@@ -115,7 +118,7 @@ const LeftSideBar = () => {
 
       <div className=" w-[90%] mt-2 space-y-[10px] flex flex-col">
         {sidebarItems.slice(1).map((item, index) => (
-          <Link href={item.link}>
+          <Link key={index} href={item.link}>
             <Button
               color="default"
               variant="light"

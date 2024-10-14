@@ -10,7 +10,7 @@ const CoverPage = ({ CurrentUser }: any) => {
         <img
           src={`${CurrentUser?.image}`}
           className="h-52 w-full object-cover"
-          alt="cover image"
+          alt="cover"
         />
 
         {/* <input

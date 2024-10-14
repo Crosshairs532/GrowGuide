@@ -3,10 +3,16 @@ import { ZodError } from 'zod'
 import handleZodError from '../error/handleZodError'
 import { TSources } from '../types/errorTypes'
 import AppError from './AppError'
+import httpStatus from 'http-status'
 
-const globalError: ErrorRequestHandler = (err, req, res, next) => {
+const globalError: ErrorRequestHandler = (
+  err,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   console.log(err, 'GlobalError')
-  let statusCode = err.status || 500
+  let statusCode = err.status || 500 || httpStatus.INTERNAL_SERVER_ERROR
   let errorMessage: any = err.message || 'something went wrong!'
   let sources: TSources[] = [
     {
@@ -41,12 +47,13 @@ const globalError: ErrorRequestHandler = (err, req, res, next) => {
     ]
   }
 
-  return res.status(statusCode).json({
+  res.status(statusCode).json({
     success: false,
     statusCode,
     message: errorMessage,
     errorSources: sources,
   })
+  return
 }
 
 export default globalError

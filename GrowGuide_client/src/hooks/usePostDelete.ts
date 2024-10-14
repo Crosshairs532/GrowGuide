@@ -9,7 +9,7 @@ export const usePostDelete = () => {
     mutationKey: ["GET_POSTS"],
     mutationFn: async (postId) => {
       console.log(postId);
-      const res = await deletePost(postId);
+      const res: any = await deletePost(postId);
       return res.data;
     },
     onSuccess: () => {

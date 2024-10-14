@@ -22,7 +22,7 @@ export default function CustomModal({
   const { mutate: postDelete } = usePostDelete();
   const { mutate: updatePost } = usePostUpdate();
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: any) => {
     console.log(id);
     postDelete(id);
   };

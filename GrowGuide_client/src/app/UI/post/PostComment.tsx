@@ -84,17 +84,19 @@ const PostComment = ({
 
           <div>
             {
-              <p
+              <span
+                role="button"
+                tabIndex={0}
                 onClick={() => setViewAll(!viewAll)}
                 className={` ${viewAll ? "hidden" : "block"} font-chirpBold`}
               >
                 View All Comments
-              </p>
+              </span>
             }
             {viewAll &&
-              post?.comments?.map((comment: any) => {
+              post?.comments?.map((comment: any, ind: number) => {
                 return (
-                  <div className=" my-3 flex items-center gap-3">
+                  <div key={ind} className=" my-3 flex items-center gap-3">
                     <div>
                       <Avatar src={comment.userId?.image} />
                     </div>
@@ -142,12 +144,14 @@ const PostComment = ({
                 );
               })}
             {
-              <p
+              <span
+                role="button"
+                tabIndex={0}
                 onClick={() => setViewAll(!viewAll)}
                 className={` ${viewAll ? "block" : "hidden"} font-chirpBold`}
               >
                 View less
-              </p>
+              </span>
             }
           </div>
         </div>

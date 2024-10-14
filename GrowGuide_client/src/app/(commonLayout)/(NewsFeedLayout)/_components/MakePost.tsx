@@ -13,7 +13,7 @@ import { categories } from "../../../../../public/category";
 const MakePost = () => {
   const [image, setImage] = useState<(string | File)[]>([]);
   const [profilePicture, setProfilePicture] = useState<any[]>([]);
-  const [categoriesEdit, setCategoriesEdit] = useState(new Set([]));
+  const [categoriesEdit, setCategoriesEdit] = useState<Set<string>>(new Set());
   const { mutate: postCreate } = usePostCreate();
 
   const user = useGrowContext();
@@ -67,6 +67,12 @@ const MakePost = () => {
       postCreate(formData);
     }
   };
+  const handleSelectionChange = (keys: any) => {
+    const newSet = new Set<string>(
+      Array.isArray(keys) ? keys : Array.from(keys)
+    );
+    setCategoriesEdit(newSet);
+  };
 
   return (
     <div className="">
@@ -88,8 +94,8 @@ const MakePost = () => {
 
               <Select
                 {...methods.register("categories")}
-                SelectedKeys={categoriesEdit}
-                onSelectionChange={setCategoriesEdit}
+                selectedKeys={categoriesEdit}
+                onSelectionChange={handleSelectionChange}
                 variant="underlined"
                 label="Choose Category"
                 selectionMode="multiple"
@@ -104,7 +110,7 @@ const MakePost = () => {
             <div className=" my-4 grid gap-2 grid-cols-2">
               {profilePicture &&
                 profilePicture.map((img, index) => (
-                  <div className=" relative previewImage">
+                  <div key={index} className=" relative previewImage">
                     <Button
                       className=" z-20 absolute right-2 rounded-full"
                       onClick={() => handleRemoveImages({ image: img, index })}

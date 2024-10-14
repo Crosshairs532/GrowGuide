@@ -121,6 +121,8 @@ const ProfilePage = ({ params, searchParams }: any) => {
         <div className=" flex font-chirpRegular w-full border-b border-gray-700 mt-4">
           {toggles?.map((tab, index) => (
             <div
+              role="button"
+              tabIndex={0}
               key={index}
               className={`flex justify-center w-fit  flex-1 p-3 ${
                 feedType === `${tab.value}`
@@ -141,7 +143,7 @@ const ProfilePage = ({ params, searchParams }: any) => {
         <div className=" p-5">
           {tabData.length > 0
             ? tabData.map((data, index) => {
-                return <p>{index}</p>;
+                return <p key={index}>{index}</p>;
               })
             : "no data found"}
         </div>

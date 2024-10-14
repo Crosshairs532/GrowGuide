@@ -1,5 +1,6 @@
 import axios from "axios";
 import { cookies } from "next/headers";
+// "https://grow-guide-server.vercel.app/api/growGuide"
 
 const AxiosInstance = axios.create({
   baseURL: "http://localhost:2000/api/growGuide",
