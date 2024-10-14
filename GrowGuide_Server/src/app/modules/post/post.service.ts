@@ -90,6 +90,9 @@ const UpDownVoteDb = async (postId: string, val: string) => {
 const getAllPostsDb = async () => {
   const res = await postModel
     .find({})
+    .sort({
+      votes: 1,
+    })
     .populate('user')
     .populate({
       path: 'comments',

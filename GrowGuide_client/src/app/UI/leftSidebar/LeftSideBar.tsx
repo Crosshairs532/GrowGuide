@@ -16,6 +16,7 @@ import {
 import {
   Bell,
   Bookmark,
+  CloudFog,
   Ellipsis,
   Images,
   Mails,
@@ -32,10 +33,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 const LeftSideBar = () => {
-  const { user } = useGrowContext();
+  const { user, setUser, handleUser, setIsLoading, loading } = useGrowContext();
   const router = useRouter();
 
   console.log(user);
@@ -99,13 +100,28 @@ const LeftSideBar = () => {
     },
     {
       link: ` ${user?.role === "user" ? "/profile" : user?.role === "admin" ? "/admin" : ""} `,
-      icon: ` ${user?.role === "user" ? <UserRound /> : user?.role === "admin" ? <ShieldHalf /> : ""} `,
+      icon:
+        user?.role === "user" ? (
+          <UserRound />
+        ) : user?.role === "admin" ? (
+          <ShieldHalf />
+        ) : null,
       title: ` ${user?.role === "user" ? "Profile" : user?.role === "admin" ? "Admin" : ""} `,
     },
   ];
 
-  const handleLogout = () => {
+  useEffect(() => {
+    handleUser();
+  }, [loading]);
+  const handleLogout = async () => {
     logout();
+    await handleUser();
+    setUser(null);
+    setIsLoading(true);
+    console.log(user);
+    if (!user) {
+      router.push("/login");
+    }
     router.push("/login");
   };
   return (
@@ -125,7 +141,7 @@ const LeftSideBar = () => {
               className={`  rounded-full w-auto flex gap-4 font-chirpMedium text-[20px] justify-between items-center`}
               key={index}
             >
-              {item.icon}
+              {item?.icon}
               <span>{item.title}</span>
             </Button>
           </Link>

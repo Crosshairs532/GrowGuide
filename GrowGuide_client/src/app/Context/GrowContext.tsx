@@ -20,17 +20,20 @@ const GrowContext = ({ children }: { children: ReactNode }) => {
     const user = await getUser();
     if (user) {
       setIsLoading(false);
+      setUser(user);
     }
-    setUser(user);
   };
   useEffect(() => {
     handleUser();
-    return () => {
-      console.log("cleanUp");
-    };
   }, [loading]);
 
-  const contextValue: any = { user, loading };
+  const contextValue: any = {
+    user,
+    loading,
+    setUser,
+    handleUser,
+    setIsLoading,
+  };
 
   return (
     <userContext.Provider value={contextValue}>{children}</userContext.Provider>
