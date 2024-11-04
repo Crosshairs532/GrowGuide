@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import * as React from "react";
@@ -20,14 +21,14 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NextUIProvider navigate={router.push}>
-        <GrowContext>
+      <GrowContext>
+        <NextUIProvider navigate={router.push}>
           <NextThemesProvider {...themeProps}>
             <Toaster />
             {children}
           </NextThemesProvider>
-        </GrowContext>
-      </NextUIProvider>
+        </NextUIProvider>
+      </GrowContext>
     </QueryClientProvider>
   );
 }

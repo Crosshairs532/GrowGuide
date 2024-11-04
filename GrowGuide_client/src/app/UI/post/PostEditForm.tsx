@@ -1,7 +1,15 @@
+/* eslint-disable prettier/prettier */
 "use client";
 import React, { useEffect, useState } from "react";
 import { useGrowContext } from "@/app/Context/GrowContext";
-import { Avatar, Button, Image, Select, SelectItem } from "@nextui-org/react";
+import {
+  Avatar,
+  Button,
+  Image,
+  Select,
+  SelectItem,
+  Skeleton,
+} from "@nextui-org/react";
 import { X } from "lucide-react";
 import { categories } from "../../../../public/category";
 
@@ -15,9 +23,11 @@ import {
 const PostEditForm = ({
   onSubmit,
   post,
+  onClose,
 }: {
   onSubmit: SubmitHandler<any>;
   post: any;
+  onClose: any;
 }) => {
   // const [image, setImage] = useState<string[] | File[] | undefined[]>([]);
   // const [profilePicture, setProfilePicture] = useState<any[]>([]);
@@ -34,19 +44,17 @@ const PostEditForm = ({
   const [profilePicture, setProfilePicture] = useState<any[]>([]);
   const [alreadyPostedImages, setAlreadyPostedImages] = useState<string[]>([]);
   const [categoriesEdit, setCategoriesEdit] = useState<Set<string>>(
-    new Set(post.categories)
+    new Set(post?.categories)
   );
 
   console.log(categoriesEdit);
 
   const user = useGrowContext();
   const methods = useForm();
-  // const { register, handleSubmit } = useFormContext();
 
   const handleImageChange = (e: any) => {
     const file = e.target.files![0];
     setImage((prev) => [...prev, file]);
-    // console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -57,13 +65,15 @@ const PostEditForm = ({
   };
 
   useEffect(() => {
-    if (post.images) {
-      setAlreadyPostedImages([...post.images]);
+    console.log(post?.images);
+    if (post?.images) {
+      setAlreadyPostedImages(post?.images);
     }
+    console.log(alreadyPostedImages);
   }, [post]);
 
   const handleRemoveImages = (data: { image: string; index: number }) => {
-    if (alreadyPostedImages.includes(data.image)) {
+    if (alreadyPostedImages?.includes(data.image)) {
       setAlreadyPostedImages((prevPostedImages) =>
         prevPostedImages.filter((img) => img !== data.image)
       );
@@ -89,8 +99,9 @@ const PostEditForm = ({
       data: categoriesAndDescription,
     };
 
-    console.log(editedData);
+    console.log({ editedData });
     onSubmit(editedData);
+    onClose();
   };
 
   const handleSelectionChange = (keys: any) => {
@@ -99,15 +110,17 @@ const PostEditForm = ({
     );
     setCategoriesEdit(newSet);
   };
+
+  console.log(alreadyPostedImages, profilePicture);
   return (
     <div>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleformSubmit)} action="">
           <div className=" profile flex gap-2">
-            <Avatar src={post.user.image} />
+            <Avatar src={post?.user?.image} />
 
             <div className=" flex flex-col">
-              <p>{post.user?.name}</p>
+              <p>{post?.user?.name}</p>
               <small>{user?.email}</small>
             </div>
           </div>
@@ -115,7 +128,7 @@ const PostEditForm = ({
             <div className=" py-3">
               <QuizEditor
                 placeholder="Edit Comment"
-                description={post.description}
+                description={post?.description}
               />
             </div>
             <div className=" w-full flex gap-1 text-balance break-words flex-wrap">
@@ -128,7 +141,7 @@ const PostEditForm = ({
 
             <Select
               {...methods.register("categories")}
-              defaultSelectedKeys={[...post.categories]}
+              defaultSelectedKeys={[...post?.categories]}
               selectedKeys={categoriesEdit}
               onSelectionChange={handleSelectionChange}
               variant="underlined"
@@ -143,28 +156,37 @@ const PostEditForm = ({
             </Select>
           </div>
           <div className=" my-4 grid gap-2 grid-cols-2">
-            {alreadyPostedImages.map((image: string, index: number) => {
-              return (
-                <div key={index} className=" relative">
-                  <Button
-                    onClick={() => handleRemoveImages({ image, index })}
-                    className=" z-20 absolute right-2 rounded-full"
-                  >
-                    <X />
-                  </Button>
-                  <Image
-                    key={index}
-                    width={200}
-                    height={200}
-                    alt="NextUI hero Image with delay"
-                    src={`https://app.requestly.io/delay/5000/${image}`}
-                  />
-                </div>
-              );
-            })}
+            {alreadyPostedImages?.length > 0 ? (
+              alreadyPostedImages?.map((image: string, index: number) => {
+                return (
+                  <div key={index} className=" relative">
+                    <Button
+                      onClick={() => handleRemoveImages({ image, index })}
+                      className=" z-20 absolute right-2 rounded-full"
+                    >
+                      <X />
+                    </Button>
+                    <Skeleton
+                      isLoaded={!(alreadyPostedImages.length > 0) || true}
+                      className="rounded-lg"
+                    >
+                      <Image
+                        key={index}
+                        width={200}
+                        height={200}
+                        alt="NextUI hero Image with delay"
+                        src={`${image}`}
+                      />
+                    </Skeleton>
+                  </div>
+                );
+              })
+            ) : (
+              <small>No Images</small>
+            )}
 
-            {profilePicture &&
-              profilePicture.map((img, index) => (
+            {profilePicture?.length > 0 &&
+              profilePicture?.map((img, index) => (
                 <div key={index} className=" relative previewImage">
                   <Button
                     className=" z-20 absolute right-2 rounded-full"
@@ -184,7 +206,10 @@ const PostEditForm = ({
           </div>
           <div className=" flex justify-between items-center">
             <div className="min-w-fit flex justify-start px-3 items-center bg-transparent border-2 rounded-lg border-[#3f3f45] flex-1">
-              <label className=" text-[#a1a1aa] text-center " htmlFor="image">
+              <label
+                className=" text-[#a1a1aa] text-center "
+                htmlFor="imageEdit"
+              >
                 Upload Image
               </label>
               <input
@@ -192,7 +217,7 @@ const PostEditForm = ({
                 className="hidden"
                 type="file"
                 name=""
-                id="image"
+                id="imageEdit"
               />
             </div>
             <Button type="submit" color="primary">

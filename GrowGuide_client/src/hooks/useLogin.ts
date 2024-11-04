@@ -1,9 +1,9 @@
+/* eslint-disable prettier/prettier */
 import {
   loginService,
   registrationService,
 } from "@/services/authService/auth.service";
 import { useMutation } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
 export const useLogin = () => {
@@ -11,15 +11,14 @@ export const useLogin = () => {
     mutationKey: ["AUTH_LOGIN"],
     mutationFn: async (loginData: any) => {
       const res = await loginService(loginData);
-      console.log(res);
+
       return res;
     },
     onSuccess: (data) => {
-      toast.success(data.message);
+      toast.success(data?.message);
     },
     onError: (error) => {
-      console.log(error);
-      toast.error(error.message);
+      toast.error(error?.message);
     },
   });
 };

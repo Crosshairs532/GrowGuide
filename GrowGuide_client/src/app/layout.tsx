@@ -1,20 +1,10 @@
+/* eslint-disable prettier/prettier */
 import "@/styles/globals.css";
-import { Metadata, Viewport } from "next";
+import { Viewport } from "next";
 
 import clsx from "clsx";
 
 import { Providers } from "../lib/providers";
-
-// export const metadata: Metadata = {
-//   title: {
-//     default: siteConfig.name,
-//     template: `%s - ${siteConfig.name}`,
-//   },
-//   description: siteConfig.description,
-//   icons: {
-//     icon: "/favicon.ico",
-//   },
-// };
 
 export const viewport: Viewport = {
   themeColor: [

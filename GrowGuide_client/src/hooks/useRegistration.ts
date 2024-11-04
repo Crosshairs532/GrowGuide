@@ -1,6 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { registrationService } from "@/services/authService/auth.service";
 import { useMutation } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
 export const useRegistration = () => {
@@ -8,7 +8,7 @@ export const useRegistration = () => {
     mutationKey: ["AUTH_REGISTRATION"],
     mutationFn: async (registrationData: any) => {
       const res = await registrationService(registrationData);
-      console.log(res);
+      // console.log(res);
       return res;
     },
     onSuccess: (data) => {

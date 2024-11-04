@@ -7,7 +7,7 @@ import httpStatus from 'http-status'
 
 const createPost = catchAsync(async (req: Request, res: Response) => {
   // !form data
-  const postData = req.body
+  const postData = req?.body
   const response = await postService.createPostDb(postData)
   sendResponse(res, {
     success: true,
@@ -29,10 +29,14 @@ const createComment = catchAsync(async (req: Request, res: Response) => {
 })
 
 const UpDownVote = catchAsync(async (req: Request, res: Response) => {
-  const { postId, votes } = req.body
+  const { postId, vote, userId } = req.body
 
-  console.log(votes)
-  const response = await postService.UpDownVoteDb(postId as string, votes)
+  console.log(postId, vote, ' this is upvote controller')
+  const response = await postService.UpDownVoteDb(
+    postId as string,
+    vote,
+    userId as string,
+  )
   sendResponse(res, {
     success: true,
     status: httpStatus.OK,
@@ -42,19 +46,23 @@ const UpDownVote = catchAsync(async (req: Request, res: Response) => {
 })
 
 const getAllPosts = catchAsync(async (req: Request, res: Response) => {
-  const response = await postService.getAllPostsDb()
+  const searchParam = req.query
+  const response = await postService.getAllPostsDb(searchParam)
   sendResponse(res, {
     success: true,
     status: httpStatus.OK,
     message: 'Posts fetched successfully',
-    data: response,
+    data: {
+      data: response.data,
+      nextId: response.nextId,
+    },
   })
 })
 
 const postDelete = catchAsync(async (req: Request, res: Response) => {
   const { postId } = req.query
 
-  console.log(postId)
+  console.log(postId, 'delete post id')
   const response = await postService.postDeleteDb(postId as string)
   sendResponse(res, {
     success: true,
@@ -111,6 +119,41 @@ const postComment = catchAsync(async (req: Request, res: Response) => {
   }
 })
 
+const getLoggedInUserPost = catchAsync(async (req: Request, res: Response) => {
+  const { userId } = req.query
+
+  console.log(req.params)
+  const response = await postService.getLoggedInUserPosts(userId as string)
+  sendResponse(res, {
+    success: true,
+    status: httpStatus.OK,
+    message: 'user posts fetched successfully',
+    data: response,
+  })
+})
+
+const postChart = catchAsync(async (req: Request, res: Response) => {
+  const response = await postService.postChartDb()
+  sendResponse(res, {
+    success: true,
+    status: httpStatus.OK,
+    message: 'chart data fetched successfully',
+    data: response,
+  })
+})
+
+const getSinglePostController = catchAsync(
+  async (req: Request, res: Response) => {
+    const { postId } = req.params
+    const response = await postService.getSinglePostDb(postId as string)
+    sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'post fetched successfully',
+      data: response,
+    })
+  },
+)
 export const postController = {
   createPost,
   createComment,
@@ -119,4 +162,7 @@ export const postController = {
   postDelete,
   postUpdate,
   postComment,
+  getLoggedInUserPost,
+  postChart,
+  getSinglePostController,
 }

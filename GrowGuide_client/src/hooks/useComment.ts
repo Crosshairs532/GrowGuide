@@ -1,31 +1,27 @@
 import { queryClient } from "@/lib/providers";
+/* eslint-disable prettier/prettier */
+
 import { postComment } from "@/services/postService/post.service";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useComment = () => {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["POST_COMMENT"],
+    mutationKey: ["POST_COMMENT", "GET_POSTS"],
     mutationFn: async (commentData: any) => {
-      //   console.log(commentData);
       const res = await postComment(commentData);
       return res;
     },
-    // onMutate: async (updatedPost) => {
-    //   console.log(updatedPost);
-    //   await queryClient.cancelQueries({ queryKey: ["GET_POSTS"] }); // Cancel any outgoing queries
+    onMutate: async (newTodo) => {
+      console.log(newTodo);
+      // await queryClient.cancelQueries({ queryKey: ["todos", newTodo.id] });
+      // const previousTodo = queryClient.getQueryData(["todos", newTodo.id]);
+      // queryClient.setQueryData(["todos", newTodo.id], newTodo);
+      // return { previousTodo, newTodo };
+    },
 
-    //   const previousPosts = queryClient.getQueryData(["GET_POSTS"]); // Get current posts
-
-    //   console.log(previousPosts);
-    //   // Optimistically update the specific post in the cache
-    //   queryClient.setQueryData(["GET_POSTS"], (oldPosts: any) =>
-    //     oldPosts.map((post) =>
-    //       post._id === updatedPost._id ? { ...post, ...updatedPost } : post
-    //     )
-    //   );
-
-    //   return { previousPosts }; // Return context for rollback
-    // },
+    onSuccess(data, variables, context) {
+      queryClient.invalidateQueries({ queryKey: ["GET_POSTS"] });
+    },
   });
 };

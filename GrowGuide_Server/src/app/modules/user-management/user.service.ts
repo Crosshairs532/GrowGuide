@@ -14,12 +14,12 @@ const updateProfileDb = async (
 
   const isExists = await userModel.findUser(email as string)
 
-  console.log({ userId })
+  console.log(userId, 'looking')
   if (!isExists) {
     throw new Error('user does not exists!')
   }
   try {
-    const updated = await userModel.findByIdAndUpdate(
+    const updated = await userModel.findOneAndUpdate(
       { _id: userId },
       updateData,
       {
@@ -27,6 +27,8 @@ const updateProfileDb = async (
       },
     )
     // !make new Token
+
+    console.log({ updateData })
     if (updated) {
       const tokenData = { ...updated.toObject() }
 
@@ -47,9 +49,9 @@ const followUserDb = async (followUser: any) => {
   // ! this is the user who is following
 
   const CurrentUserFollowing = await userModel
-    .findByIdAndUpdate(
+    .findOneAndUpdate(
       {
-        _id: new ObjectId(myId),
+        _id: myId,
       },
       {
         $addToSet: {
@@ -60,9 +62,7 @@ const followUserDb = async (followUser: any) => {
         new: true,
       },
     )
-    .populate({
-      path: 'following',
-    })
+    .populate('following')
 
   // ! this is the user who is being followed
   const CurrentFollowingFollower = await userModel
@@ -81,7 +81,7 @@ const followUserDb = async (followUser: any) => {
     )
     .populate('followers')
 
-  console.log(CurrentUserFollowing, CurrentFollowingFollower)
+  // console.log(CurrentUserFollowing, CurrentFollowingFollower)
 
   return { CurrentUserFollowing, CurrentFollowingFollower }
 }
@@ -89,6 +89,7 @@ const followUserDb = async (followUser: any) => {
 const unFollowUserDb = async (userUnFollowInfo: any) => {
   const { myId, unfollowId } = userUnFollowInfo
 
+  // console.log(myId, 'what is this ')
   // ! first delete from my list.
   const userUnfollowed = await userModel.findByIdAndUpdate(
     { _id: new ObjectId(myId) },
@@ -112,7 +113,7 @@ const unFollowUserDb = async (userUnFollowInfo: any) => {
   return { userUnfollowed, res }
 }
 
-const addToFavDb = async (email: string, postId: string) => {
+const addToFavDb = async (email: string, postId: string, userId: string) => {
   const res = await userModel
     .findOneAndUpdate(
       {
@@ -131,14 +132,73 @@ const addToFavDb = async (email: string, postId: string) => {
       path: 'favourites',
     })
 
+  const PostRes = await postModel.findOneAndUpdate(
+    {
+      _id: postId,
+    },
+    {
+      $addToSet: {
+        favourite: { $each: [userId] },
+      },
+    },
+    {
+      new: true,
+    },
+  )
+
   return res
 }
 
-const getSingleUserDb = async (email: string) => {
-  const res = await userModel.findOne({
-    email,
-  })
+const removeFavDb = async (email: string, postId: string, userId: string) => {
+  const res = await userModel
+    .findOneAndUpdate(
+      {
+        email,
+      },
+      {
+        $pull: {
+          favourites: { $in: [postId] },
+        },
+      },
+      {
+        new: true,
+      },
+    )
+    .populate({
+      path: 'favourites',
+    })
 
+  const PostRes = await postModel.findOneAndUpdate(
+    {
+      _id: postId,
+    },
+    {
+      $pull: {
+        favourite: { $in: [userId] },
+      },
+    },
+    {
+      new: true,
+    },
+  )
+
+  return res
+}
+
+const getSingleUserDb = async (id: string) => {
+  // console.log(id, 'check id')
+  const res = await userModel
+    .findById(id)
+    .populate('following')
+    .populate('followers')
+    .populate('favourites')
+
+  // console.log(res, 'check user')
+  return res
+}
+
+const adminUserDeleteDb = async (id: string) => {
+  const res = await userModel.findByIdAndDelete(id)
   return res
 }
 
@@ -148,4 +208,6 @@ export const userService = {
   unFollowUserDb,
   addToFavDb,
   getSingleUserDb,
+  adminUserDeleteDb,
+  removeFavDb,
 }

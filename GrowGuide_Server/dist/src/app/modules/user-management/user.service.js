@@ -20,15 +20,16 @@ const config_1 = __importDefault(require("../../../config"));
 const updateProfileDb = (updateData, email, userId) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(updateData);
     const isExists = yield user_model_1.userModel.findUser(email);
-    console.log({ userId });
+    console.log(userId, 'looking');
     if (!isExists) {
         throw new Error('user does not exists!');
     }
     try {
-        const updated = yield user_model_1.userModel.findByIdAndUpdate({ _id: userId }, updateData, {
+        const updated = yield user_model_1.userModel.findOneAndUpdate({ _id: userId }, updateData, {
             new: true,
         });
         // !make new Token
+        console.log({ updateData });
         if (updated) {
             const tokenData = Object.assign({}, updated.toObject());
             const token = jsonwebtoken_1.default.sign(tokenData, config_1.default.jwt_secret, {
@@ -45,8 +46,8 @@ const followUserDb = (followUser) => __awaiter(void 0, void 0, void 0, function*
     const { myId, followedId } = followUser;
     // ! this is the user who is following
     const CurrentUserFollowing = yield user_model_1.userModel
-        .findByIdAndUpdate({
-        _id: new mongodb_1.ObjectId(myId),
+        .findOneAndUpdate({
+        _id: myId,
     }, {
         $addToSet: {
             following: { $each: [followedId] },
@@ -54,9 +55,7 @@ const followUserDb = (followUser) => __awaiter(void 0, void 0, void 0, function*
     }, {
         new: true,
     })
-        .populate({
-        path: 'following',
-    });
+        .populate('following');
     // ! this is the user who is being followed
     const CurrentFollowingFollower = yield user_model_1.userModel
         .findByIdAndUpdate({
@@ -69,11 +68,12 @@ const followUserDb = (followUser) => __awaiter(void 0, void 0, void 0, function*
         new: true,
     })
         .populate('followers');
-    console.log(CurrentUserFollowing, CurrentFollowingFollower);
+    // console.log(CurrentUserFollowing, CurrentFollowingFollower)
     return { CurrentUserFollowing, CurrentFollowingFollower };
 });
 const unFollowUserDb = (userUnFollowInfo) => __awaiter(void 0, void 0, void 0, function* () {
     const { myId, unfollowId } = userUnFollowInfo;
+    // console.log(myId, 'what is this ')
     // ! first delete from my list.
     const userUnfollowed = yield user_model_1.userModel.findByIdAndUpdate({ _id: new mongodb_1.ObjectId(myId) }, {
         $pull: {
@@ -104,10 +104,18 @@ const addToFavDb = (email, postId) => __awaiter(void 0, void 0, void 0, function
     });
     return res;
 });
-const getSingleUserDb = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield user_model_1.userModel.findOne({
-        email,
-    });
+const getSingleUserDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log(id, 'check id')
+    const res = yield user_model_1.userModel
+        .findById(id)
+        .populate('following')
+        .populate('followers')
+        .populate('favourites');
+    // console.log(res, 'check user')
+    return res;
+});
+const adminUserDeleteDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield user_model_1.userModel.findByIdAndDelete(id);
     return res;
 });
 exports.userService = {
@@ -116,4 +124,5 @@ exports.userService = {
     unFollowUserDb,
     addToFavDb,
     getSingleUserDb,
+    adminUserDeleteDb,
 };

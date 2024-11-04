@@ -5,13 +5,12 @@ import { userModel } from '../user-management/user.model'
 
 const postFromData = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req)
-    const formData = JSON.parse(req.body.data)
+    const formData = JSON.parse(req?.body?.data)
 
     console.log(formData)
 
     // !find the user
-    const user = await userModel.findById(formData.user)
+    const user = await userModel.findById(formData?.user)
 
     // ! array of images with location on the local file
     const path = (req.files as any)?.map((file: any) => file.path)
@@ -24,6 +23,8 @@ const postFromData = catchAsync(
       )) as any
       images.push(secure_url)
     }
+
+    console.log({ images: images, ...formData })
 
     req.body = { images: images, ...formData }
 

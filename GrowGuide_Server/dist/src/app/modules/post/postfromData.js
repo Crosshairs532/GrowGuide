@@ -21,19 +21,18 @@ const ToCloudinary_1 = require("../../utilities/ToCloudinary");
 const user_model_1 = require("../user-management/user.model");
 const postFromData = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, e_1, _b, _c;
-    var _d;
-    console.log(req);
-    const formData = JSON.parse(req.body.data);
+    var _d, _e;
+    const formData = JSON.parse((_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.data);
     console.log(formData);
     // !find the user
-    const user = yield user_model_1.userModel.findById(formData.user);
+    const user = yield user_model_1.userModel.findById(formData === null || formData === void 0 ? void 0 : formData.user);
     // ! array of images with location on the local file
-    const path = (_d = req.files) === null || _d === void 0 ? void 0 : _d.map((file) => file.path);
+    const path = (_e = req.files) === null || _e === void 0 ? void 0 : _e.map((file) => file.path);
     let images = [];
     try {
-        for (var _e = true, path_1 = __asyncValues(path), path_1_1; path_1_1 = yield path_1.next(), _a = path_1_1.done, !_a; _e = true) {
+        for (var _f = true, path_1 = __asyncValues(path), path_1_1; path_1_1 = yield path_1.next(), _a = path_1_1.done, !_a; _f = true) {
             _c = path_1_1.value;
-            _e = false;
+            _f = false;
             let element = _c;
             const { secure_url } = (yield (0, ToCloudinary_1.sendImageToCloudinary)(user.name, element));
             images.push(secure_url);
@@ -42,10 +41,11 @@ const postFromData = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(
     catch (e_1_1) { e_1 = { error: e_1_1 }; }
     finally {
         try {
-            if (!_e && !_a && (_b = path_1.return)) yield _b.call(path_1);
+            if (!_f && !_a && (_b = path_1.return)) yield _b.call(path_1);
         }
         finally { if (e_1) throw e_1.error; }
     }
+    console.log(Object.assign({ images: images }, formData));
     req.body = Object.assign({ images: images }, formData);
     next();
 }));

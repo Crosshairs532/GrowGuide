@@ -33,7 +33,6 @@
     }
   },
   "rules": {
-    "jsx-a11y/no-autofocus": "off",
     "no-console": "warn",
     "react/prop-types": "off",
     "react/jsx-uses-react": "off",

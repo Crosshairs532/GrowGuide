@@ -18,7 +18,7 @@ const premiumSchema = new mongoose_1.Schema({
     },
     userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'users' },
     paymentStatus: {
-        types: String,
+        type: String,
         enum: ['pending', 'paid', 'cancelled'],
     },
     amount: {
@@ -27,9 +27,9 @@ const premiumSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-exports.premiumModel = (0, mongoose_1.model)('premiumUser', premiumSchema);
 premiumSchema.post('save', function (doc, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(doc);
         try {
             yield user_model_1.userModel.findByIdAndUpdate({ _id: doc.userId }, {
                 $set: { status: 'Premium' },
@@ -41,3 +41,4 @@ premiumSchema.post('save', function (doc, next) {
         }
     });
 });
+exports.premiumModel = (0, mongoose_1.model)('premiumUser', premiumSchema);

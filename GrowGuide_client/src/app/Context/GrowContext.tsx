@@ -1,6 +1,7 @@
+/* eslint-disable prettier/prettier */
 "use client";
 import getUser from "@/hooks/getUser";
-import { TUser } from "@/types";
+
 import { JwtPayload } from "jwt-decode";
 import React, {
   createContext,
@@ -10,7 +11,7 @@ import React, {
   useState,
 } from "react";
 
-export const userContext = createContext<any>(null);
+export const userContext = createContext<any | undefined>(null);
 
 const GrowContext = ({ children }: { children: ReactNode }) => {
   const [loading, setIsLoading] = useState(true);

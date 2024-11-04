@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { updatePost } from "@/services/postService/post.service";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const usePostUpdate = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["GET_POSTS"],
     mutationFn: async (postData: any) => {
@@ -10,11 +12,16 @@ export const usePostUpdate = () => {
       const res = await updatePost(postData);
       return res.data;
     },
-    onSuccess: () => {
-      toast.success("Post updated successfully!");
-      //   queryClient.invalidateQueries({
-      //     queryKey: ["GET_POSTS"],
-      //   });
+    onSuccess: (data, variables, context) => {
+      // toast.success("Post updated successfully!");
+      // queryClient.setQueryData(["GET_POSTS"], (oldData: any) => {
+      //   return { ...oldData, ...data };
+      // });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_POSTS"],
+      });
+
+      toast.success("Post Edited successfully");
     },
     onError: (error) => {
       toast.error(error.message);

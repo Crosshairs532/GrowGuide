@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 import { usePostDelete } from "@/hooks/usePostDelete";
 import {
@@ -10,17 +11,18 @@ import {
   Divider,
 } from "@nextui-org/react";
 
-import PostEditForm from "../post/PostEditForm";
 import { usePostUpdate } from "@/hooks/usePostUpdate";
+import PostEditForm from "../post/PostEditForm";
 
 export default function CustomModal({
   post,
   children,
   isOpen,
   onOpenChange,
+  onClose,
 }: any) {
   const { mutate: postDelete } = usePostDelete();
-  const { mutate: updatePost } = usePostUpdate();
+  const { mutate: updatePost, isPending } = usePostUpdate();
 
   const handleDelete = (id: any) => {
     console.log(id);
@@ -55,9 +57,6 @@ export default function CustomModal({
         formData.append("file", file);
       });
     }
-
-    // const postInformation = { postId: post?._id, formData };
-
     updatePost(formData);
   };
 
@@ -89,7 +88,11 @@ export default function CustomModal({
                 "Do You want to Delete the post?"
               ) : children === "edit" ? (
                 // <PostProvider onSubmit={onSubmit}>
-                <PostEditForm onSubmit={onSubmit} post={post}></PostEditForm>
+                <PostEditForm
+                  onClose={onClose}
+                  onSubmit={onSubmit}
+                  post={post}
+                ></PostEditForm>
               ) : (
                 // </PostProvider>
                 ""

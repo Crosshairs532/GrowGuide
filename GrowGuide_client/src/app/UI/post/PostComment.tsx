@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useGrowContext } from "@/app/Context/GrowContext";
 import { useComment } from "@/hooks/useComment";
 import { queryClient } from "@/lib/providers";
@@ -29,9 +30,9 @@ const PostComment = ({
 
   const onSubmit = (data: any) => {
     const commentData = {
-      postId: `${post._id}`,
-      commenterId: "67063aa0b940a61d10e0b16b",
-      userComments: data.comment,
+      postId: `${post?._id}`,
+      commenterId: user?._id,
+      userComments: data?.comment,
     };
 
     // console.log(commentData);
@@ -48,7 +49,6 @@ const PostComment = ({
 
   const editCommentSubmit = (data: any) => {
     const commentInfo = { ...edited, updatedComment: data.commentEdit };
-
     console.log(commentInfo);
     commentUpdate(commentInfo);
     reset();
@@ -88,9 +88,9 @@ const PostComment = ({
                 role="button"
                 tabIndex={0}
                 onClick={() => setViewAll(!viewAll)}
-                className={` ${viewAll ? "hidden" : "block"} font-chirpBold`}
+                className={` ${viewAll ? "hidden" : "block"} pl-5 hover:text-[#a3a3a3f3] duration-150 font-chirpBold`}
               >
-                View All Comments
+                <small> View All Comments</small>
               </span>
             }
             {viewAll &&
@@ -98,10 +98,12 @@ const PostComment = ({
                 return (
                   <div key={ind} className=" my-3 flex items-center gap-3">
                     <div>
-                      <Avatar src={comment.userId?.image} />
+                      <Avatar src={comment?.userId?.image} />
                     </div>
                     <div className=" px-2 rounded-2xl w-full col-span-12 bg-[#242526] py-4 md:col-span-6 mb-6 md:mb-0">
-                      <h1 className=" font-chirpBold">{comment.userId.name}</h1>
+                      <h1 className=" font-chirpBold">
+                        {comment?.userId?.name}
+                      </h1>
 
                       {editing ? (
                         <div className="flex flex-col w-full">
@@ -125,11 +127,11 @@ const PostComment = ({
                           <small>{isPending ? "posting..." : ""}</small>
                         </div>
                       ) : (
-                        <p>{comment.userComments}</p>
+                        <p>{comment?.userComments}</p>
                       )}
                     </div>
                     <div
-                      className={`edit_delete ${"67063aa0b940a61d10e0b16b" == "67063aa0b940a61d10e0b16b" ? "block" : "hidden"} `}
+                      className={`edit_delete ${user?._id == post?.user?._id ? "block" : "hidden"} `}
                     >
                       <DropDownComment
                         editPost={editPost}
@@ -148,9 +150,9 @@ const PostComment = ({
                 role="button"
                 tabIndex={0}
                 onClick={() => setViewAll(!viewAll)}
-                className={` ${viewAll ? "block" : "hidden"} font-chirpBold`}
+                className={`${viewAll ? "block" : "hidden"} pl-5 hover:text-[#a3a3a3f3] duration-150 font-chirpBold`}
               >
-                View less
+                <small>View less</small>
               </span>
             }
           </div>

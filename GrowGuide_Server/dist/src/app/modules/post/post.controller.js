@@ -19,7 +19,7 @@ const sendResponse_1 = require("../../utilities/sendResponse");
 const http_status_1 = __importDefault(require("http-status"));
 const createPost = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // !form data
-    const postData = req.body;
+    const postData = req === null || req === void 0 ? void 0 : req.body;
     const response = yield post_service_1.postService.createPostDb(postData);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
@@ -39,9 +39,9 @@ const createComment = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 
     });
 }));
 const UpDownVote = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { postId, votes } = req.body;
-    console.log(votes);
-    const response = yield post_service_1.postService.UpDownVoteDb(postId, votes);
+    const { postId, vote, userId } = req.body;
+    console.log(postId, vote, ' this is upvote controller');
+    const response = yield post_service_1.postService.UpDownVoteDb(postId, vote, userId);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         status: http_status_1.default.OK,
@@ -50,12 +50,16 @@ const UpDownVote = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     });
 }));
 const getAllPosts = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield post_service_1.postService.getAllPostsDb();
+    const searchParam = req.query;
+    const response = yield post_service_1.postService.getAllPostsDb(searchParam);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         status: http_status_1.default.OK,
         message: 'Posts fetched successfully',
-        data: response,
+        data: {
+            data: response.data,
+            nextId: response.nextId,
+        },
     });
 }));
 const postDelete = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -104,6 +108,36 @@ const postComment = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
             break;
     }
 }));
+const getLoggedInUserPost = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.query;
+    console.log(req.params);
+    const response = yield post_service_1.postService.getLoggedInUserPosts(userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        status: http_status_1.default.OK,
+        message: 'user posts fetched successfully',
+        data: response,
+    });
+}));
+const postChart = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield post_service_1.postService.postChartDb();
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        status: http_status_1.default.OK,
+        message: 'chart data fetched successfully',
+        data: response,
+    });
+}));
+const getSinglePostController = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { postId } = req.params;
+    const response = yield post_service_1.postService.getSinglePostDb(postId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        status: http_status_1.default.OK,
+        message: 'post fetched successfully',
+        data: response,
+    });
+}));
 exports.postController = {
     createPost,
     createComment,
@@ -112,4 +146,7 @@ exports.postController = {
     postDelete,
     postUpdate,
     postComment,
+    getLoggedInUserPost,
+    postChart,
+    getSinglePostController,
 };

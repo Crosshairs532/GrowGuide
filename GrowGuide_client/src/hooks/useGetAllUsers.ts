@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { getUsers } from "@/services/profileService/profile.Service";
 import { useQuery } from "@tanstack/react-query";
 

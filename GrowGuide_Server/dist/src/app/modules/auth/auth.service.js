@@ -22,9 +22,9 @@ const http_status_1 = __importDefault(require("http-status"));
 const registrationDb = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log(userData, 'user Registration Data')
     // * check if any user exists or not
-    const isExists = yield user_model_1.userModel.findUser(userData.email);
+    const isExists = yield user_model_1.userModel.findUser(userData === null || userData === void 0 ? void 0 : userData.email);
     if (isExists) {
-        throw new Error('user already exists!');
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'user already exists!');
     }
     const newUserData = Object.assign(Object.assign({}, userData), { needsPasswordChange: false });
     const res = yield user_model_1.userModel.create(newUserData);

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { JSX, SVGProps } from "react";
 
 export const MailIcon = (

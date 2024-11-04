@@ -16,8 +16,10 @@ const catchAsync_1 = require("../utilities/catchAsync");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
 const user_model_1 = require("../modules/user-management/user.model");
+const AppError_1 = __importDefault(require("./AppError"));
+const http_status_1 = __importDefault(require("http-status"));
 // * it is used when i need to verify the user.
-const auth = () => {
+const auth = (roles) => {
     return (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.headers.authorization;
         console.log(token, 'access-Token');
@@ -25,7 +27,7 @@ const auth = () => {
             throw new Error('You are not Authorized!');
         }
         const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_secret);
-        const { email, password } = decoded;
+        const { email, password, role } = decoded;
         console.log({ email });
         //! check of the decoded user really exists?
         const isExists = yield user_model_1.userModel.findUser(email);
@@ -33,8 +35,12 @@ const auth = () => {
         if (!isExists) {
             throw new Error('This User does not exists!');
         }
-        if (!(email === isExists.email)) {
+        if (!(email === (isExists === null || isExists === void 0 ? void 0 : isExists.email))) {
             throw new Error('This User does not authorized');
+        }
+        const basedOneRoles = roles.includes(role);
+        if (!basedOneRoles) {
+            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized to access this route');
         }
         req.user = isExists;
         next();

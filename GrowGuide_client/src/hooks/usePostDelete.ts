@@ -1,7 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { queryClient } from "@/lib/providers";
 import { deletePost } from "@/services/postService/post.service";
 import { useMutation } from "@tanstack/react-query";
-import { revalidateTag } from "next/cache";
+
 import { toast } from "sonner";
 
 export const usePostDelete = () => {

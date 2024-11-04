@@ -3,6 +3,7 @@ import { authRoute } from '../modules/auth/auth.routes'
 import { userRoute } from '../modules/user-management/user.routes'
 import { paymentRoute } from '../modules/payment/payment.routes'
 import { postRoute } from '../modules/post/post.routes'
+import { pdfRouter } from '../modules/PDF/routes'
 
 const router = Router()
 
@@ -22,6 +23,10 @@ const routes = [
   {
     path: '/post',
     route: postRoute,
+  },
+  {
+    path: '/generate',
+    route: pdfRouter,
   },
 ]
 

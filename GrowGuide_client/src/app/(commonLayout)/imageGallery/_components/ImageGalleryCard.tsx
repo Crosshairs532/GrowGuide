@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import PostGallary from "@/app/UI/post/Postgallary";

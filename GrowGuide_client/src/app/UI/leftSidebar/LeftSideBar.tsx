@@ -1,7 +1,10 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import { useGrowContext } from "@/app/Context/GrowContext";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { logout } from "@/services/authService/auth.service";
+import { getData } from "@/services/profileService/profile.Service";
 import HomeIcon from "@/utils/Icons/HomeIcon";
 import Logo from "@/utils/Icons/Logo";
 import { Button } from "@nextui-org/button";
@@ -18,7 +21,9 @@ import {
   Bookmark,
   CloudFog,
   Ellipsis,
+  Feather,
   Images,
+  LayoutDashboard,
   Mails,
   NotebookTabs,
   Search,
@@ -34,12 +39,13 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import PostCreateModal from "../post/PostCreateModal";
 
 const LeftSideBar = () => {
   const { user, setUser, handleUser, setIsLoading, loading } = useGrowContext();
+  const { data } = useCurrentUser(user?._id, loading);
   const router = useRouter();
 
-  console.log(user);
   const sidebarItems = [
     {
       link: "/",
@@ -79,7 +85,7 @@ const LeftSideBar = () => {
       title: "Gallery",
     },
     {
-      link: `/`,
+      link: "/premium",
       icon: <TreeDeciduous />,
       title: "Premium",
     },
@@ -89,24 +95,24 @@ const LeftSideBar = () => {
       title: "About",
     },
     {
-      link: `/`,
-      icon: <Slash />,
-      title: "Dashboard",
-    },
-    {
       link: `/contact`,
       icon: <NotebookTabs />,
       title: "Contact Us",
     },
-    {
-      link: ` ${user?.role === "user" ? "/profile" : user?.role === "admin" ? "/admin" : ""} `,
+    user && {
+      link: ` ${user?.role === "user" ? `/profile/${user?._id}` : user?.role === "admin" ? `/profile/${user?._id}` : null} `,
       icon:
         user?.role === "user" ? (
           <UserRound />
         ) : user?.role === "admin" ? (
           <ShieldHalf />
         ) : null,
-      title: ` ${user?.role === "user" ? "Profile" : user?.role === "admin" ? "Admin" : ""} `,
+      title: ` ${user ? (user?.role === "user" ? "Profile" : user?.role === "admin" ? "Admin" : null) : null} `,
+    },
+    {
+      link: `/dashboard/${user?.role}`,
+      icon: <LayoutDashboard />,
+      title: "Dashboard",
     },
   ];
 
@@ -119,61 +125,67 @@ const LeftSideBar = () => {
     setUser(null);
     setIsLoading(true);
     console.log(user);
-    if (!user) {
-      router.push("/login");
-    }
-    router.push("/login");
+
+    return router.replace("/login");
   };
+
+  console.log(data?.status);
+
   return (
     <div className=" flex flex-col items-start justify-between h-full ">
-      <div className=" mt-[4px] ml-1 flex justify-center items-center duration-400 w-[50px] h-[50px] rounded-full hover:bg-[#181818] ">
+      <div className=" mx-auto w-[90%] mt-[4px] flex justify-center lg:justify-start items-center duration-400  hover:bg-[#181818] ">
         <Link href={sidebarItems[0].link}>
           <Logo width="50" height="50" />
         </Link>
       </div>
 
-      <div className=" w-[90%] mt-2 space-y-[10px] flex flex-col">
-        {sidebarItems.slice(1).map((item, index) => (
-          <Link key={index} href={item.link}>
-            <Button
-              color="default"
-              variant="light"
-              className={`  rounded-full w-auto flex gap-4 font-chirpMedium text-[20px] justify-between items-center`}
-              key={index}
-            >
-              {item?.icon}
-              <span>{item.title}</span>
-            </Button>
-          </Link>
-        ))}
+      <div className=" w-[90%] mx-auto  mt-2 space-y-[10px] justify-center lg:items-start items-center flex flex-col">
+        {sidebarItems
+          ?.slice(1)
+          .filter(
+            (item) => !(data?.status === "Premium" && item.link === "/premium")
+          )
+          .map(
+            (item, index) =>
+              item?.title != null && (
+                <Link key={index} href={item?.link}>
+                  <Button
+                    color="default"
+                    variant="light"
+                    className={` flex justify-center items-center rounded-full w-auto gap-4 font-chirpMedium text-[20px] lg:justify-between lg:items-center`}
+                    key={index}
+                  >
+                    {item?.icon}
+                    <span className=" lg:block hidden">{item?.title}</span>
+                  </Button>
+                </Link>
+              )
+          )}
       </div>
-      <Button
-        size="lg"
-        className=" mx-auto py-7 px-4 mt-4 w-[90%] rounded-full hover:bg-[#188CD8] duration-200 bg-[#188CD8] text-[20px] font-chirpMedium"
-      >
-        Post
-      </Button>
-      <div className=" mb-2 py-4 hover:bg-[#181818] gap-2 rounded-full w-[98%]  duration-250">
+      <PostCreateModal></PostCreateModal>
+      <div className=" mb-2 mx-auto hover:bg-[#181818] gap-2 rounded-full flex items-center justify-center duration-250">
         {user ? (
           <Dropdown>
-            <DropdownTrigger>
-              <Button
-                color="default"
-                className=" bg-transparent rounded-full w-full flex items-center justify-between"
-              >
-                <Avatar size="sm" src={user?.image} />
-                <div className=" flex flex-col">
-                  <span className=" font-chirpMedium text-[15px]">
-                    {user?.name}
-                  </span>
-                  <span className=" text-[#E7E9EA1A]">{user?.email}</span>
-                </div>
-                <Ellipsis />
-              </Button>
+            <DropdownTrigger className=" border-[#2F3336] border-2">
+              <Avatar
+                className=" w-[8vh] h-[8vh] rounded-full"
+                src={user?.image}
+              />
             </DropdownTrigger>
             <DropdownMenu aria-label="Static Actions">
               <DropdownItem onClick={handleLogout} key="logout">
                 Log Out
+              </DropdownItem>
+              <DropdownItem key="profile">
+                <div className=" lg:flex hidden">
+                  <div className="  overflow-ellipsis flex flex-col">
+                    <span className=" font-chirpMedium text-[15px]">
+                      {user?.name}
+                    </span>
+                    <span className=" text-[#E7E9EA1A]">{user?.email}</span>
+                  </div>
+                  <Ellipsis />
+                </div>
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

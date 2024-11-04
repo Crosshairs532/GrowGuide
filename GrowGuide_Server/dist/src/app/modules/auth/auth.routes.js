@@ -14,10 +14,11 @@ const auth_validation_1 = require("./auth.validation");
 const router = (0, express_1.Router)();
 router.post('/register', ToCloudinary_1.upload.single('file'), parseFromData_1.default, (0, validation_1.validation)(auth_validation_1.authValidation.RegistrationSchema), auth_controller_1.authController.Registration);
 router.post('/login', (0, validation_1.validation)(auth_validation_1.authValidation.loginSchema), auth_controller_1.authController.Login);
-router.post('/change-password', (0, auth_1.default)(), (0, validation_1.validation)(auth_validation_1.authValidation.changePasswordSchema), auth_controller_1.authController.changePassword);
-router.post('/reset-password', (0, auth_1.default)(), (0, validation_1.validation)(auth_validation_1.authValidation.resetPasswordSchema), auth_controller_1.authController.resetPassword);
+router.post('/change-password', (0, auth_1.default)(['user', 'admin']), (0, validation_1.validation)(auth_validation_1.authValidation.changePasswordSchema), auth_controller_1.authController.changePassword);
+router.post('/reset-password', 
+// auth(['user', 'admin']),
+(0, validation_1.validation)(auth_validation_1.authValidation.resetPasswordSchema), auth_controller_1.authController.resetPassword);
 router.post('/forget-password', 
-// auth(),
 // validation(authValidation.resetPasswordSchema),
 auth_controller_1.authController.forgetPassword);
 exports.authRoute = router;

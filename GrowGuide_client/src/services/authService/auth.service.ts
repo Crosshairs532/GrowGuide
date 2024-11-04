@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use server";
 import { cookies, headers } from "next/headers";
 
@@ -15,21 +16,22 @@ export const registrationService = async (userData: any) => {
 
     return res.data;
   } catch (error: any) {
-    console.log(error.message);
+    console.log(error);
+    throw new Error(error?.response?.data.message);
   }
 };
 
 export const loginService = async (userData: any) => {
   try {
     const res = await AxiosInstance.post("/auth/login", userData);
-    console.log(res);
+    // console.log(res);
     const token = res?.data?.data?.accessToken;
     console.log(token);
     cookies().set("accessToken", token);
-    return res.data;
+    return res?.data;
   } catch (error: any) {
-    console.log(error);
-    throw new Error(error);
+    // console.log(error?.response.data.message, "who this??");
+    throw new Error(error?.response?.data.message);
   }
 };
 
@@ -44,19 +46,22 @@ export const forgetPasswordService = async (data: { email: string }) => {
 };
 
 export const resetPasswordService = async (data: any) => {
+  console.log({ data });
   try {
-    cookies().set("accessToken", data.accessToken);
+    // cookies().set("accessToken", data.accessToken);
     const res = await AxiosInstance.post("/auth/reset-password", data);
-    return res;
+    return res?.data;
   } catch (error: any) {
     console.log(error.message);
   }
 };
 
+// !current user from cookies.
 export const getUserService = async () => {
-  const tokenValue = cookies()?.get("accessToken");
+  const tokenValue = cookies()?.get("accessToken")?.value;
   let token;
   let decoded = null;
+  console.log(tokenValue);
   if (tokenValue) {
     token = cookies()?.get("accessToken")!.value;
     decoded = (await jwtDecode(token)) as JwtPayload;
@@ -85,6 +90,15 @@ export const profileUpdate = async (updateData: any) => {
   );
   cookies().set("accessToken", res?.data?.data?.accessToken);
 
+  return res.data;
+};
+
+export const followUser = async (data: any) => {
+  const res = await AxiosInstance.post("user-management/follow-user", data);
+  return res.data;
+};
+export const unfollowUser = async (data: any) => {
+  const res = await AxiosInstance.post("user-management/unfollow-user", data);
   return res.data;
 };
 

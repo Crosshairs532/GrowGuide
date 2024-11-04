@@ -1,11 +1,12 @@
+/* eslint-disable prettier/prettier */
 "use server";
 import nexiosInstance from "@/lib/nexiosConfig/nexios.config";
 
-export const getData = async (id: string, email: string) => {
-  const res = await nexiosInstance.get(
-    `/user-management/user?id=${id}&email=${email}`
-  );
-  return res.data;
+// ! get current user
+export const getData = async (id: string) => {
+  console.log({ id });
+  const res = await nexiosInstance.get(`/user-management/user?id=${id}`);
+  return res?.data;
 };
 
 export const getUsers = async () => {

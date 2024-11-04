@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { forgetPasswordService } from "@/services/authService/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";

@@ -58,7 +58,8 @@ const parsePostFormData = (0, catchAsync_1.catchAsync)((req, res, next) => __awa
             finally { if (e_1) throw e_1.error; }
         }
     }
-    const parsedData = Object.assign(Object.assign({ images }, other), { post });
+    console.log(images, 'images in cc ');
+    const parsedData = Object.assign(Object.assign({ images: images }, other), { post });
     console.log({ parsedData });
     req.body = parsedData;
     next();

@@ -6,22 +6,26 @@ import GGInput from "@/components/Form/GGInput";
 import { useResetPassword } from "@/hooks/useResetPassword";
 import { resetPasswordService } from "@/services/authService/auth.service";
 import { Button } from "@nextui-org/button";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 const PasswordReset = ({ searchParams }: { searchParams: any }) => {
   const { email, accessToken } = searchParams;
 
+  console.log(email, "search");
+
   const { mutate: resetPassword, isPending, isSuccess } = useResetPassword();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
-    resetPassword({ ...data, accessToken });
+    resetPassword({ ...data, email });
   };
 
   useEffect(() => {
     if (!isPending && isSuccess) {
-      redirect("/login");
+      console.log("reset");
+      router.replace("/login");
     }
   }, [isSuccess, isPending]);
   return (

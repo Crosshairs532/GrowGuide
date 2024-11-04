@@ -3,6 +3,7 @@ import { NexiosOptions } from "nexios-http/types/interfaces";
 import { cookies } from "next/headers";
 
 // Default configuration for Nexios
+// baseURL: "https://grow-guide-server.vercel.app/api/growGuide",
 const defaultConfig: NexiosOptions = {
   baseURL: "http://localhost:2000/api/growGuide",
   headers: {

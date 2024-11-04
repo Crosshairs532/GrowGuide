@@ -56,7 +56,7 @@ const changePassword = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void
     // !check that logged in user and the given old password matches
 }));
 const forgetPassword = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.body;
+    const { email } = req === null || req === void 0 ? void 0 : req.body;
     console.log({ email }, 'server');
     const response = yield auth_service_1.authService.forgetPasswordDb(email);
     (0, sendResponse_1.sendResponse)(res, {
@@ -67,12 +67,12 @@ const forgetPassword = (0, catchAsync_1.catchAsync)((req, res, next) => __awaite
     });
 }));
 const resetPassword = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email: verifiedEmail } = req === null || req === void 0 ? void 0 : req.user;
-    const { email } = req.query;
-    const { password } = req.body;
-    if (!(verifiedEmail === email)) {
-        throw new Error('You are not Authorized!');
-    }
+    // const { email: verifiedEmail } = req?.user as JwtPayload
+    const { email, password } = req.body;
+    console.log({ email, password });
+    // if (!(verifiedEmail === email)) {
+    //   throw new Error('You are not Authorized!')
+    // }
     const response = yield auth_service_1.authService.resetPasswordDb(email, password);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,

@@ -24,19 +24,18 @@ router.post(
 
 router.post(
   '/change-password',
-  auth(),
+  auth(['user', 'admin']),
   validation(authValidation.changePasswordSchema),
   authController.changePassword,
 )
 router.post(
   '/reset-password',
-  auth(),
+  // auth(['user', 'admin']),
   validation(authValidation.resetPasswordSchema),
   authController.resetPassword,
 )
 router.post(
   '/forget-password',
-  // auth(),
   // validation(authValidation.resetPasswordSchema),
   authController.forgetPassword,
 )

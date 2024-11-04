@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 import { Avatar } from "@nextui-org/react";
 import React from "react";

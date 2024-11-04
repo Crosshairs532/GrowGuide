@@ -1,5 +1,5 @@
+/* eslint-disable prettier/prettier */
 import { useForgetPassword } from "@/hooks/useForgetPassword";
-import { LockIcon } from "@/utils/Icons/LockIcon";
 import { MailIcon } from "@/utils/Icons/MainIcon";
 import {
   Modal,
@@ -9,9 +9,7 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Checkbox,
   Input,
-  Link,
 } from "@nextui-org/react";
 import { ReactNode } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -47,6 +45,7 @@ const ForgetModal = ({ children }: { children: ReactNode }) => {
                 </ModalHeader>
                 <ModalBody>
                   <Input
+                    type="email"
                     autoFocus
                     endContent={
                       <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />

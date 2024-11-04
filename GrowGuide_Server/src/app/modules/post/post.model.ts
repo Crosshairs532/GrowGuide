@@ -39,6 +39,10 @@ const postSchema = new Schema<TPost>(
     description: {
       type: String,
     },
+    favourite: {
+      type: [Schema.Types.ObjectId],
+      ref: 'users',
+    },
   },
   {
     timestamps: true,

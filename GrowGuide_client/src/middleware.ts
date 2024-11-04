@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import getUser from "./hooks/getUser";
@@ -7,18 +8,21 @@ import getUser from "./hooks/getUser";
 type Role = keyof typeof roleBasedRoutes;
 const AuthRoutes = ["/login", "/registration"];
 const roleBasedRoutes = {
-  USER: [/^\/profile/],
-  ADMIN: [/^\/admin/],
+  user: [/^\/dashboard\/user/, /^\/profile/],
+  admin: [/^\/dashboard\/admin/, /^\/profile/],
 };
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
   const user: any = await getUser();
-  // ! protected based
+  // ! not user ? then go to login page , otherwise you don't have to do it
   if (!user) {
     if (AuthRoutes.includes(pathname)) {
       return NextResponse.next();
     } else {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(
+        new URL(`/login?redirect=${pathname}`, request.url)
+      );
     }
   }
 
@@ -34,5 +38,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/profile", "/admin", "/login", "/register"],
+  matcher: ["/profile/:path*", "/login", "/register", "/dashboard/:path*"],
 };

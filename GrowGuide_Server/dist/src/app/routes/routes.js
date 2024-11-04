@@ -6,6 +6,7 @@ const auth_routes_1 = require("../modules/auth/auth.routes");
 const user_routes_1 = require("../modules/user-management/user.routes");
 const payment_routes_1 = require("../modules/payment/payment.routes");
 const post_routes_1 = require("../modules/post/post.routes");
+const routes_1 = require("../modules/PDF/routes");
 const router = (0, express_1.Router)();
 const routes = [
     {
@@ -23,6 +24,10 @@ const routes = [
     {
         path: '/post',
         route: post_routes_1.postRoute,
+    },
+    {
+        path: '/generate',
+        route: routes_1.pdfRouter,
     },
 ];
 routes.forEach(route => {

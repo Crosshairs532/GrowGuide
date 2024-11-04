@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { profileUpdate } from "@/services/authService/auth.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";

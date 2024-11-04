@@ -9,8 +9,15 @@ const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const routes_1 = require("./app/routes/routes");
 const globalError_1 = __importDefault(require("./app/middlewares/globalError"));
+const config_1 = __importDefault(require("./config"));
+const body_parser_1 = __importDefault(require("body-parser"));
+app.use(body_parser_1.default.urlencoded({ extended: true }));
+app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)({
-    origin: ['https://grow-guide-client.vercel.app/'],
+    origin: [
+        'https://grow-guide-client.vercel.app/',
+        config_1.default.frontend_url,
+    ],
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());

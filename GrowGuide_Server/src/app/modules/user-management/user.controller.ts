@@ -74,8 +74,20 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 const addToFav = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, postId } = req.body
-    const response = await userService.addToFavDb(email, postId)
+    const { email, postId, userId } = req.body
+    const response = await userService.addToFavDb(email, postId, userId)
+    sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'Post added to fav successfully',
+      data: response,
+    })
+  },
+)
+const removeFav = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, postId, userId } = req.body
+    const response = await userService.removeFavDb(email, postId, userId)
     sendResponse(res, {
       success: true,
       status: httpStatus.OK,
@@ -87,14 +99,27 @@ const addToFav = catchAsync(
 
 const getSingleUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email } = req.query
+    const { id } = req?.query
 
-    const response = await userService.getSingleUserDb(email as string)
+    const response = await userService.getSingleUserDb(id as any)
 
     sendResponse(res, {
       success: true,
       status: httpStatus.OK,
       message: 'User fetched successfully',
+      data: response,
+    })
+  },
+)
+
+const adminDeleteUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.query
+    const response = await userService.adminUserDeleteDb(userId as string)
+    return sendResponse(res, {
+      success: true,
+      status: httpStatus.OK,
+      message: 'User deleted successfully',
       data: response,
     })
   },
@@ -106,4 +131,6 @@ export const userController = {
   getAllUsers,
   addToFav,
   getSingleUser,
+  removeFav,
+  adminDeleteUser,
 }

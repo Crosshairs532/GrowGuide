@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { ReactNode, useState } from "react";
 import {
   Dropdown,
@@ -8,21 +9,36 @@ import {
 } from "@nextui-org/react";
 import CustomModal from "../customModal/CustomModal";
 import { Copy, Delete, Pencil } from "lucide-react";
-import { usePostDelete } from "@/hooks/usePostDelete";
+import { useGrowContext } from "@/app/Context/GrowContext";
 
 const DropDown = ({ children, post }: { children: ReactNode; post: any }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [modalContent, setModalContent] = useState("");
+  const { user } = useGrowContext();
+
+  const canEdit = user?._id == post?.user?._id;
 
   const items = [
-    { key: "copy", label: "Copy link", cp: <Copy /> },
-    { key: "edit", label: "Edit file", cp: <Pencil /> },
+    {
+      key: "edit",
+      label: "Edit file",
+      cp: <Pencil />,
+    },
     { key: "delete", label: "Delete file", cp: <Delete /> },
   ];
 
+  const filteredItems = items.filter((item) => {
+    if (item.key === "edit" || item.key === "delete") {
+      return canEdit; // Show edit item only if canEdit is true
+    }
+    return true; // Always show delete item
+  });
+
+  console.log(filteredItems);
+
   const handleSelect = (item: any) => {
-    console.log(item);
     setModalContent(item);
+    console.log(item, modalContent);
     onOpen();
   };
 
@@ -33,7 +49,7 @@ const DropDown = ({ children, post }: { children: ReactNode; post: any }) => {
         <DropdownMenu
           aria-label="Dynamic Actions"
           closeOnSelect={true}
-          items={items}
+          items={filteredItems}
           onAction={(item) => handleSelect(item)}
         >
           {(item) => (
@@ -49,7 +65,12 @@ const DropDown = ({ children, post }: { children: ReactNode; post: any }) => {
         </DropdownMenu>
       </Dropdown>
 
-      <CustomModal post={post} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <CustomModal
+        post={post}
+        onClose={onClose}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         {modalContent}
       </CustomModal>
     </>

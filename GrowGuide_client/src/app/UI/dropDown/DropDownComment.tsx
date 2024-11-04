@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useCommentUpdate } from "@/hooks/useCommentUpdate";
 import {
   Dropdown,

@@ -6,6 +6,9 @@ import { allRouter } from './app/routes/routes'
 import globalError from './app/middlewares/globalError'
 import path from 'path'
 import configFiles from './config'
+import bodyParser from 'body-parser'
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 app.use(
   cors({

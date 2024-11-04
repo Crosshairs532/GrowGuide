@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Spinner } from "@nextui-org/react";
 import React from "react";
 

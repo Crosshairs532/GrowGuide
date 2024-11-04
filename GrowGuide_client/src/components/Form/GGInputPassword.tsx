@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { EyeFilledIcon } from "@/utils/Icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "@/utils/Icons/EyeSlashFilledIcon";
 import { Input } from "@nextui-org/input";

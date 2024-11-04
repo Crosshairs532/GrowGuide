@@ -8,6 +8,7 @@ import { Button } from "@nextui-org/react";
 import { useRegistration } from "@/hooks/useRegistration";
 import { redirect } from "next/navigation";
 import LoadingOverlay from "@/app/UI/LoadingOverlay";
+import Link from "next/link";
 
 const RegistrationPage = () => {
   const [image, setImage] = useState<string | File | undefined>();
@@ -36,7 +37,6 @@ const RegistrationPage = () => {
 
   const onSubmit = (data: any) => {
     const userData = { role: "user", ...data };
-
     console.log(userData);
     const formData = new FormData();
     formData.append("data", JSON.stringify(userData));
@@ -60,7 +60,7 @@ const RegistrationPage = () => {
       {/* {isPending &&  isPending={isPending}></>} */}
       {isPending && <LoadingOverlay isPending={isPending}></LoadingOverlay>}
 
-      <div className=" mx-auto border-2 flex flex-col sm:flex-row lg:flex-row justify-center space-y-[4vw] sm:justify-around lg:justify-around items-center h-screen">
+      <div className=" mx-auto flex flex-col sm:flex-row lg:flex-row justify-center space-y-[4vw] sm:justify-around lg:justify-around items-center h-screen">
         <div className="  icon lg:w-[50%]">
           <div className="  w-fit mx-auto">
             <Logo width="250" height="250" />
@@ -92,6 +92,7 @@ const RegistrationPage = () => {
                           Upload Image
                         </label>
                         <input
+                          required={true}
                           onChange={(e) => handleImageChange(e)}
                           className="hidden"
                           type="file"
@@ -109,6 +110,9 @@ const RegistrationPage = () => {
                   >
                     Create Account
                   </Button>
+                  <Link className=" text-[#1c74ef]" href={"/login"}>
+                    Already have an account?
+                  </Link>
                 </form>
               </FormProvider>
               {profilePicture && (

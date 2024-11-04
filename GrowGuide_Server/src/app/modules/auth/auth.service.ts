@@ -11,9 +11,9 @@ const registrationDb = async (userData: any) => {
   // console.log(userData, 'user Registration Data')
 
   // * check if any user exists or not
-  const isExists = await userModel.findUser(userData.email)
+  const isExists = await userModel.findUser(userData?.email)
   if (isExists) {
-    throw new Error('user already exists!')
+    throw new AppError(httpStatus.BAD_REQUEST, 'user already exists!')
   }
 
   const newUserData = { ...userData, needsPasswordChange: false }

@@ -27,7 +27,9 @@ const parsePostFormData = catchAsync(
       }
     }
 
-    const parsedData = { images, ...other, post }
+    console.log(images, 'images in cc ')
+
+    const parsedData = { images: images, ...other, post }
 
     console.log({ parsedData })
 

@@ -11,7 +11,7 @@ const globalError: ErrorRequestHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log(err, 'GlobalError')
+  console.log(err.message, 'GlobalError')
   let statusCode = err.status || 500 || httpStatus.INTERNAL_SERVER_ERROR
   let errorMessage: any = err.message || 'something went wrong!'
   let sources: TSources[] = [
@@ -45,15 +45,24 @@ const globalError: ErrorRequestHandler = (
         message: err?.message,
       },
     ]
-  }
+  } else if (err.message == 'jwt expired') {
+    console.log('jwt block')
+    statusCode == httpStatus.UNAUTHORIZED
+    errorMessage = err.message
 
+    sources = [
+      {
+        path: 'TokenExpiredError',
+        message: err?.message,
+      },
+    ]
+  }
   res.status(statusCode).json({
     success: false,
     statusCode,
     message: errorMessage,
     errorSources: sources,
   })
-  return
 }
 
 export default globalError

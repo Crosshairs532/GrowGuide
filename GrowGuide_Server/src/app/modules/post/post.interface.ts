@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { Types } from 'mongoose'
 export type TComment = {
   commenterId: Types.ObjectId
@@ -13,4 +14,5 @@ export type TPost = {
   votes: number
   comments?: TComment
   description: string
+  favourite: Types.ObjectId[]
 }

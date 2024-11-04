@@ -8,7 +8,7 @@ const premiumSchema = new Schema(
     },
     userId: { type: Schema.Types.ObjectId, ref: 'users' },
     paymentStatus: {
-      types: String,
+      type: String,
       enum: ['pending', 'paid', 'cancelled'],
     },
     amount: {
@@ -20,9 +20,8 @@ const premiumSchema = new Schema(
   },
 )
 
-export const premiumModel = model('premiumUser', premiumSchema)
-
 premiumSchema.post('save', async function (doc, next) {
+  console.log(doc)
   try {
     await userModel.findByIdAndUpdate(
       { _id: doc.userId },
@@ -35,3 +34,5 @@ premiumSchema.post('save', async function (doc, next) {
     next(err)
   }
 })
+
+export const premiumModel = model('premiumUser', premiumSchema)

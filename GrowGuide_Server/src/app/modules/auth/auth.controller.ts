@@ -53,7 +53,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 
 const forgetPassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email } = req.body
+    const { email } = req?.body
     console.log({ email }, 'server')
 
     const response = await authService.forgetPasswordDb(email)
@@ -68,13 +68,14 @@ const forgetPassword = catchAsync(
 )
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
-  const { email: verifiedEmail } = req?.user as JwtPayload
-  const { email } = req.query
-  const { password } = req.body
+  // const { email: verifiedEmail } = req?.user as JwtPayload
 
-  if (!(verifiedEmail === email)) {
-    throw new Error('You are not Authorized!')
-  }
+  const { email, password } = req.body
+
+  console.log({ email, password })
+  // if (!(verifiedEmail === email)) {
+  //   throw new Error('You are not Authorized!')
+  // }
   const response = await authService.resetPasswordDb(email as string, password)
   sendResponse(res, {
     success: true,

@@ -76,12 +76,22 @@ const addToFav = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void
     });
 }));
 const getSingleUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.query;
-    const response = yield user_service_1.userService.getSingleUserDb(email);
+    const { id } = req === null || req === void 0 ? void 0 : req.query;
+    const response = yield user_service_1.userService.getSingleUserDb(id);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         status: http_status_1.default.OK,
         message: 'User fetched successfully',
+        data: response,
+    });
+}));
+const adminDeleteUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.query;
+    const response = yield user_service_1.userService.adminUserDeleteDb(userId);
+    return (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        status: http_status_1.default.OK,
+        message: 'User deleted successfully',
         data: response,
     });
 }));
@@ -92,4 +102,5 @@ exports.userController = {
     getAllUsers,
     addToFav,
     getSingleUser,
+    adminDeleteUser,
 };
