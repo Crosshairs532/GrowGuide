@@ -42,7 +42,7 @@ const confirmation = catchAsync(async (req: Request, res: Response) => {
     const result = await premiumModel.create(paymentDetails)
     await result.populate('userId')
   }
-  const filepath = join(__dirname, '/public/views/index.html')
+  const filepath = join(__dirname, '../../../../public/views/index.html')
   let temp = readFileSync(filepath, 'utf-8')
   temp = temp.replace('{{message}}', status as string)
   res.send('<h1>success</h1>')

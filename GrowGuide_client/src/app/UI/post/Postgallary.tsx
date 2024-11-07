@@ -27,7 +27,7 @@ const PostGallary = ({ images }: { images: string[] }) => {
   return (
     <>
       <LightGallery
-        elementClassNames=" w-full h-full grid grid-cols-2"
+        elementClassNames={` w-full h-full grid ${images?.length == 1 ? "grid-cols-1" : " grid-cols-2"}`}
         onInit={onInit}
         speed={500}
         plugins={[lgThumbnail, lgZoom]}

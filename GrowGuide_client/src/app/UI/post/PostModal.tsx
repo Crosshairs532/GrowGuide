@@ -16,20 +16,22 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 // import { categories } from "../../../../../../public/category";
 
 import { usePostCreate } from "@/hooks/useCreatePost";
-import { categories } from "../../../../../public/category";
+
 import { toast } from "sonner";
+import { categories } from "../../../../public/category";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type MakepostT = {
   onClose?: () => any;
 };
 
-const MakePost = ({ onClose }: MakepostT) => {
+const PostModal = ({ onClose }: MakepostT) => {
   const [image, setImage] = useState<(string | File)[]>([]);
   const [profilePicture, setProfilePicture] = useState<any[]>([]);
   const [categoriesEdit, setCategoriesEdit] = useState<Set<string>>(new Set());
   const [postStatus, setPostStatus] = useState("");
   const { mutate: postCreate } = usePostCreate();
+
   const { user, loading } = useGrowContext();
   const { data } = useCurrentUser(user?._id, loading);
   const methods = useForm();
@@ -166,7 +168,10 @@ const MakePost = ({ onClose }: MakepostT) => {
             </div>
             <div className=" flex justify-between items-center">
               <div className=" min-w-fit flex justify-start px-3 items-center bg-transparent rounded-lg border-[#3f3f45] ">
-                <label className=" text-[#a1a1aa] text-center " htmlFor="image">
+                <label
+                  className=" text-[#a1a1aa] text-center "
+                  htmlFor="PostModalimage"
+                >
                   <ImageIcon color="#1C9BEF" size={25} />
                 </label>
                 <input
@@ -174,7 +179,7 @@ const MakePost = ({ onClose }: MakepostT) => {
                   className="hidden"
                   type="file"
                   name=""
-                  id="image"
+                  id="PostModalimage"
                 />
               </div>
               <Button
@@ -193,4 +198,4 @@ const MakePost = ({ onClose }: MakepostT) => {
   );
 };
 
-export default MakePost;
+export default PostModal;

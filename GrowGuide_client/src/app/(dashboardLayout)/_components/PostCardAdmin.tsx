@@ -151,7 +151,7 @@ const PostCardAdmin = ({ post }: { post: any }) => {
                 <span
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleUpVote(post._id)}
+                  onClick={() => handleUpVote(post?._id)}
                   className=" justify-center w-[5vh] h-[5vh] rounded-full  hover:bg-[#0D1720]  group flex items-center cursor-pointer duration-250"
                 >
                   <ArrowUpNarrowWide className=" text-[#71767A]  group-hover:text-[#1C9BEF]" />
@@ -169,7 +169,7 @@ const PostCardAdmin = ({ post }: { post: any }) => {
                 <span
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleDownVote(post._id)}
+                  onClick={() => handleDownVote(post?._id)}
                   className=" w-[5vh] h-[5vh] rounded-full  group flex justify-center items-center cursor-pointer hover:text-[#ef1c1ccf] hover:bg-[#ef1c1c16] duration-250"
                 >
                   <ArrowDownWideNarrow className="  text-[#71767A] group-hover:text-[#ef1c1ccf] " />

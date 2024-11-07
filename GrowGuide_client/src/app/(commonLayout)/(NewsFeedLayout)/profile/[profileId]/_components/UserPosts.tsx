@@ -9,7 +9,6 @@ const UserPosts = ({ CurrentUser }: any) => {
   console.log(userId);
   const { data, isPending, refetch } = useGetSingleUserPosts(userId);
 
-  console.log(data, userId);
   return (
     <div>
       {isPending ? (

@@ -88,9 +88,9 @@ const ProfilePage = ({ params, searchParams }: any) => {
           <ArrowLeft />
           <div className="flex flex-col">
             <p className="font-bold font-chirpBold text-[20px]">{data?.name}</p>
-            <span className="text-sm font-chirpRegular text-[#71767A]">
-              {tabData?.length || 0} posts
-            </span>
+            {/* <span className="text-sm font-chirpRegular text-[#71767A]">
+              {tabData?.length} posts
+            </span> */}
           </div>
         </div>
 
@@ -110,7 +110,7 @@ const ProfilePage = ({ params, searchParams }: any) => {
           </div>
 
           <div className=" font-chirpMedium flex gap-2">
-            <span className="font-bold text-sm">{data?.following.length}</span>
+            <span className="font-bold text-sm">{data?.following?.length}</span>
             <span className=" font-chirpMedium  text-[#71767A] text-sm">
               Following
             </span>

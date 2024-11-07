@@ -36,6 +36,10 @@ const postSchema = new mongoose_1.Schema({
     description: {
         type: String,
     },
+    favourite: {
+        type: [mongoose_1.Schema.Types.ObjectId],
+        ref: 'users',
+    },
 }, {
     timestamps: true,
 });

@@ -42,7 +42,7 @@ const PostComment = ({
   };
 
   const editPost = (post: any, comment: any) => {
-    setEdited({ action: "edit", post, commentId: comment._id });
+    setEdited({ action: "edit", post, commentId: comment?._id });
     setEditing(true);
     setOnChangeEdit(comment.userComments);
   };
@@ -55,6 +55,7 @@ const PostComment = ({
     setEditing(false);
   };
 
+  console.log(user?._id, post);
   return (
     <div>
       {isComment ? (
@@ -105,7 +106,7 @@ const PostComment = ({
                         {comment?.userId?.name}
                       </h1>
 
-                      {editing ? (
+                      {editing && comment.userId?._id == user?._id ? (
                         <div className="flex flex-col w-full">
                           <Textarea
                             {...register("commentEdit")}
@@ -131,13 +132,13 @@ const PostComment = ({
                       )}
                     </div>
                     <div
-                      className={`edit_delete ${user?._id == post?.user?._id ? "block" : "hidden"} `}
+                      className={`edit_delete ${user?._id === comment?.userId?._id ? "block" : "hidden"} `}
                     >
                       <DropDownComment
                         editPost={editPost}
                         post={post}
                         comment={comment}
-                        commenterId={"67063aa0b940a61d10e0b16b"}
+                        commenterId={user?._id}
                       >
                         <Ellipsis />
                       </DropDownComment>

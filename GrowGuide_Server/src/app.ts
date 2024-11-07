@@ -29,7 +29,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/growGuide', allRouter)
 
 app.use(globalError)
-
+app.use(express.static(path.join(__dirname, 'public')))
 process.on('uncaughtException', error => {
   console.error('Uncaught Exception:', error)
 

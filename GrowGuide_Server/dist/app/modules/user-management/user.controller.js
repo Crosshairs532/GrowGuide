@@ -66,8 +66,18 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 const addToFav = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, postId } = req.body;
-    const response = yield user_service_1.userService.addToFavDb(email, postId);
+    const { email, postId, userId } = req.body;
+    const response = yield user_service_1.userService.addToFavDb(email, postId, userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        status: http_status_1.default.OK,
+        message: 'Post added to fav successfully',
+        data: response,
+    });
+}));
+const removeFav = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, postId, userId } = req.body;
+    const response = yield user_service_1.userService.removeFavDb(email, postId, userId);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         status: http_status_1.default.OK,
@@ -102,5 +112,6 @@ exports.userController = {
     getAllUsers,
     addToFav,
     getSingleUser,
+    removeFav,
     adminDeleteUser,
 };

@@ -16,6 +16,7 @@ exports.userService = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mongodb_1 = require("mongodb");
 const user_model_1 = require("./user.model");
+const post_model_1 = require("../post/post.model");
 const config_1 = __importDefault(require("../../../config"));
 const updateProfileDb = (updateData, email, userId) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(updateData);
@@ -88,7 +89,7 @@ const unFollowUserDb = (userUnFollowInfo) => __awaiter(void 0, void 0, void 0, f
     });
     return { userUnfollowed, res };
 });
-const addToFavDb = (email, postId) => __awaiter(void 0, void 0, void 0, function* () {
+const addToFavDb = (email, postId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     const res = yield user_model_1.userModel
         .findOneAndUpdate({
         email,
@@ -101,6 +102,40 @@ const addToFavDb = (email, postId) => __awaiter(void 0, void 0, void 0, function
     })
         .populate({
         path: 'favourites',
+    });
+    const PostRes = yield post_model_1.postModel.findOneAndUpdate({
+        _id: postId,
+    }, {
+        $addToSet: {
+            favourite: { $each: [userId] },
+        },
+    }, {
+        new: true,
+    });
+    return res;
+});
+const removeFavDb = (email, postId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield user_model_1.userModel
+        .findOneAndUpdate({
+        email,
+    }, {
+        $pull: {
+            favourites: { $in: [postId] },
+        },
+    }, {
+        new: true,
+    })
+        .populate({
+        path: 'favourites',
+    });
+    const PostRes = yield post_model_1.postModel.findOneAndUpdate({
+        _id: postId,
+    }, {
+        $pull: {
+            favourite: { $in: [userId] },
+        },
+    }, {
+        new: true,
     });
     return res;
 });
@@ -125,4 +160,5 @@ exports.userService = {
     addToFavDb,
     getSingleUserDb,
     adminUserDeleteDb,
+    removeFavDb,
 };

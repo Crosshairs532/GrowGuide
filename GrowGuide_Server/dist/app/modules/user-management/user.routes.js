@@ -15,6 +15,7 @@ router.post('/follow-user', (0, auth_1.default)(['user', 'admin']), user_control
 router.post('/unfollow-user', (0, auth_1.default)(['user', 'admin']), user_controller_1.userController.unfollowUser);
 router.get('/users', user_controller_1.userController.getAllUsers);
 router.post('/add-to-favourites', user_controller_1.userController.addToFav);
+router.post('/remove-favourites', user_controller_1.userController.removeFav);
 router.get('/user', user_controller_1.userController.getSingleUser);
 router.delete('/delete-user', (0, auth_1.default)(['admin']), user_controller_1.userController.adminDeleteUser);
 exports.userRoute = router;

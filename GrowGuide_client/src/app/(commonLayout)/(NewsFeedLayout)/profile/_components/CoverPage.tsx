@@ -5,9 +5,16 @@ import React, { useEffect } from "react";
 import EditProfileModal from "./EditProfileModal";
 import { useFollowuser } from "@/hooks/useFollowuser";
 import { Star } from "lucide-react";
+import { useUnFollowUser } from "@/hooks/useUnFollowUser";
 
 const CoverPage = ({ CurrentUser, data, refetch }: any) => {
-  const { mutate: followUser } = useFollowuser();
+  const isFollow = data?.followers?.some(
+    (follow: any) => follow?._id === CurrentUser?._id
+  );
+
+  const { mutate: followUser, isPending: FollowPending } = useFollowuser();
+  const { mutate: unfollowUser, isPending: unFollowPending } =
+    useUnFollowUser();
 
   const handleFollow = (followedUser: any) => {
     const followedId = followedUser?._id;
@@ -16,6 +23,16 @@ const CoverPage = ({ CurrentUser, data, refetch }: any) => {
     followUser(followData as any);
     refetch();
   };
+
+  const handleUnFollow = (unfollowUserData: any) => {
+    console.log("clikc");
+    const unfollowId = unfollowUserData?._id;
+    const myId = CurrentUser?._id;
+    const unfollowData = { unfollowId, myId };
+    unfollowUser(unfollowData as any);
+  };
+
+  console.log({ isFollow, data });
 
   return (
     <>
@@ -44,13 +61,21 @@ const CoverPage = ({ CurrentUser, data, refetch }: any) => {
         </div>
         {CurrentUser?.email === data?.email ? (
           <EditProfileModal CurrentUser={CurrentUser}></EditProfileModal>
+        ) : isFollow ? (
+          <Button
+            onClick={() => handleUnFollow(data)}
+            isDisabled={!data}
+            className=" relative font-chirpMedium rounded-full right-5 text-[15px] border border-[#536371] bg-transparent hover:bg-[#181919]"
+          >
+            {unFollowPending ? "UnFollowing.." : "UnFollow"}
+          </Button>
         ) : (
           <Button
             onClick={() => handleFollow(data)}
             isDisabled={!data}
             className=" relative font-chirpMedium rounded-full right-5 text-[15px] border border-[#536371] bg-transparent hover:bg-[#181919]"
           >
-            Follow
+            {FollowPending ? "Following.." : "Follow"}
           </Button>
         )}
       </div>

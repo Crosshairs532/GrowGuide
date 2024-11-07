@@ -32,7 +32,7 @@ export const useVote = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["GET_POSTS"],
+        queryKey: ["GET_POSTS", "single_user_post"],
       });
       toast.success("Your Voted added Successfully");
     },

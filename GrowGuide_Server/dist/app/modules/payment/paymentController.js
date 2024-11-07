@@ -50,7 +50,7 @@ const confirmation = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0
         const result = yield premium_model_1.premiumModel.create(paymentDetails);
         yield result.populate('userId');
     }
-    const filepath = (0, path_1.join)(__dirname, '/public/views/index.html');
+    const filepath = (0, path_1.join)(__dirname, '../../../../public/views/index.html');
     let temp = (0, fs_1.readFileSync)(filepath, 'utf-8');
     temp = temp.replace('{{message}}', status);
     res.send('<h1>success</h1>');

@@ -11,6 +11,8 @@ import {
 } from "@nextui-org/react";
 import { Feather } from "lucide-react";
 import MakePost from "@/app/(commonLayout)/(NewsFeedLayout)/_components/MakePost";
+import PostModal from "./PostModal";
+
 const PostCreateModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -31,7 +33,7 @@ const PostCreateModal = () => {
                 Modal Title
               </ModalHeader>
               <ModalBody>
-                <MakePost onClose={onClose} />
+                <PostModal onClose={onClose} />
               </ModalBody>
             </>
           )}

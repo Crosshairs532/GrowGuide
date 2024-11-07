@@ -38,9 +38,9 @@ const data02 = [
 const Circular = () => {
   const { data } = usePaymentchart();
   const formattedData = data?.map((item: any) => ({
-    name: item._id.month,
-    paymentCount: item._id.paymentCount,
-    status: item._id.status,
+    name: item?._id.month,
+    paymentCount: item?._id.paymentCount,
+    status: item?._id.status,
   }));
   console.log(data);
   console.log(formattedData);

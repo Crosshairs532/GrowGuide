@@ -5,9 +5,10 @@ import { cookies } from "next/headers";
 
 // baseURL: "https://grow-guide-server.vercel.app/api/growGuide",
 // baseURL: "https://grow-guide-server.vercel.app/api/growGuide",
-// baseURL: "https://grow-guide-server.vercel.app/api/growGuide",
+
+// baseURL: "http://localhost:2000/api/growGuide",
 const AxiosInstance = axios.create({
-  baseURL: "http://localhost:2000/api/growGuide",
+  baseURL: "https://grow-guide-server.vercel.app/api/growGuide",
 });
 AxiosInstance.interceptors.request.use(
   function (config) {

@@ -36,7 +36,7 @@ const DropDownComment = ({
         editPost(post, comment);
         break;
       case "delete":
-        commentUpdate({ action: item, commentId: comment._id });
+        commentUpdate({ action: item, commentId: comment?._id });
         break;
     }
   };

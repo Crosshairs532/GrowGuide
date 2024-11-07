@@ -119,7 +119,7 @@ const UsersToFollow = () => {
                   key={index}
                   onClick={() => {
                     handleFollow(user);
-                    setClicked(user._id);
+                    setClicked(user?._id);
                   }}
                 >
                   Follow

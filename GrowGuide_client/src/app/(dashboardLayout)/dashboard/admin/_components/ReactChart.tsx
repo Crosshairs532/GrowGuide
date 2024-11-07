@@ -64,7 +64,7 @@ const data = [
 const ReactChart = () => {
   const { data } = usePostChart();
   const formattedData = data?.map((item: any) => ({
-    name: `${item._id.month}-${item._id.year}`,
+    name: `${item?._id.month}-${item?._id.year}`,
     totalPosts: item?.totalPosts,
     votes: item?.votes,
   }));
